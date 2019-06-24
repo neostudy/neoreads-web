@@ -30,8 +30,8 @@
                 <el-menu-item index="/news">
                   <span class="theme">知新</span>
                 </el-menu-item>
-                <el-menu-item index="/notes">
-                  <span class="theme">笔记</span>
+                <el-menu-item index="/works">
+                  <span class="theme">以文</span>
                 </el-menu-item>
                 <el-menu-item index="/friends">
                   <span class="theme">会友</span>

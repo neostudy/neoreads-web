@@ -5,10 +5,11 @@ import Home from './components/top/Home.vue'
 import Library from './components/top/Library.vue'
 import Reviews from './components/top/Reviews.vue'
 import News from './components/top/News.vue'
-import Notes from './components/top/Notes.vue'
+import Works from './components/top/Works.vue'
 import Friends from './components/top/Friends.vue'
 import Book from './components/book/Book.vue'
 import Reader from './components/book/Reader.vue'
+import Notes from './components/book/Notes.vue'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ const routes = [
     {
         path: '/news',
         component: News
+    },
+    {
+        path: '/works',
+        component: Works
     },
     {
         path: '/notes',
