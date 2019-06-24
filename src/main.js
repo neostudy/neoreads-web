@@ -17,6 +17,8 @@ Vue.component('faicon', FontAwesomeIcon)
 
 // axios
 import axios from 'axios'
+
+import i18n from './i18n'
 axios.defaults.headers.post['Countent-Type'] = 'application/json'
 Vue.prototype.$axios = axios
 
@@ -26,5 +28,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App),
+  i18n,
+  render: h => h(App)
 }).$mount('#app')

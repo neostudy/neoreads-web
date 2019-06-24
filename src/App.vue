@@ -19,22 +19,22 @@
                 router
               >
                 <el-menu-item index="/home">
-                  <span class="theme">首页</span>
+                  <span class="theme">{{$t('home')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/library">
-                  <span class="theme">书斋</span>
+                  <span class="theme">{{$t('library')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/reviews">
-                  <span class="theme">温故</span>
+                  <span class="theme">{{$t('reviews')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/news">
-                  <span class="theme">知新</span>
+                  <span class="theme">{{$t('news')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/works">
-                  <span class="theme">以文</span>
+                  <span class="theme">{{$t('works')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/friends">
-                  <span class="theme">会友</span>
+                  <span class="theme">{{$t('friends')}}</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -42,7 +42,12 @@
               <search/>
             </el-col>
             <el-col :span="2">
-              <div style="height: 60px; line-height: 80px;">
+              <div class="lang">
+              <locale @locale="changeLocale"/>
+              </div>
+            </el-col>
+            <el-col :span="2">
+              <div class="options">
               <faicon icon="user" size="2x" class="user theme" @click="login"></faicon>
               </div>
             </el-col>
@@ -57,21 +62,28 @@
 </template>
 
 <script>
-import Search from "./components/tools/Search.vue";
+import Search from "./components/tools/Search.vue"
+import Locale from "./components/tools/Locale.vue"
 
 export default {
   name: "app",
   components: {
-    Search
+    Search, Locale
   },
   data() {
     return {
       activeIndex: "/home"
     };
   },
+  mounted() {
+    console.log("locale:", this.$i18n.locale)
+  },
   methods: {
     login() {
       console.log("login")
+    },
+    changeLocale(loc) {
+      this.$i18n.locale = loc
     }
   }
 };
@@ -118,7 +130,12 @@ export default {
 .search
   position relative
   float right
-  bottom -10px
+  bottom -12px
+
+.options
+  line-height 76px
+  height 60px
+  text-align left
 
 .user
   cursor pointer

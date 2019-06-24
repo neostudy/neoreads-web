@@ -28,7 +28,7 @@ const routes = [
         component: Library
     },
     {
-        path: '/reiviews',
+        path: '/reviews',
         component: Reviews
     },
     {
