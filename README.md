@@ -4,7 +4,7 @@ Website for neoreads, written in vue.js
 
 使用Vue.js开发的纯网页前端，用来展示NeoReads的内容。未来会开发对应的APP。
 
-# 版块
+## 版块
 
 - 首页：常用信息入口，可以自定义
   - 书籍分类
@@ -15,11 +15,10 @@ Website for neoreads, written in vue.js
   - 热门新闻
   - 好友近况
 
-- 书斋：管理书籍，进行学习和创作
+- 书斋：管理书籍，进行学习
   - 书架
   - 阅读
   - 笔记
-  - 创作
 
 - 温故：温习进度管理
   - 温习进度
@@ -32,4 +31,15 @@ Website for neoreads, written in vue.js
   - 优质文章
   - 新闻真假识别
 
-- 
+- 以文：创作中心
+  - 文章
+  - 翻译
+  - 评注
+  - 新闻稿
+  - 贴子
+
+- 会友：论坛与笔友
+  - 书籍论坛
+  - 话题论坛
+  - 问答社区
+  - 笔友社交
