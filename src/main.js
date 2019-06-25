@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/index'
+import './stylus/theme.styl'
 
 // Element UI
 import ElementUI from 'element-ui'
@@ -9,10 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
 // Fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUser, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faUser, faSearch)
+import './js/icon'
 Vue.component('faicon', FontAwesomeIcon)
 
 // axios

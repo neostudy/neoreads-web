@@ -141,18 +141,5 @@ export default {
   cursor pointer
   
 
-// theme
-dftColor = #409EFF
-dftBorderColor = #C6E2FF
-dftHighlightColor = #A0CFFF
 
-#logo
-  span.theme
-    color dftColor
-
-.user.theme
-  color dftColor
-
-  &:hover
-    color dftHighlightColor
 </style>

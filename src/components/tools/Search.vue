@@ -5,7 +5,7 @@
       size="medium"
       class="search-input theme"
       type="search"
-      placeholder="搜索书名、人名、笔记内容"
+      :placeholder="$t('search-placeholder')"
     >
       <el-button
         size="small"
