@@ -17,6 +17,7 @@
     "core-js": "^2.6.5",
     "element-ui": "^2.9.2",
     "lodash": "^4.17.11",
+    "pinyin": "^2.9.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue": "^2.6.10",

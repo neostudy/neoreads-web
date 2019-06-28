@@ -36,6 +36,9 @@
                 <el-menu-item index="/friends">
                   <span class="theme">{{$t('friends')}}</span>
                 </el-menu-item>
+                <el-menu-item index="/dev">
+                  <span class="theme">{{$t('dev')}}</span>
+                </el-menu-item>
               </el-menu>
             </el-col>
             <el-col :span="4">

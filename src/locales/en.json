@@ -5,7 +5,9 @@
   "news": "News",
   "works": "Works",
   "friends": "Friends",
+  "dev": "Dev",
   "en": "English",
   "zh": "Chinese",
-  "search-placeholder": "Book titles, author names"
+  "search-placeholder": "Book titles, author names",
+  "switch-ruby": "Switch Phonetics"
 }

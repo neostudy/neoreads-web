@@ -1,4 +1,12 @@
+var path = require('path')
 module.exports = {
+  configureWebpack: {
+    resolve: {
+      alias: {
+        src: path.resolve(__dirname, 'src')
+      }
+    },
+  },
   pluginOptions: {
     i18n: {
       locale: 'zh',
