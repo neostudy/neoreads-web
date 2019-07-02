@@ -28,11 +28,11 @@ module.exports = {
         }
       },
       '/api': {
-        target: 'http://www.api.zhuishushenqi.com',
+        target: 'http://localhost:8090/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/api': '/api'
         }
       },
       '/content': {

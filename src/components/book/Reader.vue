@@ -19,12 +19,9 @@
       <el-main class="reader-main">
         <el-row>
           <el-col :span="12">
-            <div class="reader-toolbar">
-              <label>{{$t('switch-ruby')}}：</label>
-              <el-switch v-model="isRuby" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-            </div>
+            <reader-toolbar></reader-toolbar>
             <div class="reader-content-div">
-              <reader-content></reader-content>
+              <reader-content :bookid="bookid" :chapid="chapid"></reader-content>
             </div>
           </el-col>
           <el-col :span="12">
@@ -41,132 +38,46 @@
 
 <script>
 import TocTree from "./TocTree";
+import ReaderToolbar from "./reader/toolbar/ReaderToolbar";
 import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
 import Pinyin from "../tools/Pinyin";
 
-import { lookupICIBA } from "../../js/dict/iciba";
-import { toPinyin } from "src/js/phonetics/pinyingen.js";
-
 export default {
   components: {
     TocTree,
+    ReaderToolbar,
     ReaderContent,
     Interactive,
     Pinyin
   },
   data() {
     return {
+      bookid: this.$route.params.id,
+      chapid: "",
       isRuby: false,
       idata: {
         dict: {}
       }
     };
   },
+  created() {
+    // get toc and chapter id
+    if (this.chapid == "") {
+      let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
+      let self = this;
+      this.$axios.get(tocUrl).then(res => {
+        let toc = res.data;
+        let chap1 = toc[0];
+        self.chapid = chap1.id;
+      });
+    }
+  },
   mounted() {
     //this.lookupWord("天");
-    let self = this;
-    let panel = document.getElementById("reader-content-panel");
-    panel.onmouseup = panel.onkeyup = panel.onselectionchange = function() {
-      let selection = self.getSelectionText();
-      self.lookupWord(selection);
-    };
   },
-  watch: {
-    idata: function() {
-      console.log("idata changed");
-    },
-    isRuby: function(newValue, oldValue) {
-      if (newValue != oldValue) {
-        if (newValue) {
-          this.addPinyin()
-        } else {
-          this.removePinyin()
-        }
-      }
-    }
-  },
-  methods: {
-    getSelectionText() {
-      var text = "";
-      var activeEl = document.activeElement;
-      var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-      if (
-        activeElTagName == "textarea" ||
-        (activeElTagName == "input" &&
-          /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
-          typeof activeEl.selectionStart == "number")
-      ) {
-        text = activeEl.value.slice(
-          activeEl.selectionStart,
-          activeEl.selectionEnd
-        );
-      } else if (window.getSelection) {
-        text = window.getSelection().toString();
-      }
-      return text;
-    },
-    lookupWord(word) {
-      let self = this;
-      lookupICIBA(word).then(res => {
-        var dict = {};
-        let data = res.data;
-        dict.word = data.word_name;
-        console.log("lookup: ", data);
-        dict.symbols = [];
-        for (let s of data.symbols) {
-          var sym = {};
-          sym.symbol = s.word_symbol;
-          sym.mp3 = s.symbol_mp3;
-          // 各种词性以及对应的意义
-          dict.symbols.push(sym);
-        }
-        self.idata.dict = dict;
-      });
-    },
-    addPinyin() {
-      var panel = document.getElementById("reader-content-panel");
-      panel.classList.add("ruby");
-      var paras = panel.getElementsByTagName("p");
-      for (let p of paras) {
-        p.setAttribute("origtext", p.innerText);
-        var rubies = [];
-        var pys = toPinyin(p.innerText).flat();
-        for (let i = 0; i < p.innerText.length; ++i) {
-          var py = pys[i];
-          var ch = p.innerText[i];
-          if (py != ch) {
-            var ruby = `<rb>${ch}<rt>${py}`;
-            rubies.push(ruby);
-          } else {
-            var ruby = `<rb>${ch}<rt>`;
-            rubies.push(ruby);
-          }
-        }
-        var html = "<ruby>" + rubies.join("") + "</ruby>";
-        p.innerHTML = html;
-      }
-    },
-    removePinyin() {
-      var panel = document.getElementById("reader-content-panel");
-      panel.classList.remove("ruby");
-      var paras = panel.getElementsByTagName("p");
-      for (let p of paras) {
-        var origtext = p.getAttribute("origtext");
-        if (origtext && origtext.length > 0) {
-          p.innerHTML = origtext;
-        }
-      }
-    },
-    switchRuby() {
-      if (!this.isRuby) {
-        this.addPinyin();
-      } else {
-        this.removePinyin();
-      }
-      this.isRuby = !this.isRuby;
-    }
-  }
+
+  methods: {}
 };
 </script>
 
