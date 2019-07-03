@@ -25,15 +25,18 @@ Website for neoreads, written in vue.js
 
 近期先做核心功能：互动式阅读界面
 
+- [x] 基本阅读界面
+- [x] 章节目录导航
+- [ ] 选定N句话，弹出操作窗口
 - [ ] 评注定位：后端需要改为按句分隔的格式，每句、每段都分配ID。
 - [ ] 评注定位：前端根据句、段ID定位相关标注。
-- [ ] 现在的拼音标注直接修改dom，与vue.js有冲突，改为纯vue.js实现
-- [x] 章节目录导航
 - [x] 拼音标注：利用[pinyin](https://github.com/hotoo/pinyin)库实现汉语文章的拼音标注功能。
-- [x] 英文字典：利用[iciba](http://open.iciba.com/?c=wiki&t=cc)API实现简单英文的单词查询功能。
+- [ ] 现在的拼音标注直接修改dom，与vue.js有冲突，改为纯vue.js实现
+- [x] 英文字典查询：利用[iciba](http://open.iciba.com/?c=wiki&t=cc)API实现简单英文的单词查询功能。
 - [ ] 中文字典（二选一）：
   - 利用[聚合数据](https://www.juhe.cn/docs/api/id/156)API实现简单的中文字典功能。
   - 利用[急速数据](https://www.jisuapi.com/api/cidian/)API实现简单的中文字典功能。
+- [ ] 弹框字典界面
 - [ ] 研究更好的字典与注音功能（比如采用后端实现）
 
 ## 版块 | Sitemap
