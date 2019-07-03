@@ -9,9 +9,11 @@
 import { toPinyin } from "src/js/phonetics/pinyingen";
 
 export default {
+  props: ["lines"],
   data() {
     return {
-      isRuby: false
+      isRuby: false,
+      pinyinLines: []
     };
   },
   watch: {

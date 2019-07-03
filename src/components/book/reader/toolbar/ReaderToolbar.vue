@@ -9,6 +9,18 @@ import RubySwitch from "./RubySwitch";
 export default {
   components: {
     RubySwitch
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      popVisible: false
+    };
+  },
+  methods: {
+    handleClose(done) {
+      console.log("closed");
+      done();
+    }
   }
 };
 </script>

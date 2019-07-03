@@ -14,49 +14,53 @@ import Notes from './components/book/Notes.vue'
 Vue.use(Router)
 
 const routes = [
-    {
-        path: '/',
-        redirects: '/home',
-        component: Home
-    },
-    {
-        path: '/home',
-        component: Home
-    },
-    {
-        path: '/library',
-        component: Library
-    },
-    {
-        path: '/reviews',
-        component: Reviews
-    },
-    {
-        path: '/news',
-        component: News
-    },
-    {
-        path: '/works',
-        component: Works
-    },
-    {
-        path: '/notes',
-        component: Notes
-    },
-    {
-        path: '/friends',
-        component: Friends
-    },
-    {
-        path: '/book/:id',
-        component: Book
-    },
-    {
-        path: '/reader/:id',
-        component: Reader
-    }
+  {
+    path: '/',
+    redirects: '/home',
+    component: Home
+  },
+  {
+    path: '/home',
+    component: Home
+  },
+  {
+    path: '/library',
+    component: Library
+  },
+  {
+    path: '/reviews',
+    component: Reviews
+  },
+  {
+    path: '/news',
+    component: News
+  },
+  {
+    path: '/works',
+    component: Works
+  },
+  {
+    path: '/notes',
+    component: Notes
+  },
+  {
+    path: '/friends',
+    component: Friends
+  },
+  {
+    path: '/book/:id',
+    component: Book
+  },
+  {
+    path: '/reader/:bookid',
+    component: Reader
+  },
+  {
+    path: '/reader/:bookid/:chapid',
+    component: Reader
+  }
 ]
 
 export default new Router({
-    routes
+  routes
 });

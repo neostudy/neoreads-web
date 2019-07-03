@@ -14,7 +14,7 @@
     </el-header>
     <el-container>
       <el-aside class="reader-toolbar" width="200px">
-        <toc-tree></toc-tree>
+        <toc-tree :tocdata="toc"></toc-tree>
       </el-aside>
       <el-main class="reader-main">
         <el-row>
@@ -53,30 +53,44 @@ export default {
   },
   data() {
     return {
-      bookid: this.$route.params.id,
-      chapid: "",
+      bookid: this.$route.params.bookid,
+      chapid: this.$route.params.chapid,
       isRuby: false,
       idata: {
         dict: {}
-      }
+      },
+      toc: []
     };
   },
   created() {
+    let self = this;
+    /*
+    this.$on('toc-change', chapid => {
+      console.log("toc changed from toc component")
+      self.chapid = chapid
+    })
+    */
+    console.log("reader: chap id is ", this.chapid);
     // get toc and chapter id
-    if (this.chapid == "") {
-      let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
-      let self = this;
-      this.$axios.get(tocUrl).then(res => {
-        let toc = res.data;
-        let chap1 = toc[0];
+    let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
+    this.$axios.get(tocUrl).then(res => {
+      let toc = res.data;
+      let chap1 = toc[0];
+      if (!self.chapid) {
         self.chapid = chap1.id;
-      });
-    }
+        self.$router.push("/reader/" + self.bookid + "/" + chap1.id);
+      }
+      self.toc = toc;
+    });
   },
   mounted() {
     //this.lookupWord("天");
   },
-
+  beforeRouteUpdate(to, from, next) {
+    this.bookid = to.params.bookid
+    this.chapid = to.params.chapid
+    next();
+  },
   methods: {}
 };
 </script>

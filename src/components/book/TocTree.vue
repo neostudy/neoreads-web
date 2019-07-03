@@ -11,6 +11,7 @@
       :props="defaultProps"
       default-expand-all
       :filter-node-method="filterNode"
+      @node-click="tocSelected"
       ref="tree"
     ></el-tree>
   </div>
@@ -18,72 +19,41 @@
 
 <script>
 export default {
+  props: ["tocdata"],
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
+    },
+    tocdata(val) {
+      // transform toc data into tree data
+      this.data = []
+      for (let ch of this.tocdata) {
+        var node = {}
+        node.id = ch.id
+        node.label = ch.title
+        node.children = []
+        this.data.push(node)
+      }
     }
   },
-
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
+    },
+    tocSelected(entry, node, comp) {
+      console.log(entry)
+      let bookid = this.$route.params.bookid
+      let chapid = entry.id
+      this.$emit('toc-change', chapid)
+      this.$router.push('/reader/'+bookid+'/'+chapid)
     }
   },
 
   data() {
     return {
       filterText: "",
-      data: [
-        {
-          id: 1,
-          label: "第一章",
-          children: [
-            {
-              id: 4,
-              label: "1.1",
-              children: [
-                {
-                  id: 9,
-                  label: "1.2"
-                },
-                {
-                  id: 10,
-                  label: "1.3"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          label: "第二章",
-          children: [
-            {
-              id: 5,
-              label: "2.1"
-            },
-            {
-              id: 6,
-              label: "2.2"
-            }
-          ]
-        },
-        {
-          id: 3,
-          label: "第三章",
-          children: [
-            {
-              id: 7,
-              label: "3.1"
-            },
-            {
-              id: 8,
-              label: "3.2"
-            }
-          ]
-        }
-      ],
+      data: [],
       defaultProps: {
         children: "children",
         label: "label"
