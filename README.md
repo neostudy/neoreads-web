@@ -1,8 +1,8 @@
-# 衍星斋WEB | NeoReads Web
+# 衍星阁Web | NeoReads Web
+
+使用Vue.js开发的纯网页前端，用来展示衍星阁学习平台。未来会开发对应的APP。
 
 Website for neoreads, written in vue.js
-
-使用Vue.js开发的纯网页前端，用来展示NeoReads的内容。未来会开发对应的APP。
 
 欢迎大家提issue。
 
