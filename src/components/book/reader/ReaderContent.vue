@@ -1,15 +1,35 @@
 <template>
-  <div v-loading="loading" class="reader-content-pane" id="reader-content-panel" v-html="mdContent"></div>
+  <el-container>
+    <el-main>
+      <div
+        v-loading="loading"
+        class="reader-content-pane"
+        id="reader-content-panel"
+        v-html="showContent"
+        @mounted="onTextMounted"
+      ></div>
+    </el-main>
+    <el-aside width="15px" class="gutter">
+      <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
+    </el-aside>
+
+    <pop id="pop" v-show="popShow" :context="selectContext"></pop>
+  </el-container>
 </template>
 
 <script>
 import { lookupICIBA } from "src/js/dict/iciba";
 import { getSelectedNodes } from "src/js/selection/selection";
+import { toPinyin } from "src/js/phonetics/pinyingen";
+import Pop from "src/components/tools/Pop.vue";
+import { setTimeout } from "timers";
 var mdi = require("markdown-it")({
   html: true
 });
 
+var popper;
 export default {
+  components: { Pop },
   props: ["bookid", "chapid", "isRuby"],
   data() {
     return {
@@ -18,9 +38,16 @@ export default {
         dict: {}
       },
       loading: false,
-      mdContent: ""
+      popShow: false,
+      selectContext: {},
+      mdContent: "",
+      showContent: "",
+      curHover: null,
+      timeout: null,
+      gutters: [{ a: 1 }, { a: 2 }, { a: 3 }]
     };
   },
+
   created() {
     // get book info
     this.getContent();
@@ -28,11 +55,36 @@ export default {
   mounted() {
     let self = this;
     let panel = document.getElementById("reader-content-panel");
+    /*
     panel.onmouseup = panel.onkeyup = panel.onselectionchange = function() {
       let selection = self.getSelectionText();
       // self.markSelection();
       // self.lookupWord(selection);
     };
+    */
+  },
+  updated() {
+    console.log("updated");
+    let self = this;
+    let panel = document.getElementById("reader-content-panel");
+    let paras = panel.getElementsByTagName("p");
+    for (let para of paras) {
+      let spans = para.getElementsByClassName("content-text");
+
+      for (let span of spans) {
+        self.registerSpan(span);
+      }
+      let lastSpan = spans[spans.length - 1];
+      if (lastSpan) {
+        lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
+        lastSpan.onmouseover = function() {
+          para.classList.add("active");
+        };
+        lastSpan.onmouseout = function() {
+          para.classList.remove("active");
+        };
+      }
+    }
   },
   watch: {
     chapid: function(newValue, oldValue) {
@@ -45,7 +97,14 @@ export default {
       console.log("idata changed");
     },
     isRuby: function() {
-      console.log("is ruby in content:", this.isRuby)
+      console.log("is ruby in content:", this.isRuby);
+      if (this.isRuby) {
+        this.loading = true;
+        this.showContent = this.addRuby(this.mdContent);
+        this.loading = false;
+      } else {
+        this.showContent = this.mdContent;
+      }
     }
   },
   methods: {
@@ -59,19 +118,18 @@ export default {
           //console.log(res);
           let data = res.data;
           let content = data.content;
+          let md = mdi.render(content);
+          console.log(md.substr(0, 100));
+          this.mdContent = md.replace(
+            />([^<]+)</g,
+            '><span class="content-text">$1</span><'
+          );
           if (self.isRuby) {
-            this.mdContent = "RUBY";
+            this.showContent = this.addRuby(this.mdContent);
           } else {
-            this.mdContent = mdi.render(content);
+            this.showContent = this.mdContent;
           }
           self.loading = false;
-          /*
-          let text = data.content.split("\n\r");
-          self.lines = text;
-          self.loading = false;
-          let panel = document.getElementById("reader-content-panel");
-          panel.innerHTML = md;
-          */
         });
       }
     },
@@ -205,7 +263,6 @@ export default {
         var dict = {};
         let data = res.data;
         dict.word = data.word_name;
-        console.log("lookup: ", data);
         dict.symbols = [];
         for (let s of data.symbols) {
           var sym = {};
@@ -216,6 +273,86 @@ export default {
         }
         self.idata.dict = dict;
       });
+    },
+    registerSpan(span) {
+      let self = this;
+      /*
+      span.onmouseover = function() {
+        span.classList.add("active");
+      };
+      span.onmouseout = function() {
+        span.classList.remove("active");
+      };
+      */
+      /*
+      span.onmouseup = function() {
+        console.log("mouseup");
+        var popdiv = document.getElementById("pop");
+        self.popShow = true;
+        self.selectContext = {
+          rect: span.getBoundingClientRect(),
+          text: span.textContent,
+          ids: {
+            bookid: self.bookid,
+            chapid: self.chapid,
+            sentid: span.nextSibling.id,
+            paraid: span.parentNode.lastChild.id,
+            pos: 0
+          }
+        };
+      };
+      */
+    },
+    addRuby(html) {
+      var panel = document.getElementById("reader-content-panel");
+      panel.classList.add("ruby");
+      var dm = document.createElement("div");
+      dm.innerHTML = this.mdContent;
+
+      for (let p of dm.getElementsByTagName("p")) {
+        var rubies = [];
+        for (let n of p.childNodes) {
+          if (n.nodeType == Node.TEXT_NODE) {
+            var txt = n.textContent;
+            var rubies = [];
+            for (let ch of txt.split("")) {
+              var py = toPinyin(ch);
+              if (py.length > 0) {
+                py = py[0];
+              }
+              if (py != ch) {
+                var ruby = `<rb>${ch}<rt>${py}`;
+                rubies.push(ruby);
+              } else {
+                var ruby = `<rb>${ch}<rt>`;
+                rubies.push(ruby);
+              }
+            }
+            var rubyEl = document.createElement("ruby");
+            rubyEl.innerHTML = rubies.join("");
+            n.replaceWith(rubyEl);
+          }
+        }
+      }
+      return dm.innerHTML;
+    },
+    onTextMounted() {
+      console.log("on mounted");
+      let panel = document.getElementById("reader-content-panel");
+
+      for (let span of panel.getElementsByClassName("content-text")) {
+        span.onmouseover = function() {
+          console.log("over");
+        };
+      }
+    },
+    gutterStyle(g) {
+      if (g.a == '2') {
+      return "height:100px;background-color:red;";
+      } else {
+      return "height:100px;background-color:pink;";
+
+      }
     }
   }
 };
@@ -227,6 +364,36 @@ export default {
   text-align left
 
   p
-    margin-top 10px
+    padding 5px
+    border-radius 4px
+    margin-top 15px
     font-size 18px
+    line-height 32px
+    transition background-color 300ms ease-in
+
+    span
+      padding 5px
+      background-color white
+      border-radius 4px
+      transition background-color 300ms ease-in
+
+    span:hover
+      background-color #D9ECFF
+      cursor pointer
+
+  p.active
+    background-color #D9ECFF
+
+    span
+      background-color #D9ECFF
+
+  ruby
+    rb
+      font-size 28px
+
+    rt
+      font-size 8px
+
+.gutter
+  border 1px solid #eee
 </style>

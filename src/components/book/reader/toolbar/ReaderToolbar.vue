@@ -1,6 +1,11 @@
 <template>
   <div class="reader-toolbar">
-    <ruby-switch @is-ruby="$emit('is-ruby', $event)"></ruby-switch>
+      <el-radio-group v-model="readingMode" size="small" class="reader-tool">
+        <el-radio-button label="1">句读模式</el-radio-button>
+        <el-radio-button label="2">自由阅读</el-radio-button>
+      </el-radio-group>
+      <ruby-switch class="reader-tool" @is-ruby="$emit('is-ruby', $event)"></ruby-switch>
+      <el-button id="reader-setting" type="icon" icon="el-icon-setting" size="small" circle></el-button>
   </div>
 </template>
 
@@ -13,11 +18,11 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      popVisible: false
+      popVisible: false,
+      readingMode: "1"
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     handleClose(done) {
       console.log("closed");
@@ -27,5 +32,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="stylus">
+.reader-tool
+  margin-left 10px
+  padding 10px
+
+#reader-setting
+  float right
+  margin 10px 10px 0px 0px
 </style>

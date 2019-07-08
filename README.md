@@ -27,11 +27,20 @@ Website for neoreads, written in vue.js
 
 - [x] 基本阅读界面
 - [x] 章节目录导航
+- [x] 使用[makrdown-it](https://github.com/markdown-it/markdown-it)/[showdown](https://github.com/showdownjs/showdown)或[remark](https://github.com/remarkjs/remark)来实现其前端Markdown解析
+- [ ] 采用vuex.store来管理全局状态（如isRuby）
+- [x] 高亮鼠标悬停的句子
+- [ ] 增加鼠标悬停高亮段落的模式。
+- [ ] 增加鼠标悬停高亮字的模式。
+- [ ] 点击一句话，弹出操作窗口
+- [ ] 选定一个词，弹出操作窗口
+- [ ] 跨句子选定，自动扩充选择到整句边界
 - [ ] 选定N句话，弹出操作窗口
-- [ ] 评注定位：后端需要改为按句分隔的格式，每句、每段都分配ID。
+- [ ] 阅读窗口右侧实现gutter，用来展示每段、每句的热度
+- [x] 评注定位：后端需要改为按句分隔的格式，每句、每段都分配ID。
 - [ ] 评注定位：前端根据句、段ID定位相关标注。
 - [x] 拼音标注：利用[pinyin](https://github.com/hotoo/pinyin)库实现汉语文章的拼音标注功能。
-- [ ] 现在的拼音标注直接修改dom，与vue.js有冲突，改为纯vue.js实现
+- [x] 现在的拼音标注直接修改dom，~~与vue.js有冲突~~使用v-html暂时解决了冲突，未来还要考虑改为纯vue.js的component实现
 - [x] 英文字典查询：利用[iciba](http://open.iciba.com/?c=wiki&t=cc)API实现简单英文的单词查询功能。
 - [ ] 中文字典（二选一）：
   - 利用[聚合数据](https://www.juhe.cn/docs/api/id/156)API实现简单的中文字典功能。

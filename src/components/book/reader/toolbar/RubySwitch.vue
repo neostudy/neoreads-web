@@ -1,7 +1,7 @@
 <template>
   <div class="ruby-switch">
-    <label>{{$t('switch-ruby')}}：</label>
-    <el-switch v-model="isRuby" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+    <label>{{$t('switch-ruby')}}&nbsp;</label>
+    <el-switch v-model="isRuby"></el-switch>
   </div>
 </template>
 
@@ -16,13 +16,11 @@ export default {
       pinyinLines: []
     };
   },
-  created() {
-
-  },
+  created() {},
   watch: {
     isRuby: function(newValue, oldValue) {
       if (newValue != oldValue) {
-        this.$emit("is-ruby", newValue)
+        this.$emit("is-ruby", newValue);
         /*
         if (newValue) {
           this.addPinyin();
@@ -81,7 +79,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.ruby-switch
+  display inline-block
 
+  label
+    font-size 13px
 </style>
 
 

@@ -3,7 +3,7 @@
     <el-header class="reader-header" height="36px">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item to="/library">
-          <faicon icon="stream" class="breadcrum-icon"></faicon>书斋
+          <faicon icon="stream" class="breadcrum-icon"></faicon>&nbsp;书斋
         </el-breadcrumb-item>
         <el-breadcrumb-item>
           <a href="/">史记</a>
@@ -113,8 +113,9 @@ export default {
 
 .reader-content-div
   max-height 800px
-  padding 10px
+  padding 0px
   overflow-y scroll
+  border 1px solid #eee
 
 .reader-content-pane.ruby
   font-size 24px
