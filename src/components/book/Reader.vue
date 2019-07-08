@@ -19,9 +19,9 @@
       <el-main class="reader-main">
         <el-row>
           <el-col :span="12">
-            <reader-toolbar></reader-toolbar>
+            <reader-toolbar @is-ruby="isRuby = $event"></reader-toolbar>
             <div class="reader-content-div">
-              <reader-content :bookid="bookid" :chapid="chapid"></reader-content>
+              <reader-content :bookid="bookid" :chapid="chapid" :is-ruby="isRuby"></reader-content>
             </div>
           </el-col>
           <el-col :span="12">
@@ -87,11 +87,12 @@ export default {
     //this.lookupWord("天");
   },
   beforeRouteUpdate(to, from, next) {
-    this.bookid = to.params.bookid
-    this.chapid = to.params.chapid
+    this.bookid = to.params.bookid;
+    this.chapid = to.params.chapid;
     next();
   },
-  methods: {}
+  methods: {
+  }
 };
 </script>
 

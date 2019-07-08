@@ -16,14 +16,20 @@ export default {
       pinyinLines: []
     };
   },
+  created() {
+
+  },
   watch: {
     isRuby: function(newValue, oldValue) {
       if (newValue != oldValue) {
+        this.$emit("is-ruby", newValue)
+        /*
         if (newValue) {
           this.addPinyin();
         } else {
           this.removePinyin();
         }
+        */
       }
     }
   },

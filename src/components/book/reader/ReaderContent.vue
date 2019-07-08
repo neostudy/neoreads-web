@@ -1,22 +1,24 @@
 <template>
-  <div v-loading="loading" class="reader-content-pane" id="reader-content-panel">
-    <p v-for="(ln,i) in lines" :key="i">{{ln}}</p>
-  </div>
+  <div v-loading="loading" class="reader-content-pane" id="reader-content-panel" v-html="mdContent"></div>
 </template>
 
 <script>
 import { lookupICIBA } from "src/js/dict/iciba";
 import { getSelectedNodes } from "src/js/selection/selection";
+var mdi = require("markdown-it")({
+  html: true
+});
 
 export default {
-  props: ["bookid", "chapid"],
+  props: ["bookid", "chapid", "isRuby"],
   data() {
     return {
       lines: [],
       idata: {
         dict: {}
       },
-      loading: false
+      loading: false,
+      mdContent: ""
     };
   },
   created() {
@@ -41,6 +43,9 @@ export default {
     },
     idata: function() {
       console.log("idata changed");
+    },
+    isRuby: function() {
+      console.log("is ruby in content:", this.isRuby)
     }
   },
   methods: {
@@ -51,12 +56,22 @@ export default {
         let contentUrl =
           "/api/v1/book/" + this.bookid + "/chapter/" + this.chapid;
         this.$axios.get(contentUrl).then(res => {
-          console.log(res);
+          //console.log(res);
           let data = res.data;
+          let content = data.content;
+          if (self.isRuby) {
+            this.mdContent = "RUBY";
+          } else {
+            this.mdContent = mdi.render(content);
+          }
+          self.loading = false;
+          /*
           let text = data.content.split("\n\r");
           self.lines = text;
           self.loading = false;
           let panel = document.getElementById("reader-content-panel");
+          panel.innerHTML = md;
+          */
         });
       }
     },
@@ -207,10 +222,11 @@ export default {
 </script>
 
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .reader-content-pane
   text-align left
 
   p
     margin-top 10px
+    font-size 18px
 </style>

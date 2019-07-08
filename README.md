@@ -12,7 +12,7 @@ Website for neoreads, written in vue.js
 - 独创的互动式阅读模式
 - 支持多种语言的双语阅读
   - 初期采用开源书籍
-    - 中文古籍：殆知阁
+    - 中文古籍：[殆知阁](https://github.com/garychowcmu/daizhigev20)
     - 中文诗词：[中华诗词](https://github.com/chinese-poetry/chinese-poetry)
     - 英文书籍：[gutenberg](http://www.gutenberg.org/)
     - 日文书籍：[青空文庫](https://www.aozora.gr.jp/)

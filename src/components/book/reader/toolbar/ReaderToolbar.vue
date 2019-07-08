@@ -1,6 +1,6 @@
 <template>
   <div class="reader-toolbar">
-    <ruby-switch></ruby-switch>
+    <ruby-switch @is-ruby="$emit('is-ruby', $event)"></ruby-switch>
   </div>
 </template>
 
@@ -15,6 +15,8 @@ export default {
       dialogVisible: false,
       popVisible: false
     };
+  },
+  created() {
   },
   methods: {
     handleClose(done) {
