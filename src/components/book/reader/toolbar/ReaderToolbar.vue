@@ -1,8 +1,9 @@
 <template>
   <div class="reader-toolbar">
       <el-radio-group v-model="readingMode" size="small" class="reader-tool">
-        <el-radio-button label="1">句读模式</el-radio-button>
-        <el-radio-button label="2">自由阅读</el-radio-button>
+        <el-radio-button label="1">自由阅读</el-radio-button>
+        <el-radio-button label="2">句读模式</el-radio-button>
+        <el-radio-button label="3">双语对照</el-radio-button>
       </el-radio-group>
       <ruby-switch class="reader-tool" @is-ruby="$emit('is-ruby', $event)"></ruby-switch>
       <el-button id="reader-setting" type="icon" icon="el-icon-setting" size="small" circle></el-button>
@@ -19,7 +20,7 @@ export default {
     return {
       dialogVisible: false,
       popVisible: false,
-      readingMode: "1"
+      readingMode: "2"
     };
   },
   created() {},

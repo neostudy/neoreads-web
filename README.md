@@ -25,6 +25,8 @@ Website for neoreads, written in vue.js
 
 近期先做核心功能：互动式阅读界面
 
+### 互动式阅读界面
+
 - [x] 基本阅读界面
 - [x] 章节目录导航
 - [x] 使用[makrdown-it](https://github.com/markdown-it/markdown-it)/[showdown](https://github.com/showdownjs/showdown)或[remark](https://github.com/remarkjs/remark)来实现其前端Markdown解析
@@ -32,8 +34,10 @@ Website for neoreads, written in vue.js
 - [x] 高亮鼠标悬停的句子
 - [ ] 增加鼠标悬停高亮段落的模式。
 - [ ] 增加鼠标悬停高亮字的模式。
-- [ ] 点击一句话，弹出操作窗口
-- [ ] 选定一个词，弹出操作窗口
+- [x] 悬停在一句话上超过N秒，显示该句的浮动操作条
+- [ ] 浮动操作条可拖拽。可以利用[Vue.Draggable](https://github.com/SortableJS/Vue.Draggable)来实现。
+- [ ] 选定一个词，弹出字典窗口
+- [ ] 弹框字典界面
 - [ ] 跨句子选定，自动扩充选择到整句边界
 - [ ] 选定N句话，弹出操作窗口
 - [ ] 阅读窗口右侧实现gutter，用来展示每段、每句的热度
@@ -45,8 +49,12 @@ Website for neoreads, written in vue.js
 - [ ] 中文字典（二选一）：
   - 利用[聚合数据](https://www.juhe.cn/docs/api/id/156)API实现简单的中文字典功能。
   - 利用[急速数据](https://www.jisuapi.com/api/cidian/)API实现简单的中文字典功能。
-- [ ] 弹框字典界面
 - [ ] 研究更好的字典与注音功能（比如采用后端实现）
+- [ ] 研究字、词、句的分级功能。
+
+### 其他界面
+
+- [ ] 利用vuex.store来存储和显示当前高亮的导航栏
 
 ## 版块 | Sitemap
 

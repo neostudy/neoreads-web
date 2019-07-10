@@ -25,7 +25,7 @@ import { toPinyin } from "src/js/phonetics/pinyingen";
 import Pop from "src/components/tools/Pop.vue";
 import PopBar from "src/components/tools/PopBar.vue";
 import { setTimeout } from "timers";
-import { isFunction } from 'util';
+import { isFunction } from "util";
 var mdi = require("markdown-it")({
   html: true
 });
@@ -55,6 +55,8 @@ export default {
   created() {
     // get book info
     this.getContent();
+    //this.$root.data.activeIndex = "/library";
+    console.log("root:", this.$root)
   },
   mounted() {
     let self = this;
@@ -294,7 +296,7 @@ export default {
       };
       span.onmouseover = function(event) {
         span.classList.add("active");
-        let isFav = span.classList.contains("mark")
+        let isFav = span.classList.contains("mark");
         setTimeout(function() {
           if (span.classList.contains("active")) {
             var popdiv = document.getElementById("pop");
