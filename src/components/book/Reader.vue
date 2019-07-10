@@ -64,12 +64,6 @@ export default {
   },
   created() {
     let self = this;
-    /*
-    this.$on('toc-change', chapid => {
-      console.log("toc changed from toc component")
-      self.chapid = chapid
-    })
-    */
     console.log("reader: chap id is ", this.chapid);
     // get toc and chapter id
     let tocUrl = "/api/v1/book/" + this.bookid + "/toc";

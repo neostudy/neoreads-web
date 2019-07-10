@@ -13,7 +13,8 @@
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
     </el-aside>
 
-    <pop id="pop" v-show="popShow" :context="selectContext"></pop>
+    <!--<pop id="pop" v-show="popShow" :context="selectContext"></pop>-->
+    <pop-bar id="pop" :context="selectContext" @fav="fav"></pop-bar>
   </el-container>
 </template>
 
@@ -22,14 +23,16 @@ import { lookupICIBA } from "src/js/dict/iciba";
 import { getSelectedNodes } from "src/js/selection/selection";
 import { toPinyin } from "src/js/phonetics/pinyingen";
 import Pop from "src/components/tools/Pop.vue";
+import PopBar from "src/components/tools/PopBar.vue";
 import { setTimeout } from "timers";
+import { isFunction } from 'util';
 var mdi = require("markdown-it")({
   html: true
 });
 
 var popper;
 export default {
-  components: { Pop },
+  components: { Pop, PopBar },
   props: ["bookid", "chapid", "isRuby"],
   data() {
     return {
@@ -44,7 +47,8 @@ export default {
       showContent: "",
       curHover: null,
       timeout: null,
-      gutters: [{ a: 1 }, { a: 2 }, { a: 3 }]
+      gutters: [{ a: 1 }, { a: 2 }, { a: 3 }],
+      needRebind: true
     };
   },
 
@@ -65,25 +69,11 @@ export default {
   },
   updated() {
     console.log("updated");
-    let self = this;
-    let panel = document.getElementById("reader-content-panel");
-    let paras = panel.getElementsByTagName("p");
-    for (let para of paras) {
-      let spans = para.getElementsByClassName("content-text");
+    if (this.needRebind) {
+      console.log("rebinding...");
+      this.rebind();
 
-      for (let span of spans) {
-        self.registerSpan(span);
-      }
-      let lastSpan = spans[spans.length - 1];
-      if (lastSpan) {
-        lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
-        lastSpan.onmouseover = function() {
-          para.classList.add("active");
-        };
-        lastSpan.onmouseout = function() {
-          para.classList.remove("active");
-        };
-      }
+      this.needRebind = false;
     }
   },
   watch: {
@@ -129,6 +119,7 @@ export default {
           } else {
             this.showContent = this.mdContent;
           }
+          this.needRebind = true;
           self.loading = false;
         });
       }
@@ -274,34 +265,58 @@ export default {
         self.idata.dict = dict;
       });
     },
+    rebind() {
+      let self = this;
+      let panel = document.getElementById("reader-content-panel");
+      let paras = panel.getElementsByTagName("p");
+      for (let para of paras) {
+        let spans = para.getElementsByClassName("content-text");
+
+        for (let span of spans) {
+          self.registerSpan(span);
+        }
+        let lastSpan = spans[spans.length - 1];
+        if (lastSpan) {
+          lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
+          lastSpan.onmouseover = function() {
+            para.classList.add("active");
+          };
+          lastSpan.onmouseout = function() {
+            para.classList.remove("active");
+          };
+        }
+      }
+    },
     registerSpan(span) {
       let self = this;
-      /*
-      span.onmouseover = function() {
-        span.classList.add("active");
-      };
       span.onmouseout = function() {
         span.classList.remove("active");
       };
-      */
-      /*
-      span.onmouseup = function() {
-        console.log("mouseup");
-        var popdiv = document.getElementById("pop");
-        self.popShow = true;
-        self.selectContext = {
-          rect: span.getBoundingClientRect(),
-          text: span.textContent,
-          ids: {
-            bookid: self.bookid,
-            chapid: self.chapid,
-            sentid: span.nextSibling.id,
-            paraid: span.parentNode.lastChild.id,
-            pos: 0
+      span.onmouseover = function(event) {
+        span.classList.add("active");
+        let isFav = span.classList.contains("mark")
+        setTimeout(function() {
+          if (span.classList.contains("active")) {
+            var popdiv = document.getElementById("pop");
+            self.selectContext = {
+              isFav: isFav,
+              rect: span.getBoundingClientRect(),
+              text: span.textContent,
+              ids: {
+                bookid: self.bookid,
+                chapid: self.chapid,
+                sentid: span.nextSibling.id,
+                paraid: span.parentNode.lastChild.id,
+                pos: 0
+              },
+              mouse: {
+                clientX: event.clientX,
+                clientY: event.clientY
+              }
+            };
           }
-        };
+        }, 500);
       };
-      */
     },
     addRuby(html) {
       var panel = document.getElementById("reader-content-panel");
@@ -347,11 +362,23 @@ export default {
       }
     },
     gutterStyle(g) {
-      if (g.a == '2') {
-      return "height:100px;background-color:red;";
+      if (g.a == "2") {
+        return "height:100px;background-color:red;";
       } else {
-      return "height:100px;background-color:pink;";
-
+        return "height:100px;background-color:pink;";
+      }
+    },
+    fav(isFav) {
+      let ctx = this.selectContext;
+      this.markFav(isFav, ctx.ids.sentid, ctx.ids.paraid);
+    },
+    markFav(isFav, sentid, paraid) {
+      let sent = document.getElementById(sentid);
+      let span = sent.previousSibling;
+      if (isFav) {
+        span.classList.add("mark");
+      } else {
+        span.classList.remove("mark");
       }
     }
   }
@@ -381,11 +408,8 @@ export default {
       background-color #D9ECFF
       cursor pointer
 
-  p.active
-    background-color #D9ECFF
-
-    span
-      background-color #D9ECFF
+    span.mark
+      background-color yellow
 
   ruby
     rb
