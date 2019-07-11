@@ -18,8 +18,8 @@ Website for neoreads, written in vue.js
     - 日文书籍：[青空文庫](https://www.aozora.gr.jp/)
   - 未来打算引入更多正版书籍
 - 独创的评注引用功能
-- 温故知新： 碎片化学习进度管理
-- 以文会友
+- 温故知新：碎片化学习进度管理
+- 以文会友：跨时间社交
 
 ## 近期计划 | TODO
 
@@ -29,12 +29,13 @@ Website for neoreads, written in vue.js
 
 - [x] 基本阅读界面
 - [x] 章节目录导航
-- [x] 使用[makrdown-it](https://github.com/markdown-it/markdown-it)/[showdown](https://github.com/showdownjs/showdown)或[remark](https://github.com/remarkjs/remark)来实现其前端Markdown解析
+- [x] 使用[makrdown-it](https://github.com/markdown-it/markdown-it)~~/[showdown](https://github.com/showdownjs/showdown)或[remark](https://github.com/remarkjs/remark)~~来实现其前端Markdown解析
 - [ ] 采用vuex.store来管理全局状态（如isRuby）
 - [x] 高亮鼠标悬停的句子
 - [ ] 增加鼠标悬停高亮段落的模式。
 - [ ] 增加鼠标悬停高亮字的模式。
 - [x] 悬停在一句话上超过N秒，显示该句的浮动操作条
+- [x] 收藏句子，以及高亮显示已有的收藏。
 - [ ] 浮动操作条可拖拽。可以利用[Vue.Draggable](https://github.com/SortableJS/Vue.Draggable)来实现。
 - [ ] 选定一个词，弹出字典窗口
 - [ ] 弹框字典界面

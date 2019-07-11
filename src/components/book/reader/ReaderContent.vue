@@ -48,7 +48,8 @@ export default {
       curHover: null,
       timeout: null,
       gutters: [{ a: 1 }, { a: 2 }, { a: 3 }],
-      needRebind: true
+      needRebind: true,
+      notes: {}
     };
   },
 
@@ -56,7 +57,7 @@ export default {
     // get book info
     this.getContent();
     //this.$root.data.activeIndex = "/library";
-    console.log("root:", this.$root)
+    console.log("root:", this.$root);
   },
   mounted() {
     let self = this;
@@ -288,6 +289,8 @@ export default {
           };
         }
       }
+      // get notes from api
+      this.getNotes();
     },
     registerSpan(span) {
       let self = this;
@@ -372,15 +375,58 @@ export default {
     },
     fav(isFav) {
       let ctx = this.selectContext;
-      this.markFav(isFav, ctx.ids.sentid, ctx.ids.paraid);
+      this.markFav(isFav, ctx.ids.paraid, ctx.ids.sentid);
     },
-    markFav(isFav, sentid, paraid) {
+    markFav(isFav, paraid, sentid) {
       let sent = document.getElementById(sentid);
       let span = sent.previousSibling;
       if (isFav) {
         span.classList.add("mark");
+        this.addNote(paraid, sentid);
       } else {
         span.classList.remove("mark");
+        this.removeNote(paraid, sentid);
+      }
+    },
+    addNote(paraid, sentid) {
+      var json = {
+        ntype: 1, // mark
+        ptype: 1, // position: sent
+        bookid: this.bookid,
+        chapid: this.chapid,
+        paraid: paraid,
+        sentid: sentid,
+        wordid: "0000"
+      };
+      console.log("add note:", json);
+      let self = this;
+      this.$axios.post("/api/v1/note/add", json).then(res => {
+        let noteid = res.data.id;
+        self.notes[sentid] = noteid;
+      });
+    },
+    removeNote(paraid, sentid) {
+      let noteid = this.notes[sentid];
+      if (noteid) {
+        console.log("removing note:", noteid);
+        this.$axios.get("/api/v1/note/remove/" + noteid);
+      }
+    },
+    getNotes() {
+      let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
+      let self = this;
+      this.$axios.get("/api/v1/note/list?" + query).then(res => {
+        for (let n of res.data) {
+          self.notes[n.sentid] = n.id
+          self.applyNote(n);
+        }
+      });
+    },
+    applyNote(n) {
+      let sent = document.getElementById(n.sentid);
+      if (sent) {
+        let span = sent.previousSibling;
+        span.classList.add("mark");
       }
     }
   }
