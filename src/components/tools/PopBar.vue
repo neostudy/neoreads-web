@@ -36,13 +36,15 @@ export default {
     context: function(ctx, old) {
       this.isFavorite = ctx.isFav;
       let rec = ctx.rect;
-      let lineHeight = 30;
-      console.log("lines:", ((rec.bottom - rec.top) / 30) | 0);
-
-      let mouseOffset = ((ctx.mouse.clientY - rec.top) / 32) | 0;
-      console.log("mouseOffset:", mouseOffset);
-      let left = (rec.left + rec.right) / 2 - this.$el.clientWidth / 2;
-      let top = rec.top - this.$el.clientHeight - 6;
+      let lineHeight = 32;
+      let mouseOffset = ((ctx.mouse.clientY - rec.top) / lineHeight) | 0;
+      //let left = (rec.left + rec.right) / 2 - this.$el.clientWidth / 2;
+      // the HEART icon should be direct above the mouse
+      let left = ctx.mouse.clientX - 24;
+      console.log("left:", left);
+      console.log("rect.left:", rec.left);
+      let popHeight = 48; // clientHeight: 42, plus shadows
+      let top = rec.top + mouseOffset * lineHeight - popHeight;
       this.$el.style.top = top + "px";
       this.$el.style.left = left + "px";
       this.$el.style.display = "block";

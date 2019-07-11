@@ -13,8 +13,7 @@
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
     </el-aside>
 
-    <!--<pop id="pop" v-show="popShow" :context="selectContext"></pop>-->
-    <pop-bar id="pop" :context="selectContext" @fav="fav"></pop-bar>
+    <pop-bar id="pop" v-show="false" :context="selectContext" @fav="fav"></pop-bar>
   </el-container>
 </template>
 
@@ -268,6 +267,8 @@ export default {
         self.idata.dict = dict;
       });
     },
+    // rebind command popper to all sentences and paragraphs
+    // TODO: deal with paragraph
     rebind() {
       let self = this;
       let panel = document.getElementById("reader-content-panel");
@@ -314,6 +315,10 @@ export default {
                 paraid: span.parentNode.lastChild.id,
                 pos: 0
               },
+              // TODO: 
+              // The mouse might move away when this timeout hits,
+              // so this mouse position is not accurate.
+              // Find another way to get the mouse position for popbar
               mouse: {
                 clientX: event.clientX,
                 clientY: event.clientY
