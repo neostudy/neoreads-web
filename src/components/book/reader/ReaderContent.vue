@@ -93,10 +93,12 @@ export default {
       if (this.isRuby) {
         this.loading = true;
         this.showContent = this.addRuby(this.mdContent);
+        console.log("showContent:", this.showContent)
         this.loading = false;
       } else {
         this.showContent = this.mdContent;
       }
+      this.needRebind = true;
     }
   },
   methods: {
@@ -304,6 +306,7 @@ export default {
         setTimeout(function() {
           if (span.classList.contains("active")) {
             var popdiv = document.getElementById("pop");
+            // the popbar shows itself when self.selectContext changes
             self.selectContext = {
               isFav: isFav,
               rect: span.getBoundingClientRect(),
@@ -324,6 +327,7 @@ export default {
                 clientY: event.clientY
               }
             };
+
           }
         }, 500);
       };
@@ -332,13 +336,14 @@ export default {
       var panel = document.getElementById("reader-content-panel");
       panel.classList.add("ruby");
       var dm = document.createElement("div");
-      dm.innerHTML = this.mdContent;
+      dm.innerHTML = html;
 
       for (let p of dm.getElementsByTagName("p")) {
         var rubies = [];
         for (let n of p.childNodes) {
-          if (n.nodeType == Node.TEXT_NODE) {
-            var txt = n.textContent;
+          if (n.tagName.toLowerCase() == "span") {
+            let t = n.firstChild;
+            var txt = t.textContent;
             var rubies = [];
             for (let ch of txt.split("")) {
               var py = toPinyin(ch);
@@ -355,7 +360,7 @@ export default {
             }
             var rubyEl = document.createElement("ruby");
             rubyEl.innerHTML = rubies.join("");
-            n.replaceWith(rubyEl);
+            t.replaceWith(rubyEl);
           }
         }
       }

@@ -52,10 +52,12 @@ Website for neoreads, written in vue.js
   - 利用[急速数据](https://www.jisuapi.com/api/cidian/)API实现简单的中文字典功能。
 - [ ] 研究更好的字典与注音功能（比如采用后端实现）
 - [ ] 研究字、词、句的分级功能。
+- [ ] 添加前端章节分页功能，去掉滚动条。
 
 ### 其他界面
 
 - [ ] 利用vuex.store来存储和显示当前高亮的导航栏
+- [ ] 面包屑导航
 
 ## 版块 | Sitemap
 

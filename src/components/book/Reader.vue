@@ -9,7 +9,7 @@
           <a href="/">史记</a>
         </el-breadcrumb-item>
         <el-breadcrumb-item>第1章</el-breadcrumb-item>
-        <el-breadcrumb-item>五帝本纪</el-breadcrumb-item>
+        <el-breadcrumb-item>卷一 五帝本纪第一</el-breadcrumb-item>
       </el-breadcrumb>
     </el-header>
     <el-container>
