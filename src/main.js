@@ -5,9 +5,10 @@ import store from './store/index'
 import './stylus/theme.styl'
 
 // Element UI
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI)
+//import 'element-ui/lib/theme-chalk/index.css'
+//import ElementUI from 'element-ui'
+Vue.use(ELEMENT)
+
 
 // Fontawesome
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

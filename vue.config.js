@@ -6,6 +6,10 @@ module.exports = {
         src: path.resolve(__dirname, 'src')
       }
     },
+    externals: {
+      'vue': 'Vue',
+      'element-ui' : 'ELEMENT',
+    }
   },
   pluginOptions: {
     i18n: {

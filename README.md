@@ -59,6 +59,11 @@ Website for neoreads, written in vue.js
 - [ ] 利用vuex.store来存储和显示当前高亮的导航栏
 - [ ] 面包屑导航
 
+### 性能
+
+- [ ] 资源打gzip包
+- [x] 利用CDN减少bundle尺寸
+
 ## 版块 | Sitemap
 
 - 首页|Home：常用信息入口，可以自定义
