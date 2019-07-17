@@ -38,6 +38,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch("setActiveMenuIndex", "/none");
     console.log("token:", this.$store.getters.token);
   },
   methods: {
@@ -57,6 +58,7 @@ export default {
             username : username
           }
           self.$store.dispatch("login", user);
+          self.$message("登陆成功！")
           self.$router.push('/home')
         })
         .catch(err => {

@@ -30,7 +30,7 @@ Website for neoreads, written in vue.js
 - [x] 基本阅读界面
 - [x] 章节目录导航
 - [x] 使用[makrdown-it](https://github.com/markdown-it/markdown-it)~~/[showdown](https://github.com/showdownjs/showdown)或[remark](https://github.com/remarkjs/remark)~~来实现其前端Markdown解析
-- [ ] 采用vuex.store来管理全局状态（如isRuby）
+- [x] 采用vuex.store来管理全局状态（如isRuby）
 - [x] 高亮鼠标悬停的句子
 - [ ] 增加鼠标悬停高亮段落的模式。
 - [ ] 增加鼠标悬停高亮字的模式。
@@ -66,11 +66,12 @@ Website for neoreads, written in vue.js
 
 ### 安全
 
-- [ ] 注册前端
+- [x] 注册前端
 - [x] 登录前端
 - [x] JWT前端
 - [x] 利用Vuex实现简单的前端Auth
 - [ ] 前端权限管理
+- [ ] 使用[vuelidate](https://github.com/vuelidate/vuelidate)进行表单验证
 
 ## 版块 | Sitemap
 

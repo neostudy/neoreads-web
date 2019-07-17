@@ -14,7 +14,7 @@
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
         <el-form-item label="重复密码">
-          <el-input v-model="form.password2" type="password"></el-input>
+          <el-input v-model="password2" type="password"></el-input>
         </el-form-item>
         <el-form-item>
           <label id="message-label">{{errmsg}}</label>
@@ -23,7 +23,7 @@
           <el-button type="primary" class="submit" @click="register">{{$t('register')}}</el-button>
         </el-form-item>
         <el-form-item>
-          已经注册？ 请点击 
+          已经注册？ 请点击
           <router-link to="/user/login">登录</router-link>
         </el-form-item>
       </el-form>
@@ -37,35 +37,48 @@ export default {
     return {
       form: {
         username: "",
-        password: ""
+        password: "",
+        email: ""
       },
-      errmsg : ''
+      password2: "",
+      errmsg: ""
     };
   },
   created() {
+    this.$store.dispatch("setActiveMenuIndex", "/none");
     console.log("token:", this.$store.getters.token);
   },
   methods: {
+    checkPasswords() {
+      if (this.form.password == '') {
+        this.errmsg = "请填写密码";
+        return false;
+      }
+      if (this.password2 == '') {
+        this.errmsg = "请填写重复密码";
+        return false;
+      }
+      if (this.form.password != this.password2) {
+        this.errmsg = "两次输入的密码不一致";
+        return false;
+      } else {
+        return true;
+      }
+    },
     register() {
-      console.log("login:", this.form);
+      if (!this.checkPasswords()) {
+        return;
+      }
       let loginUrl = "/api/v1/user/register";
       let self = this;
-      let username = this.form.username;
       this.$axios
         .post(loginUrl, this.form)
         .then(res => {
-          let token = res.data.token;
-          let expire = res.data.expire;
-          let user = {
-            token : token,
-            expire: expire,
-            username : username
-          }
-          self.$store.dispatch("login", user);
-          self.$router.push('/home')
+          self.$message("注册成功，请登录")
+          self.$router.push("/user/login");
         })
         .catch(err => {
-          self.errmsg = '登陆失败！用户名或密码错误，请重新登录'
+          self.errmsg = "注册失败：用户名或密码错误。请重新填表注册。";
         });
     }
   }
