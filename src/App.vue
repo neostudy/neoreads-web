@@ -5,10 +5,12 @@
         <div id="nav">
           <el-row>
             <el-col :span="4">
-              <div id="logo">
-                <span class="theme">Neo</span>
-                <span>Reads</span>
-              </div>
+              <router-link to="/home" id="logo-link">
+                <div id="logo">
+                  <span class="theme">Neo</span>
+                  <span class="black">Reads</span>
+                </div>
+              </router-link>
             </el-col>
             <el-col :span="12">
               <el-menu
@@ -74,7 +76,7 @@
 <script>
 import Search from "./components/tools/Search.vue";
 import Locale from "./components/tools/Locale.vue";
-import UserOptions from "./components/top/UserOptions.vue";
+import UserOptions from "./components/user/UserOptions.vue";
 
 export default {
   name: "app",
@@ -83,15 +85,17 @@ export default {
     Locale,
     UserOptions
   },
-  computed: {
-    isAuthed() {
-      return this.$store.getters.token != "";
+  data(){
+    return {
     }
   },
-  data() {
-    return {
-      activeIndex: "/home"
-    };
+  computed: {
+    isAuthed() {
+      return this.$store.getters.isAuth;
+    },
+    activeIndex() {
+      return this.$store.getters.activeMenuIndex;
+    }
   },
   mounted() {
     console.log("locale:", this.$i18n.locale);
@@ -136,6 +140,14 @@ export default {
   span
     font-size 1.8em
     text-align left
+
+  span.black
+    color black
+
+
+#logo-link
+  outline none
+  text-decoration none
 
 #top-menu
   border-bottom 0

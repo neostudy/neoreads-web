@@ -3,8 +3,8 @@ import { DefaultLocalStore} from './local';
 const state = DefaultLocalStore.get() || {
     userfont: 12,
     isRuby: false,
-    token: '',
-    expire: '',
+    activeMenuIndex: '/home',
+    user: {}
 }
 
 console.log("init state:", state)

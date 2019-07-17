@@ -4,7 +4,9 @@
 
 <script>
 export default {
-    
-}
+  created() {
+    this.$store.dispatch("setActiveMenuIndex", "/works");
+  }
+};
 </script>
 

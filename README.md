@@ -56,7 +56,7 @@ Website for neoreads, written in vue.js
 
 ### 其他界面
 
-- [ ] 利用vuex.store来存储和显示当前高亮的导航栏
+- [x] 利用vuex.store来存储和显示当前高亮的导航栏
 - [ ] 面包屑导航
 
 ### 性能
@@ -66,9 +66,11 @@ Website for neoreads, written in vue.js
 
 ### 安全
 
-- [ ] 注册登录前端
-- [ ] JWT前端
-- [ ] 利用Vuex实现前端Auth
+- [ ] 注册前端
+- [x] 登录前端
+- [x] JWT前端
+- [x] 利用Vuex实现简单的前端Auth
+- [ ] 前端权限管理
 
 ## 版块 | Sitemap
 

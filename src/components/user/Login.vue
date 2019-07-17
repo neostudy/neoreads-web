@@ -11,12 +11,16 @@
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
         <el-form-item>
-          <label id="message-label"></label>
+          <label id="message-label">{{errmsg}}</label>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" class="submit" @click="login">{{$t('login')}}</el-button>
         </el-form-item>
-        <el-form-item></el-form-item>
+        <el-form-item>
+          还没有注册？ 请点击 
+          <router-link to="/user/register">注册</router-link>
+
+        </el-form-item>
       </el-form>
     </div>
   </div>
@@ -29,7 +33,8 @@ export default {
       form: {
         username: "",
         password: ""
-      }
+      },
+      errmsg : ''
     };
   },
   created() {
@@ -40,17 +45,22 @@ export default {
       console.log("login:", this.form);
       let loginUrl = "/api/v1/token/login";
       let self = this;
+      let username = this.form.username;
       this.$axios
         .post(loginUrl, this.form)
         .then(res => {
           let token = res.data.token;
           let expire = res.data.expire;
-          self.$store.dispatch("saveToken", token);
-          self.$store.dispatch("saveExpire", expire);
+          let user = {
+            token : token,
+            expire: expire,
+            username : username
+          }
+          self.$store.dispatch("login", user);
           self.$router.push('/home')
         })
-        .catch(res => {
-          console.log(res);
+        .catch(err => {
+          self.errmsg = '登陆失败！用户名或密码错误，请重新登录'
         });
     }
   }
@@ -75,4 +85,7 @@ div.center
   button.submit
     margin-top 10px
     width 100%
+
+#message-label
+  color red
 </style>

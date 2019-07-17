@@ -3,7 +3,6 @@ function saveLocal(name, item) {
   if (typeof content !== 'string') {
     item = JSON.stringify(item)
   }
-  console.log("into local:", item)
   window.localStorage.setItem(name, item)
 }
 
@@ -26,8 +25,8 @@ class LocalStore {
       else
         return JSON.parse(n);
     };
-    this.save = function (obj) {
-      saveLocal(name, obj);
+    this.save = function (param) {
+      saveLocal(name, param);
     };
     this.clear = function () {
       removeLocal(name);
