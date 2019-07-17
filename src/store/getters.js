@@ -14,7 +14,6 @@ export default {
   },
   activeMenuIndex(state) {
     let idx = state.activeMenuIndex;
-    console.log("idx:", idx)
     if (!idx) return '/home';
     else return state.activeMenuIndex;
   },

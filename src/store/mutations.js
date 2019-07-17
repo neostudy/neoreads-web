@@ -13,7 +13,6 @@ export default {
   },
   [SET_ACTIVE_MENU_INDEX](state, param) { 
     state.activeMenuIndex = param
-    console.log("saving menu index:", param)
     DefaultLocalStore.save(state)
   }
 }

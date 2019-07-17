@@ -58,6 +58,7 @@ Website for neoreads, written in vue.js
 
 - [x] 利用vuex.store来存储和显示当前高亮的导航栏
 - [ ] 面包屑导航
+- [x] 首页推荐书籍
 
 ### 性能
 
@@ -69,6 +70,7 @@ Website for neoreads, written in vue.js
 - [x] 注册前端
 - [x] 登录前端
 - [x] JWT前端
+- [ ] JWT Token定时刷新
 - [x] 利用Vuex实现简单的前端Auth
 - [ ] 前端权限管理
 - [ ] 使用[vuelidate](https://github.com/vuelidate/vuelidate)进行表单验证

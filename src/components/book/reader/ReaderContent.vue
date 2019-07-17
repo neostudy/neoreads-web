@@ -396,6 +396,16 @@ export default {
         this.removeNote(paraid, sentid);
       }
     },
+    authGet(url) {
+      return this.$axios.get(url, {headers: {
+        "Authorization": `Bearer ${this.$store.getters.token}`
+      }})
+    },
+    authPost(url, json) {
+      return this.$axios.post(url, json, {headers: {
+        "Authorization": `Bearer ${this.$store.getters.token}`
+      }})
+    },
     addNote(paraid, sentid) {
       var json = {
         ntype: 1, // mark
@@ -408,22 +418,31 @@ export default {
       };
       console.log("add note:", json);
       let self = this;
+
+      this.authPost("/api/v1/note/add", json).then(res => {
+        let noteid = res.data.id;
+        self.notes[sentid] = noteid;
+      });
+      /*
       this.$axios.post("/api/v1/note/add", json).then(res => {
         let noteid = res.data.id;
         self.notes[sentid] = noteid;
       });
+      */
     },
     removeNote(paraid, sentid) {
       let noteid = this.notes[sentid];
       if (noteid) {
         console.log("removing note:", noteid);
-        this.$axios.get("/api/v1/note/remove/" + noteid);
+        this.authGet("/api/v1/note/remove/" + noteid);
       }
     },
     getNotes() {
       let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
       let self = this;
-      this.$axios.get("/api/v1/note/list?" + query).then(res => {
+      let token = this.$store.getters.token
+      this.authGet("/api/v1/note/list?" + query).then(res => {
+        console.log(res)
         for (let n of res.data) {
           self.notes[n.sentid] = n.id
           self.applyNote(n);

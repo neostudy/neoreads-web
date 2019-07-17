@@ -4,17 +4,23 @@
       <h2 class="title">{{$t('register')}} {{$t('sitename')}}</h2>
       <br />
       <el-form ref="form" :model="form" label-width="80px" label-position="top">
-        <el-form-item label="用户">
+        <el-form-item label="用户名">
           <el-input v-model="form.username"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="form.email"></el-input>
         </el-form-item>
         <el-form-item label="密码">
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
         <el-form-item label="重复密码">
           <el-input v-model="password2" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
+        <el-form-item label="姓">
+          <el-input v-model="form.lastname"></el-input>
+        </el-form-item>
+        <el-form-item label="名">
+          <el-input v-model="form.firstname"></el-input>
         </el-form-item>
         <el-form-item>
           <label id="message-label">{{errmsg}}</label>
@@ -38,7 +44,9 @@ export default {
       form: {
         username: "",
         password: "",
-        email: ""
+        email: "",
+        firstname: "",
+        lastname: ""
       },
       password2: "",
       errmsg: ""

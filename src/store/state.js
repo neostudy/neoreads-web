@@ -7,6 +7,4 @@ const state = DefaultLocalStore.get() || {
     user: {}
 }
 
-console.log("init state:", state)
-
 export default state
