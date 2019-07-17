@@ -42,16 +42,23 @@
               </el-menu>
             </el-col>
             <el-col :span="4">
-              <search/>
+              <search />
             </el-col>
             <el-col :span="2">
               <div class="lang">
-              <locale @locale="changeLocale"/>
+                <locale @locale="changeLocale" />
               </div>
             </el-col>
             <el-col :span="2">
               <div class="options">
-              <faicon icon="user" size="2x" class="user theme" @click="login"></faicon>
+                <div v-show="!isAuthed">
+                  <router-link to="/user/login">
+                    <faicon icon="user" size="2x" class="user login" @click="login"></faicon>
+                  </router-link>
+                </div>
+                <div v-show="isAuthed">
+                  <user-options></user-options>
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -65,13 +72,21 @@
 </template>
 
 <script>
-import Search from "./components/tools/Search.vue"
-import Locale from "./components/tools/Locale.vue"
+import Search from "./components/tools/Search.vue";
+import Locale from "./components/tools/Locale.vue";
+import UserOptions from "./components/top/UserOptions.vue";
 
 export default {
   name: "app",
   components: {
-    Search, Locale
+    Search,
+    Locale,
+    UserOptions
+  },
+  computed: {
+    isAuthed() {
+      return this.$store.getters.token != "";
+    }
   },
   data() {
     return {
@@ -79,14 +94,17 @@ export default {
     };
   },
   mounted() {
-    console.log("locale:", this.$i18n.locale)
+    console.log("locale:", this.$i18n.locale);
   },
   methods: {
     login() {
-      console.log("login")
+      console.log("login");
     },
     changeLocale(loc) {
-      this.$i18n.locale = loc
+      this.$i18n.locale = loc;
+    },
+    userOptions() {
+      console.log("show options");
     }
   }
 };
@@ -130,19 +148,19 @@ export default {
 .top-header
   border-bottom 1px solid #eee
 
-.search
-  position relative
-  float right
-  bottom -12px
+  .search
+    position relative
+    float right
+    bottom -12px
 
-.options
-  line-height 76px
-  height 60px
-  text-align left
+  .options
+    line-height 76px
+    height 60px
+    text-align left
 
-.user
-  cursor pointer
-  
+    .user
+      cursor pointer
 
-
+    .user.login
+      color gray
 </style>

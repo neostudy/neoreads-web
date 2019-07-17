@@ -89,11 +89,9 @@ export default {
       console.log("idata changed");
     },
     isRuby: function() {
-      console.log("is ruby in content:", this.isRuby);
       if (this.isRuby) {
         this.loading = true;
         this.showContent = this.addRuby(this.mdContent);
-        console.log("showContent:", this.showContent)
         this.loading = false;
       } else {
         this.showContent = this.mdContent;

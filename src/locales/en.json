@@ -9,5 +9,7 @@
   "en": "English",
   "zh": "Chinese",
   "search-placeholder": "Book titles, author names",
-  "switch-ruby": "Switch Phonetics"
+  "switch-ruby": "Switch Phonetics",
+  "login": "Login",
+  "sitename": "NeoReads"
 }

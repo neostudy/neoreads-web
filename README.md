@@ -64,6 +64,12 @@ Website for neoreads, written in vue.js
 - [ ] 资源打gzip包
 - [x] 利用CDN减少bundle尺寸
 
+### 安全
+
+- [ ] 注册登录前端
+- [ ] JWT前端
+- [ ] 利用Vuex实现前端Auth
+
 ## 版块 | Sitemap
 
 - 首页|Home：常用信息入口，可以自定义

@@ -10,6 +10,8 @@ import Friends from './components/top/Friends.vue'
 import Book from './components/book/Book.vue'
 import Reader from './components/book/Reader.vue'
 import Notes from './components/book/Notes.vue'
+import Login from './components/user/Login.vue'
+import Register from './components/user/Register.vue'
 
 Vue.use(Router)
 
@@ -58,6 +60,14 @@ const routes = [
   {
     path: '/reader/:bookid/:chapid',
     component: Reader
+  },
+  {
+    path: '/user/register',
+    component: Register
+  },
+  {
+    path: '/user/login',
+    component: Login
   }
 ]
 

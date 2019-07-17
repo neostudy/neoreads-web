@@ -27,7 +27,7 @@ export default {
   mounted() {
     document.onmouseup = function(e) {
       var pop = document.getElementById("pop-bar");
-      if (pop != e.target && !pop.contains(e.target)) {
+      if (pop && pop != e.target && !pop.contains(e.target)) {
         pop.style.display = "none";
       }
     };

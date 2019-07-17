@@ -1,13 +1,15 @@
 {
   "home": "首页",
-    "library": "书斋",
-    "reviews": "温故",
-    "news": "知新",
-    "works": "以文",
-    "friends": "会友",
-    "dev": "开发",
-    "en": "英文",
-    "zh": "中文",
-    "search-placeholder": "搜索书名、人名、笔记内容",
-    "switch-ruby": "拼音"
+  "library": "书斋",
+  "reviews": "温故",
+  "news": "知新",
+  "works": "以文",
+  "friends": "会友",
+  "dev": "开发",
+  "en": "英文",
+  "zh": "中文",
+  "search-placeholder": "搜索书名、人名、笔记内容",
+  "switch-ruby": "拼音",
+  "login": "登录",
+  "sitename": "衍星阁"
 }
