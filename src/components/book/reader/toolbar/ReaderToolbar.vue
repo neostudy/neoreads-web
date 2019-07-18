@@ -1,5 +1,6 @@
 <template>
   <div class="reader-toolbar">
+    <el-button @click="toggleTOC" type="icon" icon="el-icon-s-unfold" size="small" circle></el-button>
     <el-radio-group v-model="readingMode" size="small" class="reader-tool">
       <el-radio-button label="1">自由阅读</el-radio-button>
       <el-radio-button label="2">句读模式</el-radio-button>
@@ -42,18 +43,24 @@ export default {
     },
     prevPage() {
       EVENT_BUS.$emit("PREV_PAGE");
+    },
+    toggleTOC() {
+      EVENT_BUS.$emit("TOGGLE_TOC");
     }
   }
 };
 </script>
 
 <style lang="stylus">
+.reader-toolbar
+  padding-left 10px
+  height 49px
+
 .reader-tool
-  margin-left 10px
   padding 10px
 
 #page-buttons
-  margin-left 60px
+  margin-left 30px
 
 #reader-setting
   float right

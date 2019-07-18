@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="interactive-dict">
+      <!--
       <div>{{dict.word}}</div>
       <div v-for="(s,i) in dict.symbols" :key="i">
         <span>{{s.symbol}}</span>
@@ -8,8 +9,11 @@
           <faicon icon="volume-up" @click="playMp3(s.mp3)"></faicon>
         </span>
       </div>
+      -->
     </div>
+    <!--
     <div>{{py}}</div>
+    -->
   </div>
 </template>
 

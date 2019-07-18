@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header class="reader-header" height="36px">
+    <el-header class="reader-header" height="30px">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item to="/library">
           <faicon icon="stream" class="breadcrum-icon"></faicon>&nbsp;书斋
@@ -13,7 +13,7 @@
       </el-breadcrumb>
     </el-header>
     <el-container>
-      <el-aside class="reader-toolbar" width="200px">
+      <el-aside v-show="showTOC" class="reader-aside" width="250px">
         <toc-tree :tocdata="toc"></toc-tree>
       </el-aside>
       <el-main class="reader-main">
@@ -42,6 +42,7 @@ import ReaderToolbar from "./reader/toolbar/ReaderToolbar";
 import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
 import Pinyin from "../tools/Pinyin";
+import {EVENT_BUS} from "src/eventbus.js"
 
 export default {
   components: {
@@ -59,7 +60,8 @@ export default {
       idata: {
         dict: {}
       },
-      toc: []
+      toc: [],
+      showTOC : true
     };
   },
   created() {
@@ -76,6 +78,8 @@ export default {
       }
       self.toc = toc;
     });
+    
+    EVENT_BUS.$on("TOGGLE_TOC", () => this.showTOC = !this.showTOC)
   },
   mounted() {
     //this.lookupWord("天");
@@ -96,18 +100,25 @@ export default {
   height 36px
   line-height 36px
 
-.reader-toolbar
+.reader-aside
   border 1px solid #eee
-  border-bottom 0px
+  border-right 0px
+  text-align left
+  height 876px
+  overflow hidden
 
 .reader-main
   border 1px solid #eee
+  padding 16px
+  height 876px
 
 .reader-toolbar
+  border 1px solid #eee
+  border-bottom 0px
   text-align left
 
 .reader-content-div
-  height 800px
+  height 786px
   padding 0px
   overflow-y hidden
   border 1px solid #eee

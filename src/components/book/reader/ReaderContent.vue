@@ -1,14 +1,19 @@
 <template>
   <el-container>
-    <el-main>
-      <div
-        v-loading="loading"
-        class="reader-content-pane"
-        id="reader-content-panel"
-        @mounted="onTextMounted"
-      >
-        <!--<div v-for="(p, i) in paras" :key="i" v-html="p"></div>-->
-      </div>
+    <el-main class="reader-content-main">
+      <el-container>
+        <el-header height="20px"></el-header>
+        <el-main style="padding: 0px;">
+          <div
+            v-loading="loading"
+            class="reader-content-pane"
+            id="reader-content-panel"
+            @mounted="onTextMounted"
+          >
+            <!--<div v-for="(p, i) in paras" :key="i" v-html="p"></div>-->
+          </div>
+        </el-main>
+      </el-container>
     </el-main>
     <el-aside width="15px" class="gutter">
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
@@ -24,7 +29,7 @@ import { getSelectedNodes } from "src/js/selection/selection";
 import { toPinyin } from "src/js/phonetics/pinyingen";
 import Pop from "src/components/tools/Pop.vue";
 import PopBar from "src/components/tools/PopBar.vue";
-import {EVENT_BUS} from "src/eventbus.js";
+import { EVENT_BUS } from "src/eventbus.js";
 import { setTimeout } from "timers";
 import { isFunction } from "util";
 import PagerMixin from "./PagerMixin.js";
@@ -300,6 +305,7 @@ export default {
         for (let span of spans) {
           self.registerSpan(span);
         }
+        /*
         let lastSpan = spans[spans.length - 1];
         if (lastSpan) {
           lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
@@ -310,8 +316,10 @@ export default {
             para.classList.remove("active");
           };
         }
+        */
       }
       // get notes from api
+      // TODO: should only called once per chapter
       this.getNotes();
     },
     registerSpan(span) {
@@ -488,21 +496,22 @@ export default {
 
 
 <style lang="stylus">
+.reader-content-main
+  padding 0px 20px
+
 .reader-content-pane
   text-align left
-  max-height 760px
   overflow hidden
 
   p
-    padding 5px
+    margin-bottom 20px
     border-radius 4px
-    margin-top 15px
-    font-size 18px
-    line-height 32px
+    font-size 20px
+    line-height 36px
     transition background-color 300ms ease-in
 
     span
-      padding 5px
+      padding 4px 0
       background-color white
       border-radius 4px
       transition background-color 300ms ease-in
