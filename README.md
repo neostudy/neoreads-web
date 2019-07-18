@@ -114,3 +114,14 @@ Website for neoreads, written in vue.js
   - 话题论坛
   - 问答社区
   - 笔友社交
+
+## 运行
+
+出于安全考虑，我们使用的第三方API的key并没有放在github上，所以运行程序前请修改 src/keys.js 文件，填入自己的keys：
+
+```javascript
+export default {
+  iciba: "YOUR_ICIBA_KEY",
+}
+```
+
