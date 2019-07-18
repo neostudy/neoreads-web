@@ -8,8 +8,8 @@
     </el-radio-group>
     <ruby-switch class="reader-tool" @is-ruby="$emit('is-ruby', $event)"></ruby-switch>
     <el-button-group id="page-buttons">
-      <el-button @click="prevPage" size="small" plain icon="el-icon-arrow-left"></el-button>
-      <el-button @click="nextPage" size="small" plain>
+      <el-button title="快捷键：向上翻页键或使用鼠标滚轴" @click="prevPage" size="small" plain icon="el-icon-arrow-left"></el-button>
+      <el-button title="快捷键：向下翻页键或使用鼠标滚轴" @click="nextPage" size="small" plain>
         <i class="el-icon-arrow-right el-icon--right"></i>
       </el-button>
     </el-button-group>

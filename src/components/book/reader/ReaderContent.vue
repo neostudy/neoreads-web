@@ -70,8 +70,9 @@ export default {
     EVENT_BUS.$on("NEXT_PAGE", () => this.nextPage(this.paras));
   },
   mounted() {
-    let self = this;
-    let panel = document.getElementById("reader-content-panel");
+    this.registerWheel();
+    this.registerKeys();
+
     /*
     panel.onmouseup = panel.onkeyup = panel.onselectionchange = function() {
       let selection = self.getSelectionText();
@@ -359,8 +360,8 @@ export default {
       };
     },
     addRuby(html) {
-      var panel = document.getElementById("reader-content-panel");
-      panel.classList.add("ruby");
+
+
       var dm = document.createElement("div");
       dm.innerHTML = html;
 
@@ -489,6 +490,39 @@ export default {
         let span = sent.previousSibling;
         span.classList.add("mark");
       }
+    },
+    // enable page turning with mousewheel
+    registerWheel() {
+      let self = this;
+      let panel = document.getElementById("reader-content-panel");
+
+      panel.onwheel = function(event) {
+        event.preventDefault();
+
+        if (event.deltaY < 0) {
+          // wheel up
+          self.prevPage(self.paras);
+        } else {
+          // wheel down
+          self.nextPage(self.paras);
+        }
+      };
+    },
+    // enable page turning with PgUp, PgDown, Left and Right
+    registerKeys() {
+      let self = this;
+      window.onkeydown = function(event) {
+        if (event.srcElement.tagName == "BODY") {
+          let k = event.keyCode;
+          if (k == 33 || k == 37) { // 33: page up; 37: left
+            event.preventDefault();
+            self.prevPage(self.paras);
+          } else if (k == 34 || k == 39) { // 34: page down; 39: right
+            event.preventDefault();
+            self.nextPage(self.paras);
+          }
+        }
+      };
     }
   }
 };
