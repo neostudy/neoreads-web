@@ -37,7 +37,7 @@ export default {
       let n = page <= 0 ? 0 : page - 1;
       let lastPageConf = this.pages[n];
       let lastFitRows = lastPageConf ? lastPageConf[2] : 0
-      console.log("lastFitRows:", lastFitRows)
+      // console.log("lastFitRows:", lastFitRows)
       topHeight = - lastFitRows * 36;
       if (topHeight < 0) {
         container.style.marginTop = topHeight + "px"
@@ -49,7 +49,7 @@ export default {
       var i = 0;
       var lastHeight = 0;
       var height = 0;
-      console.log("topHeight:", topHeight)
+      // console.log("topHeight:", topHeight)
       for (i = lastIdx; i < paras.length; i++) {
         let d = document.createElement("div");
         d.innerHTML = paras[i];
@@ -72,12 +72,12 @@ export default {
       let fitCount = remain / 36;
       let fitRows = Math.floor(fitCount)
       let needCount = diff / 36;
-      console.log("Height:", height, "; LastHeight:", lastHeight)
-      console.log("Height DIFF:", height - lastHeight)
-      console.log("FitCount:", fitCount, "; NeedCount:", needCount)
+      // console.log("Height:", height, "; LastHeight:", lastHeight)
+      // console.log("Height DIFF:", height - lastHeight)
+      // console.log("FitCount:", fitCount, "; NeedCount:", needCount)
       if (fitCount > 0) {
         let maxHeight = lastHeight + fitRows * 36;
-        console.log("Seting maxheight:", maxHeight)
+        // console.log("Seting maxheight:", maxHeight)
         container.style.height = maxHeight + "px";
       }
       if (fitRows < 0) fitRows = 0;

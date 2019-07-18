@@ -43,7 +43,7 @@ Website for neoreads, written in vue.js
 - [ ] 选定N句话，弹出操作窗口
 - [ ] 阅读窗口右侧实现gutter，用来展示每段、每句的热度
 - [x] 评注定位：后端需要改为按句分隔的格式，每句、每段都分配ID。
-- [ ] 评注定位：前端根据句、段ID定位相关标注。
+- [x] 评注定位：前端根据句、段ID定位相关标注。
 - [x] 拼音标注：利用[pinyin](https://github.com/hotoo/pinyin)库实现汉语文章的拼音标注功能。
 - [x] 现在的拼音标注直接修改dom，~~与vue.js有冲突~~使用v-html暂时解决了冲突，未来还要考虑改为纯vue.js的component实现
 - [x] 英文字典查询：利用[iciba](http://open.iciba.com/?c=wiki&t=cc)API实现简单英文的单词查询功能。
@@ -52,12 +52,20 @@ Website for neoreads, written in vue.js
   - 利用[急速数据](https://www.jisuapi.com/api/cidian/)API实现简单的中文字典功能。
 - [ ] 研究更好的字典与注音功能（比如采用后端实现）
 - [ ] 研究字、词、句的分级功能。
-- [ ] 添加前端章节分页功能，去掉滚动条。
+- [x] 添加前端章节分页功能，去掉滚动条。
+- [ ] 改进前端分页，使之能支持拼音及排版设定修改的情况。
+- [ ] 增加滚轴或按键翻页的功能。
+- [ ] 在章节开始和结尾页，自动跳转到上一章或下一章。
+
+#### 评注
+
+- [ ] 现在评注是每次刷新阅读界面都获取，需要修改为每章切换时获取
 
 #### 其他界面
 
 - [x] 利用vuex.store来存储和显示当前高亮的导航栏
 - [ ] 面包屑导航
+- [ ] 章节目录增加无滚动条滚动功能；或者实现自定义滚动条。
 - [x] 首页推荐书籍
 - [x] 首页显示工程版本号
 - [ ] 版本更新日志页面
@@ -76,6 +84,11 @@ Website for neoreads, written in vue.js
 - [x] 利用Vuex实现简单的前端Auth
 - [ ] 前端权限管理
 - [ ] 使用[vuelidate](https://github.com/vuelidate/vuelidate)进行表单验证
+
+#### 代码质量
+
+- [ ] 重构ReaderContent.vue模块，将独立的功能拆分出去。
+- [ ] 研究不互相纠缠的mixin分割办法。
 
 ## 版块 | Sitemap
 
