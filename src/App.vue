@@ -5,12 +5,13 @@
         <div id="nav">
           <el-row>
             <el-col :span="4">
-              <router-link to="/home" id="logo-link">
-                <div id="logo">
-                  <span class="theme">Neo</span>
-                  <span class="black">Reads</span>
-                </div>
-              </router-link>
+              <div id="logo">
+                <router-link to="/home" id="logo-link">
+                  <span class="theme">{{$t('logo-neo')}}</span>
+                  <span class="black">{{$t('logo-reads')}}</span>
+                </router-link>
+                <span id="logo-version">v0.1</span>
+              </div>
             </el-col>
             <el-col :span="12">
               <el-menu
@@ -85,9 +86,8 @@ export default {
     Locale,
     UserOptions
   },
-  data(){
-    return {
-    }
+  data() {
+    return {};
   },
   computed: {
     isAuthed() {
@@ -144,6 +144,10 @@ export default {
   span.black
     color black
 
+  #logo-version
+    margin-left 5px
+    font-size 0.9em
+    color #999
 
 #logo-link
   outline none

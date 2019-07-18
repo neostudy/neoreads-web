@@ -98,6 +98,7 @@ export default {
 
 .reader-toolbar
   border 1px solid #eee
+  border-bottom 0px
 
 .reader-main
   border 1px solid #eee
@@ -106,9 +107,9 @@ export default {
   text-align left
 
 .reader-content-div
-  max-height 800px
+  height 800px
   padding 0px
-  overflow-y scroll
+  overflow-y hidden
   border 1px solid #eee
 
 .reader-content-pane.ruby

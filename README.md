@@ -59,7 +59,8 @@ Website for neoreads, written in vue.js
 - [x] 利用vuex.store来存储和显示当前高亮的导航栏
 - [ ] 面包屑导航
 - [x] 首页推荐书籍
-- [ ] 首页显示工程版本号
+- [x] 首页显示工程版本号
+- [ ] 版本更新日志页面
 
 #### 性能
 

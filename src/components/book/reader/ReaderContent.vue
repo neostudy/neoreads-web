@@ -5,9 +5,10 @@
         v-loading="loading"
         class="reader-content-pane"
         id="reader-content-panel"
-        v-html="showContent"
         @mounted="onTextMounted"
-      ></div>
+      >
+        <!--<div v-for="(p, i) in paras" :key="i" v-html="p"></div>-->
+      </div>
     </el-main>
     <el-aside width="15px" class="gutter">
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
@@ -23,14 +24,17 @@ import { getSelectedNodes } from "src/js/selection/selection";
 import { toPinyin } from "src/js/phonetics/pinyingen";
 import Pop from "src/components/tools/Pop.vue";
 import PopBar from "src/components/tools/PopBar.vue";
+import {EVENT_BUS} from "src/eventbus.js";
 import { setTimeout } from "timers";
 import { isFunction } from "util";
+import PagerMixin from "./PagerMixin.js";
 var mdi = require("markdown-it")({
   html: true
 });
 
 var popper;
 export default {
+  mixins: [PagerMixin],
   components: { Pop, PopBar },
   props: ["bookid", "chapid", "isRuby"],
   data() {
@@ -42,13 +46,13 @@ export default {
       loading: false,
       popShow: false,
       selectContext: {},
-      mdContent: "",
-      showContent: "",
       curHover: null,
       timeout: null,
-      gutters: [{ a: 1 }, { a: 2 }, { a: 3 }],
+      gutters: [1, 1, 2, 1, 1, 2, 1, 0, 0],
       needRebind: true,
-      notes: {}
+      notes: {},
+      paras: [],
+      oparas: []
     };
   },
 
@@ -57,6 +61,8 @@ export default {
     this.getContent();
     //this.$root.data.activeIndex = "/library";
     console.log("root:", this.$root);
+    EVENT_BUS.$on("PREV_PAGE", () => this.prevPage(this.paras));
+    EVENT_BUS.$on("NEXT_PAGE", () => this.nextPage(this.paras));
   },
   mounted() {
     let self = this;
@@ -68,6 +74,7 @@ export default {
       // self.lookupWord(selection);
     };
     */
+    console.log("say hello!");
   },
   updated() {
     console.log("updated");
@@ -91,11 +98,16 @@ export default {
     isRuby: function() {
       if (this.isRuby) {
         this.loading = true;
-        this.showContent = this.addRuby(this.mdContent);
+        this.oparas = this.paras;
+        this.paras = this.paras.map(p => this.addRuby(p));
         this.loading = false;
       } else {
-        this.showContent = this.mdContent;
+        this.paras = this.oparas;
       }
+      self.pages = [];
+      self.curPage = 0;
+      self.endChapter = false;
+      this.renderPage(this.paras);
       this.needRebind = true;
     }
   },
@@ -111,17 +123,26 @@ export default {
           let data = res.data;
           let content = data.content;
           let md = mdi.render(content);
-          console.log(md.substr(0, 100));
-          this.mdContent = md.replace(
-            />([^<]+)</g,
-            '><span class="content-text">$1</span><'
-          );
+          console.log("markdown length:", md.length);
+          let mdps = md
+            .split(/<\/?p>/g)
+            .map(ln => ln.trim())
+            .filter(ln => ln != "")
+            .map(ln => "<p>" + ln + "</p>")
+            .map(ln =>
+              ln.replace(/>([^<]+)</g, '><span class="content-text">$1</span><')
+            );
+          self.oparas = mdps;
           if (self.isRuby) {
-            this.showContent = this.addRuby(this.mdContent);
+            self.paras = mdps.map(p => self.addRuby(p));
           } else {
-            this.showContent = this.mdContent;
+            self.paras = mdps;
           }
-          this.needRebind = true;
+          self.pages = [];
+          self.curPage = 0;
+          self.endChapter = false;
+          self.renderPage(self.paras);
+          self.needRebind = true;
           self.loading = false;
         });
       }
@@ -316,7 +337,7 @@ export default {
                 paraid: span.parentNode.lastChild.id,
                 pos: 0
               },
-              // TODO: 
+              // TODO:
               // The mouse might move away when this timeout hits,
               // so this mouse position is not accurate.
               // Find another way to get the mouse position for popbar
@@ -325,7 +346,6 @@ export default {
                 clientY: event.clientY
               }
             };
-
           }
         }, 500);
       };
@@ -375,10 +395,12 @@ export default {
       }
     },
     gutterStyle(g) {
-      if (g.a == "2") {
+      if (g == 2) {
         return "height:100px;background-color:red;";
-      } else {
+      } else if (g == 1) {
         return "height:100px;background-color:pink;";
+      } else if (g == 0) {
+        return "height:100px;";
       }
     },
     fav(isFav) {
@@ -397,14 +419,18 @@ export default {
       }
     },
     authGet(url) {
-      return this.$axios.get(url, {headers: {
-        "Authorization": `Bearer ${this.$store.getters.token}`
-      }})
+      return this.$axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.token}`
+        }
+      });
     },
     authPost(url, json) {
-      return this.$axios.post(url, json, {headers: {
-        "Authorization": `Bearer ${this.$store.getters.token}`
-      }})
+      return this.$axios.post(url, json, {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters.token}`
+        }
+      });
     },
     addNote(paraid, sentid) {
       var json = {
@@ -440,11 +466,11 @@ export default {
     getNotes() {
       let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
       let self = this;
-      let token = this.$store.getters.token
+      let token = this.$store.getters.token;
       this.authGet("/api/v1/note/list?" + query).then(res => {
-        console.log(res)
+        console.log(res);
         for (let n of res.data) {
-          self.notes[n.sentid] = n.id
+          self.notes[n.sentid] = n.id;
           self.applyNote(n);
         }
       });
@@ -464,6 +490,8 @@ export default {
 <style lang="stylus">
 .reader-content-pane
   text-align left
+  max-height 760px
+  overflow hidden
 
   p
     padding 5px
@@ -494,5 +522,6 @@ export default {
       font-size 8px
 
 .gutter
-  border 1px solid #eee
+  border 0px
+  border-left 1px solid #eee
 </style>
