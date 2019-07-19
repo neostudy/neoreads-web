@@ -29,6 +29,12 @@ Vue.config.productionTip = false
 import mixins from 'src/js/mixins.js'
 Vue.mixin(mixins)
 
+// Mavon Editor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
+
 // Initialization
 new Vue({
   router,

@@ -19,16 +19,15 @@
       <el-main class="reader-main">
         <el-row>
           <el-col :span="12">
+            <div class="reader-content-wrap">
             <reader-toolbar @is-ruby="isRuby = $event"></reader-toolbar>
             <div class="reader-content-div">
               <reader-content :bookid="bookid" :chapid="chapid" :is-ruby="isRuby"></reader-content>
             </div>
+            </div>
           </el-col>
           <el-col :span="12">
-            <div class="reader-interactive-div">
-              <span id="sel"></span>
-              <interactive v-bind="idata"></interactive>
-            </div>
+            <interactive v-bind="idata"></interactive>
           </el-col>
         </el-row>
       </el-main>
@@ -42,7 +41,7 @@ import ReaderToolbar from "./reader/toolbar/ReaderToolbar";
 import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
 import Pinyin from "../tools/Pinyin";
-import {EVENT_BUS} from "src/eventbus.js"
+import { EVENT_BUS } from "src/eventbus.js";
 
 export default {
   components: {
@@ -61,10 +60,13 @@ export default {
         dict: {}
       },
       toc: [],
-      showTOC : true
+      showTOC: true
     };
   },
   created() {
+
+    this.$store.dispatch("setActiveMenuIndex", "/library");
+
     let self = this;
     console.log("reader: chap id is ", this.chapid);
     // get toc and chapter id
@@ -78,8 +80,9 @@ export default {
       }
       self.toc = toc;
     });
-    
-    EVENT_BUS.$on("TOGGLE_TOC", () => this.showTOC = !this.showTOC)
+
+    EVENT_BUS.$on("TOGGLE_TOC", () => (this.showTOC = !this.showTOC));
+    EVENT_BUS.$on("HIDE_TOC", () => (this.showTOC = false));
   },
   mounted() {
     //this.lookupWord("天");
@@ -89,8 +92,7 @@ export default {
     this.chapid = to.params.chapid;
     next();
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
@@ -112,8 +114,11 @@ export default {
   padding 16px
   height 876px
 
+.reader-content-wrap
+  box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
+
 .reader-toolbar
-  border 1px solid #eee
+  border 1px solid #DCDFE6
   border-bottom 0px
   text-align left
 
@@ -121,7 +126,7 @@ export default {
   height 786px
   padding 0px
   overflow-y hidden
-  border 1px solid #eee
+  border 1px solid #DCDFE6
 
 .reader-content-pane.ruby
   font-size 24px

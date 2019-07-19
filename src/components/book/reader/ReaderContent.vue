@@ -185,10 +185,16 @@ export default {
         span.classList.remove("active");
       };
       span.onclick = function(event) {
+        // close toc to make room for 
+        EVENT_BUS.$emit("HIDE_TOC");
+
+
+        // update self.selectContext so that interactive pane and popdiv should respond
+        // TODO: use store/event_bus instead of props and watchers
         span.classList.add("active");
         let isFav = span.classList.contains("mark");
-        let nid = span.noteid;
-        let note = self.notes[nid];
+        let sid = span.sentid;
+        let note = self.notes[sid];
         var popdiv = document.getElementById("pop");
         // the popbar shows itself when self.selectContext changes
         self.selectContext = {
@@ -324,6 +330,7 @@ export default {
       let sent = document.getElementById(n.sentid);
       if (sent) {
         let span = sent.previousSibling;
+        span.sentid = n.sentid;
         if (n.ntype == 0) {
           //mark
           span.classList.add("mark");

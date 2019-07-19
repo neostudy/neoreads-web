@@ -17,6 +17,7 @@
     "core-js": "^2.6.5",
     "lodash": "^4.17.14",
     "markdown-it": "^8.4.2",
+    "mavon-editor": "^2.7.5",
     "pinyin": "^2.9.0",
     "popper.js": "^1.15.0",
     "stylus": "^0.54.5",

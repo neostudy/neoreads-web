@@ -1,27 +1,66 @@
 <template>
-  <div>
-    <div class="interactive-dict">
-      <div class="note">
-        <div>{{note.ctx.text}}</div>
-        <div>
-          <textarea v-model="note.content"></textarea>
-          <el-button @click="saveNote">保存笔记</el-button>
+  <el-tabs type="border-card" id="reader-interactive-panel" v-model="tab">
+    <el-tab-pane name="explains" label="讲解">
+      <span slot="label" class="label">
+        <faicon icon="book-reader" ></faicon>
+        <label>讲解</label>
+      </span>
+      <div>{{ctx.text}}</div>
+    </el-tab-pane>
+    <el-tab-pane name="favorites">
+      <span slot="label" class="label">
+        <faicon icon="heart"></faicon>
+        <label>收藏</label>
+      </span>
+    </el-tab-pane>
+    <el-tab-pane name="notes">
+      <span slot="label" class="label">
+        <faicon icon="pen"></faicon>
+        <label>笔记</label>
+      </span>
+      <div class="note" v-show="isShow">
+        <div class="note-text">{{ctx.text}}</div>
+        <div class="note-editor">
+          <div v-if="needNote">
+            <mavon-editor  v-model="note.content"></mavon-editor>
+          <br/>
+          <el-button type="primary" @click="saveNote">保存笔记</el-button>
+          </div>
+          <div v-if="!needNote">{{getNote()}}</div>
         </div>
       </div>
-      <!--
-      <div>{{dict.word}}</div>
-      <div v-for="(s,i) in dict.symbols" :key="i">
-        <span>{{s.symbol}}</span>
-        <span v-if="s.mp3">
-          <faicon icon="volume-up" @click="playMp3(s.mp3)"></faicon>
-        </span>
-      </div>
-      -->
-    </div>
-    <!--
-    <div>{{py}}</div>
-    -->
-  </div>
+    </el-tab-pane>
+    <el-tab-pane name="annotations" label="批注">
+      <span slot="label" class="label">
+        <faicon icon="pen-alt"></faicon>
+        <label>批注</label>
+      </span>
+    </el-tab-pane>
+    <el-tab-pane name="translations">
+      <span slot="label" class="label">
+        <faicon icon="globe-asia" ></faicon>
+        <label>翻译</label>
+      </span>
+    </el-tab-pane>
+        <el-tab-pane name="qa" label="问答">
+      <span slot="label" class="label">
+        <faicon icon="question"></faicon>
+        <label>问答</label>
+      </span>
+    </el-tab-pane>
+    <el-tab-pane name="comments">
+      <span slot="label" class="label">
+        <faicon icon="comments"></faicon>
+        <label>评论</label>
+      </span>
+    </el-tab-pane>
+    <el-tab-pane name="refs">
+      <span slot="label" class="label">
+        <faicon icon="quote-left"></faicon>
+        <label>引用</label>
+      </span>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
@@ -31,6 +70,7 @@ export default {
   props: ["dict"],
   data() {
     return {
+      tab: "notes",
       py: "",
       note: {
         ctx: {
@@ -46,6 +86,17 @@ export default {
   mounted() {
     this.py = toPinyin("你好");
   },
+  computed: {
+    ctx: function() {
+      return this.$store.getters.selectContext;
+    },
+    isShow: function() {
+      return this.ctx.text != undefined && this.ctx.text != '';
+    },
+    needNote: function() {
+      return this.getNote() == '';
+    }
+  },
   watch: {
     dict: function(newData, oldData) {
       console.log("prop data received:", newData);
@@ -56,21 +107,41 @@ export default {
           }
         }
       }
+    },
+    ctx: function(n, o) {
+      console.log("CTX changed:", n);
     }
   },
   methods: {
     playMp3(url) {
       new Audio(url).play();
     },
+    getNote() {
+      let ctx = this.ctx
+      if (!ctx) {
+        return '';
+      }
+      if (!ctx.note) {
+        return ''
+      }
+      if (!ctx.note.content) {
+        return '';
+      }
+      return ctx.note.content
+
+    },
     openNotes() {
+      /*
       let ctx = this.$store.getters.selectContext;
       console.log("selected:", ctx);
       this.note.ctx = ctx;
       let text = ctx.text;
+      */
+      this.tab = "notes";
     },
     saveNote() {
       this.$message("saving note: " + this.note.content);
-      let ctx = this.note.ctx
+      let ctx = this.note.ctx;
       var json = {
         ntype: 1, // note
         ptype: 1, // position: sentence
@@ -91,13 +162,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-div.interactive-dict
+#reader-interactive-panel
+  margin-left 10px
   text-align left
+  height 836px
 
-  div
-    text-align left
+  span.label
+    svg
+      margin-right 4px
 
-  span
-    text-align left
+  .note-text
+    border-left 5px solid #D9ECFF
+    margin-top 20px
+    margin-bottom 30px
+    padding-left 10px
+    font-size 1.3em
+    color #888
+
 </style>
 
