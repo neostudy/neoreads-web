@@ -29,20 +29,21 @@ export default {
         lastIdx = this.pages[page][0];
       }
 
+      container.style.removeProperty("margin-top")
       // render page one paragraph at a time
       let start = lastIdx;
       let topHeight = 0;
 
       // get last pages fitrows
-      let n = page <= 0 ? 0 : page - 1;
-      let lastPageConf = this.pages[n];
-      let lastFitRows = lastPageConf ? lastPageConf[2] : 0
-      // console.log("lastFitRows:", lastFitRows)
-      topHeight = - lastFitRows * 36;
-      if (topHeight < 0) {
-        container.style.marginTop = topHeight + "px"
-      } else {
-        container.style.removeProperty("margin-top")
+      if (page > 0) {
+        let n = page <= 0 ? 0 : page - 1;
+        let lastPageConf = this.pages[n];
+        let lastFitRows = lastPageConf ? lastPageConf[2] : 0
+        // console.log("lastFitRows:", lastFitRows)
+        topHeight = - lastFitRows * 36;
+        if (topHeight < 0) {
+          container.style.marginTop = topHeight + "px"
+        }
       }
       let heightLimit = 786 - topHeight;
 
@@ -75,6 +76,7 @@ export default {
       // console.log("Height:", height, "; LastHeight:", lastHeight)
       // console.log("Height DIFF:", height - lastHeight)
       // console.log("FitCount:", fitCount, "; NeedCount:", needCount)
+      //this.$message(""+fitCount)
       if (fitCount > 0) {
         let maxHeight = lastHeight + fitRows * 36;
         // console.log("Seting maxheight:", maxHeight)

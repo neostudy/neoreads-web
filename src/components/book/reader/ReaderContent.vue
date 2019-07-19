@@ -24,23 +24,22 @@
 </template>
 
 <script>
-import { lookupICIBA } from "src/js/dict/iciba";
-import { getSelectedNodes } from "src/js/selection/selection";
 import { toPinyin } from "src/js/phonetics/pinyingen";
-import Pop from "src/components/tools/Pop.vue";
 import PopBar from "src/components/tools/PopBar.vue";
 import { EVENT_BUS } from "src/eventbus.js";
 import { setTimeout } from "timers";
 import { isFunction } from "util";
 import PagerMixin from "./PagerMixin.js";
+import SelectionMixin from "./SelectionMixin.js";
+import DictMixin from "./DictMixin.js";
 var mdi = require("markdown-it")({
   html: true
 });
 
 var popper;
 export default {
-  mixins: [PagerMixin],
-  components: { Pop, PopBar },
+  mixins: [PagerMixin, SelectionMixin, DictMixin],
+  components: { PopBar },
   props: ["bookid", "chapid", "isRuby"],
   data() {
     return {
@@ -72,7 +71,6 @@ export default {
   mounted() {
     this.registerWheel();
     this.registerKeys();
-
     /*
     panel.onmouseup = panel.onkeyup = panel.onselectionchange = function() {
       let selection = self.getSelectionText();
@@ -80,7 +78,6 @@ export default {
       // self.lookupWord(selection);
     };
     */
-    console.log("say hello!");
   },
   updated() {
     console.log("updated");
@@ -153,147 +150,6 @@ export default {
         });
       }
     },
-    getSelectionText() {
-      var text = "";
-      var activeEl = document.activeElement;
-      var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-      if (
-        activeElTagName == "textarea" ||
-        (activeElTagName == "input" &&
-          /^(?:text|search|password|tel|url)$/i.test(activeEl.type) &&
-          typeof activeEl.selectionStart == "number")
-      ) {
-        text = activeEl.value.slice(
-          activeEl.selectionStart,
-          activeEl.selectionEnd
-        );
-      } else if (window.getSelection) {
-        text = window.getSelection().toString();
-      }
-      return text;
-    },
-    // TODO: this function is not working properly
-    // need to rewrite it when we have noted text in the backend
-    // what we need is mark by sentence, not mark where ever you want.
-    markSelection() {
-      let sel = window.getSelection();
-      if (sel.toString().length == 0) {
-        console.log("selected nothing.");
-        return;
-      }
-      let r = getSelectedNodes();
-      console.log(r);
-      let range = sel.getRangeAt(0);
-      let sc = range.startContainer;
-      let so = range.startOffset;
-      let ec = range.endContainer;
-      let eo = range.endOffset;
-      // same container
-      if (sc === ec) {
-        let p = sc;
-        if (p.parentNode.tagName.toLowerCase() != "mark") {
-          let t0 = p.textContent.slice(0, so);
-          console.log("t0:", t0);
-          let t1 = p.textContent.slice(eo, p.textContent.length);
-          console.log("t1:", t1);
-          let ts = sel.toString();
-          console.log("ts:", ts);
-          var m0 = document.createTextNode(t0);
-          p.parentNode.insertBefore(m0, p);
-          var ms = document.createElement("mark");
-          ms.innerHTML = ts;
-          p.parentNode.insertBefore(ms, p);
-          var m1 = document.createTextNode(t1);
-          p.parentNode.insertBefore(m1, p);
-          p.parentNode.removeChild(p);
-        }
-      } else {
-        console.log("init: ", r);
-        for (let n of r) {
-          if (
-            n.nodeType != Node.TEXT_NODE &&
-            n.tagName.toLowerCase() == "mark"
-          ) {
-            n.replaceWith(document.createTextNode(n.textContent));
-          }
-        }
-        r = getSelectedNodes();
-        console.log("cleand:", r);
-        for (let n of r) {
-          if (n && n.parentNode) n.parentNode.normalize();
-        }
-        r = getSelectedNodes();
-        console.log("cleand:", r);
-        for (let n of r) {
-          if (
-            n.nodeType != Node.TEXT_NODE &&
-            n.tagName.toLowerCase() == "mark"
-          ) {
-            continue;
-          }
-          if (n.parentNode.tagName.toLowerCase() == "mark") {
-            continue;
-          }
-          if (n == sc.parentNode || n == ec.parentNode) {
-            console.log("ignore start and end parents");
-          } else if (n == sc && n.textContent.length != so) {
-            // start text node
-            console.log("text:", n.textContent, ":", n.textContent.length);
-            console.log("so:", so);
-            let text = n.textContent;
-            let t0 = text.slice(0, so);
-            let ts = text.slice(so, text.length);
-            if (ts.length == 0) continue;
-            n.textContent = t0;
-            var ms = document.createElement("mark");
-            ms.innerHTML = ts;
-            n.parentNode.insertBefore(ms, n.nextSibling);
-            console.log("tt0:", t0);
-            console.log("tts:", ts);
-          } else if (n == ec && eo != 0) {
-            console.log("eo:", eo);
-            let text = n.textContent;
-            let t1 = text.slice(eo, text.length);
-            let ts = text.slice(0, eo);
-            n.textContent = t1;
-            var ms = document.createElement("mark");
-            ms.innerHTML = ts;
-            n.parentNode.insertBefore(ms, n);
-            // end text node
-          } else {
-            // middle node
-            if (n.nodeType == Node.TEXT_NODE) {
-              console.log("text node");
-              console.log("next sibling:", n.nextSibling);
-              let ms = document.createElement("mark");
-              ms.innerHTML = n.textContent;
-              n.parentNode.insertBefore(ms, n);
-
-              n.parentNode.removeChild(n);
-            } else if (n.tagName == "mark") {
-              console.log("mark:", n);
-            }
-          }
-        }
-      }
-    },
-    lookupWord(word) {
-      let self = this;
-      lookupICIBA(word).then(res => {
-        var dict = {};
-        let data = res.data;
-        dict.word = data.word_name;
-        dict.symbols = [];
-        for (let s of data.symbols) {
-          var sym = {};
-          sym.symbol = s.word_symbol;
-          sym.mp3 = s.symbol_mp3;
-          // 各种词性以及对应的意义
-          dict.symbols.push(sym);
-        }
-        self.idata.dict = dict;
-      });
-    },
     // rebind command popper to all sentences and paragraphs
     // TODO: deal with paragraph
     rebind() {
@@ -328,40 +184,38 @@ export default {
       span.onmouseout = function() {
         span.classList.remove("active");
       };
-      span.onmouseover = function(event) {
+      span.onclick = function(event) {
         span.classList.add("active");
         let isFav = span.classList.contains("mark");
-        setTimeout(function() {
-          if (span.classList.contains("active")) {
-            var popdiv = document.getElementById("pop");
-            // the popbar shows itself when self.selectContext changes
-            self.selectContext = {
-              isFav: isFav,
-              rect: span.getBoundingClientRect(),
-              text: span.textContent,
-              ids: {
-                bookid: self.bookid,
-                chapid: self.chapid,
-                sentid: span.nextSibling.id,
-                paraid: span.parentNode.lastChild.id,
-                pos: 0
-              },
-              // TODO:
-              // The mouse might move away when this timeout hits,
-              // so this mouse position is not accurate.
-              // Find another way to get the mouse position for popbar
-              mouse: {
-                clientX: event.clientX,
-                clientY: event.clientY
-              }
-            };
+        let nid = span.noteid;
+        let note = self.notes[nid];
+        var popdiv = document.getElementById("pop");
+        // the popbar shows itself when self.selectContext changes
+        self.selectContext = {
+          isFav: isFav,
+          rect: span.getBoundingClientRect(),
+          text: span.textContent,
+          ids: {
+            bookid: self.bookid,
+            chapid: self.chapid,
+            sentid: span.nextSibling.id,
+            paraid: span.parentNode.lastChild.id,
+            pos: 0
+          },
+          note: note,
+          // TODO:
+          // The mouse might move away when this timeout hits,
+          // so this mouse position is not accurate.
+          // Find another way to get the mouse position for popbar
+          mouse: {
+            clientX: event.clientX,
+            clientY: event.clientY
           }
-        }, 500);
+        };
+        self.$store.dispatch("selectContext", self.selectContext);
       };
     },
     addRuby(html) {
-
-
       var dm = document.createElement("div");
       dm.innerHTML = html;
 
@@ -427,23 +281,9 @@ export default {
         this.removeNote(paraid, sentid);
       }
     },
-    authGet(url) {
-      return this.$axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${this.$store.getters.token}`
-        }
-      });
-    },
-    authPost(url, json) {
-      return this.$axios.post(url, json, {
-        headers: {
-          Authorization: `Bearer ${this.$store.getters.token}`
-        }
-      });
-    },
     addNote(paraid, sentid) {
       var json = {
-        ntype: 1, // mark
+        ntype: 0, // mark
         ptype: 1, // position: sent
         bookid: this.bookid,
         chapid: this.chapid,
@@ -456,17 +296,13 @@ export default {
 
       this.authPost("/api/v1/note/add", json).then(res => {
         let noteid = res.data.id;
-        self.notes[sentid] = noteid;
+        self.notes[sentid] = res.data;
       });
-      /*
-      this.$axios.post("/api/v1/note/add", json).then(res => {
-        let noteid = res.data.id;
-        self.notes[sentid] = noteid;
-      });
-      */
     },
     removeNote(paraid, sentid) {
-      let noteid = this.notes[sentid];
+      let note = this.notes[sentid];
+      if (!note) return;
+      let noteid = note.id;
       if (noteid) {
         console.log("removing note:", noteid);
         this.authGet("/api/v1/note/remove/" + noteid);
@@ -479,7 +315,7 @@ export default {
       this.authGet("/api/v1/note/list?" + query).then(res => {
         console.log(res);
         for (let n of res.data) {
-          self.notes[n.sentid] = n.id;
+          self.notes[n.sentid] = n;
           self.applyNote(n);
         }
       });
@@ -488,7 +324,16 @@ export default {
       let sent = document.getElementById(n.sentid);
       if (sent) {
         let span = sent.previousSibling;
-        span.classList.add("mark");
+        if (n.ntype == 0) {
+          //mark
+          span.classList.add("mark");
+        } else if (n.ntype == 1) {
+          // note
+          span.classList.add("note");
+          span.title = n.content;
+        } else {
+          span.classList.add("other-note");
+        }
       }
     },
     // enable page turning with mousewheel
@@ -514,10 +359,12 @@ export default {
       window.onkeydown = function(event) {
         if (event.srcElement.tagName == "BODY") {
           let k = event.keyCode;
-          if (k == 33 || k == 37) { // 33: page up; 37: left
+          if (k == 33 || k == 37) {
+            // 33: page up; 37: left
             event.preventDefault();
             self.prevPage(self.paras);
-          } else if (k == 34 || k == 39) { // 34: page down; 39: right
+          } else if (k == 34 || k == 39) {
+            // 34: page down; 39: right
             event.preventDefault();
             self.nextPage(self.paras);
           }
@@ -555,7 +402,10 @@ export default {
       cursor pointer
 
     span.mark
-      background-color yellow
+      background-color #FFFFB3
+
+    span.note
+      background-color #FFCFA0
 
   ruby
     rb

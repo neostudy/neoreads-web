@@ -1,27 +1,33 @@
 <template>
   <div class="pop-bar" id="pop-bar">
     <span>
-      <faicon v-if="isFavorite" icon="heart" size="lg" @click="fav"></faicon>
+      <faicon v-if="isFavorite" icon="heart" size="lg" @click="fav" class="mark"></faicon>
       <faicon v-if="!isFavorite" :icon="['far', 'heart']" size="lg" @click="fav"></faicon>
       <label>128</label>
     </span>
     <span>
-      <faicon icon="comments" size="lg"></faicon>
+      <faicon @click="openNotes" icon="pen-square" size="lg"></faicon>
+      <label>12</label>
+    </span>
+    <span>
+      <faicon @click="openComments" icon="comments" size="lg"></faicon>
       <label>99</label>
     </span>
     <span>
-      <faicon icon="quote-left" size="lg"></faicon>
+      <faicon @click="openQuotes" icon="quote-left" size="lg"></faicon>
       <label>58</label>
     </span>
   </div>
 </template>
 
 <script>
+import {EVENT_BUS} from "src/eventbus.js"
 export default {
   props: ["id", "context"],
   data() {
     return {
-      isFavorite: false
+      isFavorite: false,
+      note: {}
     };
   },
   mounted() {
@@ -35,6 +41,7 @@ export default {
   watch: {
     context: function(ctx, old) {
       this.isFavorite = ctx.isFav;
+      this.note = ctx.note;
       let rec = ctx.rect;
       let lineHeight = 32;
       let mouseOffset = ((ctx.mouse.clientY - rec.top) / lineHeight) | 0;
@@ -56,6 +63,16 @@ export default {
         this.isFavorite = true;
       }
       this.$emit("fav", this.isFavorite);
+    },
+    openNotes() {
+      this.$message("NOTE")
+      EVENT_BUS.$emit("OPEN_NOTES")
+    },
+    openComments() {
+      this.$message("Comments")
+    },
+    openQuotes() {
+      this.$message("Quotes")
     }
   }
 };
@@ -68,7 +85,7 @@ div.pop-bar
   position fixed
   top 100px
   left 200px
-  width 200px
+  width 250px
   height 32px
   line-height 32px
   border 1px solid #A0CFFF
@@ -84,6 +101,9 @@ div.pop-bar
     svg
       color #409EFF
       cursor pointer
+
+    svg.mark
+      color #FF6666
 
     label
       margin-left 5px

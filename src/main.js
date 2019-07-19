@@ -25,9 +25,15 @@ Vue.prototype.$axios = axios
 // Initialization
 Vue.config.productionTip = false
 
+// Mixins
+import mixins from 'src/js/mixins.js'
+Vue.mixin(mixins)
+
+// Initialization
 new Vue({
   router,
   store,
   i18n,
   render: h => h(App)
 }).$mount('#app')
+

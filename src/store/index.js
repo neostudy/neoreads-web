@@ -1,18 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import state from './state'
-import actions from './actions'
-import mutations from './mutations'
-import getters from './getters'
+import persist from './persist'
+import session from './session'
 
 Vue.use(Vuex)
 
 
 
 export default new Vuex.Store({
-    state,
-    actions,
-    mutations,
-    getters
+  modules: {
+    persist,
+    session
+  }
 })
