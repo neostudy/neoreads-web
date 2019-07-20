@@ -14,8 +14,9 @@ export default {
       let self = this;
 
       this.authPost("/api/v1/note/add", json).then(res => {
-        let noteid = res.data.id;
-        self.notes[sentid] = res.data;
+        let note = res.data;
+        self.notes[sentid] = note;
+        self.applyNote(note);
       });
     },
     removeNote(paraid, sentid) {
@@ -27,17 +28,25 @@ export default {
         this.authGet("/api/v1/note/remove/" + noteid);
       }
     },
-    getNotes() {
-      let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
+    // fetch notes from server
+    // should be called once per chapter
+    fetchNotes() {
       let self = this;
-      let token = this.$store.getters.token;
+      let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
       this.authGet("/api/v1/note/list?" + query).then(res => {
-        console.log(res);
+        console.log("fetched notes:", res);
         for (let n of res.data) {
           self.notes[n.sentid] = n;
-          self.applyNote(n);
         }
+        self.bindNotes();
       });
+    },
+    bindNotes() {
+      console.log("binding notes");
+      for (var sentid in this.notes) {
+        let note = this.notes[sentid];
+        this.applyNote(note);
+      }
     },
     applyNote(n) {
       let sent = document.getElementById(n.sentid);

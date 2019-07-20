@@ -54,10 +54,9 @@ export default {
       oparas: []
     };
   },
-
   created() {
     // get book info
-    this.getContent();
+    this.fetchContent();
     //this.$root.data.activeIndex = "/library";
     console.log("root:", this.$root);
     EVENT_BUS.$on("PREV_PAGE", () => this.prevPage(this.paras));
@@ -87,7 +86,7 @@ export default {
     chapid: function(newValue, oldValue) {
       console.log("chapid changed:", oldValue, newValue);
       if (newValue != "") {
-        this.getContent();
+        this.fetchContent();
       }
     },
     idata: function() {
@@ -110,7 +109,7 @@ export default {
     }
   },
   methods: {
-    getContent() {
+    fetchContent() {
       if (this.bookid != "" && this.chapid != "") {
         this.loading = true;
         let self = this;
@@ -144,6 +143,7 @@ export default {
           self.loading = false;
         });
       }
+      this.fetchNotes();
     },
     // rebind command popper to all sentences and paragraphs
     // TODO: deal with paragraph
@@ -159,9 +159,7 @@ export default {
 
         this.bindParagraph();
       }
-      // get notes from api
-      // TODO: should only called once per chapter
-      this.getNotes();
+      this.bindNotes();
     },
     bindSentence(span) {
       let self = this;

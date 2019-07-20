@@ -48,7 +48,7 @@ export default {
       document.onmouseup = function(e) {
         var pop = document.getElementById("pop-bar");
         if (pop && pop != e.target && !pop.contains(e.target)) {
-          self.show = false;
+          self.isShow = false;
         }
       };
     },
