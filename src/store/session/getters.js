@@ -1,6 +1,6 @@
 
 export default {
-  selectContext(state) {
+  select(state) {
     return state.selectContext
   },
 }

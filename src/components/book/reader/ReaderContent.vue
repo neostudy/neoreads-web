@@ -4,12 +4,7 @@
       <el-container>
         <el-header height="20px"></el-header>
         <el-main style="padding: 0px;">
-          <div
-            v-loading="loading"
-            class="reader-content-pane"
-            id="reader-content-panel"
-            @mounted="onTextMounted"
-          >
+          <div v-loading="loading" class="reader-content-pane" id="reader-content-panel">
             <!--<div v-for="(p, i) in paras" :key="i" v-html="p"></div>-->
           </div>
         </el-main>
@@ -19,7 +14,7 @@
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
     </el-aside>
 
-    <pop-bar id="pop" v-show="false" :context="selectContext" @fav="fav"></pop-bar>
+    <pop-bar id="pop" v-show="false" @fav="fav"></pop-bar>
   </el-container>
 </template>
 
@@ -32,13 +27,14 @@ import { isFunction } from "util";
 import PagerMixin from "./PagerMixin.js";
 import SelectionMixin from "./SelectionMixin.js";
 import DictMixin from "./DictMixin.js";
+import NoteMixin from "./NoteMixin.js";
 var mdi = require("markdown-it")({
   html: true
 });
 
 var popper;
 export default {
-  mixins: [PagerMixin, SelectionMixin, DictMixin],
+  mixins: [PagerMixin, SelectionMixin, DictMixin, NoteMixin],
   components: { PopBar },
   props: ["bookid", "chapid", "isRuby"],
   data() {
@@ -49,7 +45,6 @@ export default {
       },
       loading: false,
       popShow: false,
-      selectContext: {},
       curHover: null,
       timeout: null,
       gutters: [1, 1, 2, 1, 1, 2, 1, 0, 0],
@@ -153,51 +148,39 @@ export default {
     // rebind command popper to all sentences and paragraphs
     // TODO: deal with paragraph
     rebind() {
-      let self = this;
       let panel = document.getElementById("reader-content-panel");
       let paras = panel.getElementsByTagName("p");
       for (let para of paras) {
         let spans = para.getElementsByClassName("content-text");
 
         for (let span of spans) {
-          self.registerSpan(span);
+          this.bindSentence(span);
         }
-        /*
-        let lastSpan = spans[spans.length - 1];
-        if (lastSpan) {
-          lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
-          lastSpan.onmouseover = function() {
-            para.classList.add("active");
-          };
-          lastSpan.onmouseout = function() {
-            para.classList.remove("active");
-          };
-        }
-        */
+
+        this.bindParagraph();
       }
       // get notes from api
       // TODO: should only called once per chapter
       this.getNotes();
     },
-    registerSpan(span) {
+    bindSentence(span) {
       let self = this;
       span.onmouseout = function() {
         span.classList.remove("active");
       };
       span.onclick = function(event) {
-        // close toc to make room for 
+        // close toc to make room for interactive pane
         EVENT_BUS.$emit("HIDE_TOC");
 
-
-        // update self.selectContext so that interactive pane and popdiv should respond
-        // TODO: use store/event_bus instead of props and watchers
+        // hightlight this sentence to show it's selected
         span.classList.add("active");
+
+        // update store.select context
         let isFav = span.classList.contains("mark");
         let sid = span.sentid;
         let note = self.notes[sid];
-        var popdiv = document.getElementById("pop");
         // the popbar shows itself when self.selectContext changes
-        self.selectContext = {
+        let ctx = {
           isFav: isFav,
           rect: span.getBoundingClientRect(),
           text: span.textContent,
@@ -218,8 +201,25 @@ export default {
             clientY: event.clientY
           }
         };
-        self.$store.dispatch("selectContext", self.selectContext);
+        self.$store.dispatch("select", ctx);
+
+        // open popbar for this sentence
+        EVENT_BUS.$emit("OPEN_POPBAR");
       };
+    },
+    bindParagraph() {
+      /*
+        let lastSpan = spans[spans.length - 1];
+        if (lastSpan) {
+          lastSpan.innerHTML = '<i class="el-icon-zoom-in"></i>';
+          lastSpan.onmouseover = function() {
+            para.classList.add("active");
+          };
+          lastSpan.onmouseout = function() {
+            para.classList.remove("active");
+          };
+        }
+        */
     },
     addRuby(html) {
       var dm = document.createElement("div");
@@ -253,16 +253,6 @@ export default {
       }
       return dm.innerHTML;
     },
-    onTextMounted() {
-      console.log("on mounted");
-      let panel = document.getElementById("reader-content-panel");
-
-      for (let span of panel.getElementsByClassName("content-text")) {
-        span.onmouseover = function() {
-          console.log("over");
-        };
-      }
-    },
     gutterStyle(g) {
       if (g == 2) {
         return "height:100px;background-color:red;";
@@ -273,7 +263,7 @@ export default {
       }
     },
     fav(isFav) {
-      let ctx = this.selectContext;
+      let ctx = this.$store.getters.select;
       this.markFav(isFav, ctx.ids.paraid, ctx.ids.sentid);
     },
     markFav(isFav, paraid, sentid) {
@@ -286,97 +276,6 @@ export default {
         span.classList.remove("mark");
         this.removeNote(paraid, sentid);
       }
-    },
-    addNote(paraid, sentid) {
-      var json = {
-        ntype: 0, // mark
-        ptype: 1, // position: sent
-        bookid: this.bookid,
-        chapid: this.chapid,
-        paraid: paraid,
-        sentid: sentid,
-        wordid: "0000"
-      };
-      console.log("add note:", json);
-      let self = this;
-
-      this.authPost("/api/v1/note/add", json).then(res => {
-        let noteid = res.data.id;
-        self.notes[sentid] = res.data;
-      });
-    },
-    removeNote(paraid, sentid) {
-      let note = this.notes[sentid];
-      if (!note) return;
-      let noteid = note.id;
-      if (noteid) {
-        console.log("removing note:", noteid);
-        this.authGet("/api/v1/note/remove/" + noteid);
-      }
-    },
-    getNotes() {
-      let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
-      let self = this;
-      let token = this.$store.getters.token;
-      this.authGet("/api/v1/note/list?" + query).then(res => {
-        console.log(res);
-        for (let n of res.data) {
-          self.notes[n.sentid] = n;
-          self.applyNote(n);
-        }
-      });
-    },
-    applyNote(n) {
-      let sent = document.getElementById(n.sentid);
-      if (sent) {
-        let span = sent.previousSibling;
-        span.sentid = n.sentid;
-        if (n.ntype == 0) {
-          //mark
-          span.classList.add("mark");
-        } else if (n.ntype == 1) {
-          // note
-          span.classList.add("note");
-          span.title = n.content;
-        } else {
-          span.classList.add("other-note");
-        }
-      }
-    },
-    // enable page turning with mousewheel
-    registerWheel() {
-      let self = this;
-      let panel = document.getElementById("reader-content-panel");
-
-      panel.onwheel = function(event) {
-        event.preventDefault();
-
-        if (event.deltaY < 0) {
-          // wheel up
-          self.prevPage(self.paras);
-        } else {
-          // wheel down
-          self.nextPage(self.paras);
-        }
-      };
-    },
-    // enable page turning with PgUp, PgDown, Left and Right
-    registerKeys() {
-      let self = this;
-      window.onkeydown = function(event) {
-        if (event.srcElement.tagName == "BODY") {
-          let k = event.keyCode;
-          if (k == 33 || k == 37) {
-            // 33: page up; 37: left
-            event.preventDefault();
-            self.prevPage(self.paras);
-          } else if (k == 34 || k == 39) {
-            // 34: page down; 39: right
-            event.preventDefault();
-            self.nextPage(self.paras);
-          }
-        }
-      };
     }
   }
 };

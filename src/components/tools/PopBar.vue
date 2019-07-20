@@ -1,5 +1,5 @@
 <template>
-  <div class="pop-bar" id="pop-bar">
+  <div v-show="isShow" class="pop-bar" id="pop-bar">
     <span>
       <faicon v-if="isFavorite" icon="heart" size="lg" @click="fav" class="mark"></faicon>
       <faicon v-if="!isFavorite" :icon="['far', 'heart']" size="lg" @click="fav"></faicon>
@@ -21,25 +21,57 @@
 </template>
 
 <script>
-import {EVENT_BUS} from "src/eventbus.js"
+import { EVENT_BUS } from "src/eventbus.js";
 export default {
-  props: ["id", "context"],
+  props: ["id"],
   data() {
     return {
+      isShow: false,
       isFavorite: false,
       note: {}
     };
   },
   mounted() {
-    document.onmouseup = function(e) {
-      var pop = document.getElementById("pop-bar");
-      if (pop && pop != e.target && !pop.contains(e.target)) {
-        pop.style.display = "none";
-      }
-    };
+    // listen to open event
+    EVENT_BUS.$on("OPEN_POPBAR", this.show);
+
+    // close popper when clicked outside
+    this.closeOnClickOutside();
   },
-  watch: {
-    context: function(ctx, old) {
+  methods: {
+    show() {
+      this.reposition();
+      this.isShow = true;
+    },
+    closeOnClickOutside() {
+      let self = this;
+      document.onmouseup = function(e) {
+        var pop = document.getElementById("pop-bar");
+        if (pop && pop != e.target && !pop.contains(e.target)) {
+          self.show = false;
+        }
+      };
+    },
+    fav() {
+      if (this.isFavorite) {
+        this.isFavorite = false;
+      } else {
+        this.isFavorite = true;
+      }
+      this.$emit("fav", this.isFavorite);
+    },
+    openNotes() {
+      this.$message("NOTE");
+      EVENT_BUS.$emit("OPEN_NOTES");
+    },
+    openComments() {
+      this.$message("Comments");
+    },
+    openQuotes() {
+      this.$message("Quotes");
+    },
+    reposition() {
+      let ctx = this.$store.getters.select;
       this.isFavorite = ctx.isFav;
       this.note = ctx.note;
       let rec = ctx.rect;
@@ -53,26 +85,6 @@ export default {
       this.$el.style.top = top + "px";
       this.$el.style.left = left + "px";
       this.$el.style.display = "block";
-    }
-  },
-  methods: {
-    fav() {
-      if (this.isFavorite) {
-        this.isFavorite = false;
-      } else {
-        this.isFavorite = true;
-      }
-      this.$emit("fav", this.isFavorite);
-    },
-    openNotes() {
-      this.$message("NOTE")
-      EVENT_BUS.$emit("OPEN_NOTES")
-    },
-    openComments() {
-      this.$message("Comments")
-    },
-    openQuotes() {
-      this.$message("Quotes")
     }
   }
 };

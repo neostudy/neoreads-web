@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     ctx: function() {
-      return this.$store.getters.selectContext;
+      return this.$store.getters.select;
     },
     isShow: function() {
       return this.ctx.text != undefined && this.ctx.text != '';
@@ -131,12 +131,6 @@ export default {
 
     },
     openNotes() {
-      /*
-      let ctx = this.$store.getters.selectContext;
-      console.log("selected:", ctx);
-      this.note.ctx = ctx;
-      let text = ctx.text;
-      */
       this.tab = "notes";
     },
     saveNote() {

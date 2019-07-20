@@ -60,7 +60,7 @@ export default {
         dict: {}
       },
       toc: [],
-      showTOC: true
+      showTOC: false
     };
   },
   created() {
