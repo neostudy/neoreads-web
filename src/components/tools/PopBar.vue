@@ -92,6 +92,7 @@ export default {
 
 <style lang="stylus">
 div.pop-bar
+  z-index 999
   text-align left
   padding 5px
   position fixed

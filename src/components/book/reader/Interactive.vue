@@ -7,12 +7,14 @@
       </span>
       <div>{{ctx.text}}</div>
     </el-tab-pane>
+    <!--
     <el-tab-pane name="favorites">
       <span slot="label" class="label">
         <faicon icon="heart"></faicon>
         <label>收藏</label>
       </span>
     </el-tab-pane>
+    -->
     <el-tab-pane name="notes">
       <span slot="label" class="label">
         <faicon icon="pen"></faicon>
@@ -189,13 +191,13 @@ div#reader-interactive-panel
 div#reader-interactive-panel
   margin-left 10px
   text-align left
-  height 866px
+  height 910px
 
   .el-tab-pane
     padding 0px
 
   .tab-content-pane
-    max-height 846px
+    max-height 870px
 
   .tab-pane
     padding 0 16px

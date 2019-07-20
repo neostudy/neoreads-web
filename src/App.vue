@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header class="top-header" height="62px">
+      <el-header v-show="isNavShow" class="top-header" height="62px">
         <div id="nav">
           <el-row>
             <el-col :span="4">
@@ -67,7 +67,7 @@
           </el-row>
         </div>
       </el-header>
-      <el-main>
+      <el-main id="main-pane">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -78,6 +78,7 @@
 import Search from "./components/tools/Search.vue";
 import Locale from "./components/tools/Locale.vue";
 import UserOptions from "./components/user/UserOptions.vue";
+import { EVENT_BUS } from "./eventbus.js";
 
 export default {
   name: "app",
@@ -87,7 +88,9 @@ export default {
     UserOptions
   },
   data() {
-    return {};
+    return {
+      isNavShow: true
+    };
   },
   computed: {
     isAuthed() {
@@ -96,6 +99,18 @@ export default {
     activeIndex() {
       return this.$store.getters.activeMenuIndex;
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log("going to route:", to)
+    if (to.path.startsWith("/reader")) {
+      this.isNavShow = false;
+    } else {
+      this.isNavShow = true;
+    }
+    next();
+  },
+  created() {
+    EVENT_BUS.$on("HIDE_NAVMENU", this.hideNavMenu)
   },
   mounted() {
     console.log("locale:", this.$i18n.locale);
@@ -109,6 +124,9 @@ export default {
     },
     userOptions() {
       console.log("show options");
+    },
+    hideNavMenu() {
+      this.isNavShow = false;
     }
   }
 };
@@ -128,6 +146,12 @@ export default {
   text-align center
   color #2c3e50
   min-width 1600px
+  min-height 980px
+  height 100%
+
+#main-pane
+  padding 20px
+  padding-bottom 0
 
 #nav
   padding 0 20px
@@ -179,4 +203,5 @@ export default {
 
     .user.login
       color gray
+
 </style>

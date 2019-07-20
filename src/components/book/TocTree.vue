@@ -96,7 +96,7 @@ export default {
     font-weight bold
 
 .toc-tree
-  max-height 866px
+  max-height 890px
 
 .right
   float right

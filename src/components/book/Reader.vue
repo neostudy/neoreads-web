@@ -66,11 +66,12 @@ export default {
   created() {
 
     this.$store.dispatch("setActiveMenuIndex", "/library");
+    
+    EVENT_BUS.$emit("HIDE_NAVMENU")
 
-    let self = this;
-    console.log("reader: chap id is ", this.chapid);
     // get toc and chapter id
     let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
+    let self = this;
     this.$axios.get(tocUrl).then(res => {
       let toc = res.data;
       let chap1 = toc[0];
@@ -92,7 +93,11 @@ export default {
     this.chapid = to.params.chapid;
     next();
   },
-  methods: {}
+  methods: {
+    goBack() {
+
+    }
+  }
 };
 </script>
 
@@ -105,14 +110,14 @@ export default {
 .reader-aside
   border 1px solid #DCDFE6
   text-align left
-  height 868px
+  height 913px
   box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
   overflow hidden
 
 .reader-main
   //border 1px solid #eee
   padding 0px 10px
-  height 876px
+  height 930px
   overflow hidden
 
 .reader-content-wrap
@@ -124,7 +129,7 @@ export default {
   text-align left
 
 .reader-content-div
-  height 816px
+  height 860px
   padding 0px
   overflow-y hidden
   border 1px solid #DCDFE6
