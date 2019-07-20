@@ -2,7 +2,7 @@
   <el-tabs type="border-card" id="reader-interactive-panel" v-model="tab">
     <el-tab-pane name="explains" label="讲解">
       <span slot="label" class="label">
-        <faicon icon="book-reader" ></faicon>
+        <faicon icon="book-reader"></faicon>
         <label>讲解</label>
       </span>
       <div>{{ctx.text}}</div>
@@ -18,15 +18,9 @@
         <faicon icon="pen"></faicon>
         <label>笔记</label>
       </span>
-      <div class="note" v-show="isShow">
-        <div class="note-text">{{ctx.text}}</div>
-        <div class="note-editor">
-          <div v-if="needNote">
-            <mavon-editor  v-model="note.content"></mavon-editor>
-          <br/>
-          <el-button type="primary" @click="saveNote">保存笔记</el-button>
-          </div>
-          <div v-if="!needNote">{{getNote()}}</div>
+      <div v-bar>
+        <div class="tab-content-pane">
+          <notes></notes>
         </div>
       </div>
     </el-tab-pane>
@@ -38,11 +32,11 @@
     </el-tab-pane>
     <el-tab-pane name="translations">
       <span slot="label" class="label">
-        <faicon icon="globe-asia" ></faicon>
+        <faicon icon="globe-asia"></faicon>
         <label>翻译</label>
       </span>
     </el-tab-pane>
-        <el-tab-pane name="qa" label="问答">
+    <el-tab-pane name="qa" label="问答">
       <span slot="label" class="label">
         <faicon icon="question"></faicon>
         <label>问答</label>
@@ -66,18 +60,18 @@
 <script>
 import { EVENT_BUS } from "src/eventbus.js";
 import { toPinyin } from "src/js/phonetics/pinyingen.js";
+
+import Notes from "./interactive/Notes.vue";
+import { scrypt } from "crypto";
 export default {
+  components: {
+    Notes
+  },
   props: ["dict"],
   data() {
     return {
       tab: "notes",
-      py: "",
-      note: {
-        ctx: {
-          text: ""
-        },
-        content: ""
-      }
+      py: ""
     };
   },
   created() {
@@ -85,16 +79,46 @@ export default {
   },
   mounted() {
     this.py = toPinyin("你好");
+
+    let scrollpane = document
+      .getElementById("reader-interactive-panel")
+      .getElementsByClassName("el-tabs__content")[0];
+    console.log(scrollpane);
+    let paneNotes = document.getElementById("pane-notes");
+
+    scrollpane.onwheel = function(event) {
+      if (event.deltaY < 0) {
+        console.log(
+          "tops:",
+          paneNotes.scrollTop,
+          paneNotes.clientTop,
+          paneNotes.offsetTop
+        );
+        // wheel up
+        console.log("wheel up:", event.deltaY);
+        //paneNotes.style.marginTop = - event.deltaY + "px";
+      } else {
+        // wheel down
+        console.log("wheel down", event.deltaY);
+        console.log(
+          "tops:",
+          paneNotes.scrollTop,
+          paneNotes.clientTop,
+          paneNotes.offsetTop
+        );
+        //paneNotes.style.marginTop = - event.deltaY + "px";
+      }
+    };
   },
   computed: {
     ctx: function() {
       return this.$store.getters.select;
     },
     isShow: function() {
-      return this.ctx.text != undefined && this.ctx.text != '';
+      return this.ctx.text != undefined && this.ctx.text != "";
     },
     needNote: function() {
-      return this.getNote() == '';
+      return this.getNote() == "";
     }
   },
   watch: {
@@ -115,63 +139,68 @@ export default {
   methods: {
     playMp3(url) {
       new Audio(url).play();
-    },
-    getNote() {
-      let ctx = this.ctx
-      if (!ctx) {
-        return '';
-      }
-      if (!ctx.note) {
-        return ''
-      }
-      if (!ctx.note.content) {
-        return '';
-      }
-      return ctx.note.content
-
-    },
-    openNotes() {
-      this.tab = "notes";
-    },
-    saveNote() {
-      this.$message("saving note: " + this.note.content);
-      let ctx = this.note.ctx;
-      var json = {
-        ntype: 1, // note
-        ptype: 1, // position: sentence
-        bookid: ctx.ids.bookid,
-        chapid: ctx.ids.chapid,
-        paraid: ctx.ids.paraid,
-        sentid: ctx.ids.sentid,
-        content: this.note.content
-      };
-      console.log("add note:", json);
-      let self = this;
-      this.authPost("/api/v1/note/add", json).then(res => {
-        let noteid = res.data.id;
-      });
     }
   }
 };
 </script>
 
+<style lang="stylus">
+div#reader-interactive-panel
+  div.el-tabs__content
+    padding 0px
+
+// TODO move this to a dedicate stylus file
+.vb > .vb-dragger
+  z-index 5
+  width 12px
+  right 0
+
+.vb > .vb-dragger > .vb-dragger-styler
+  -webkit-backface-visibility hidden
+  backface-visibility hidden
+  -webkit-transform rotate3d(0, 0, 0, 0)
+  transform rotate3d(0, 0, 0, 0)
+  -webkit-transition background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out
+  transition background-color 100ms ease-out, margin 100ms ease-out, height 100ms ease-out
+  background-color rgba(48, 121, 244, 0.1)
+  margin 5px 5px 5px 0
+  border-radius 20px
+  height calc(100% - 10px)
+  display block
+
+.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler
+  background-color rgba(48, 121, 244, 0.3)
+
+.vb > .vb-dragger:hover > .vb-dragger-styler
+  background-color rgba(48, 121, 244, 0.5)
+  margin 0px
+  height 100%
+
+.vb.vb-dragging > .vb-dragger > .vb-dragger-styler
+  background-color rgba(48, 121, 244, 0.5)
+  margin 0px
+  height 100%
+
+.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler
+  background-color rgba(48, 121, 244, 0.5)
+</style>
+
 <style lang="stylus" scoped>
-#reader-interactive-panel
+div#reader-interactive-panel
   margin-left 10px
   text-align left
-  height 836px
+  height 866px
+
+  .el-tab-pane
+    padding 0px
+
+  .tab-content-pane
+    max-height 846px
+
+  .tab-pane
+    padding 0 16px
 
   span.label
     svg
       margin-right 4px
-
-  .note-text
-    border-left 5px solid #D9ECFF
-    margin-top 20px
-    margin-bottom 30px
-    padding-left 10px
-    font-size 1.3em
-    color #888
-
 </style>
-

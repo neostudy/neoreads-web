@@ -35,6 +35,11 @@ import 'mavon-editor/dist/css/index.css'
 // use
 Vue.use(mavonEditor)
 
+// Vuebar
+import Vuebar from 'vuebar'
+Vue.use(Vuebar)
+
+
 // Initialization
 new Vue({
   router,

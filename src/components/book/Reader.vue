@@ -103,16 +103,17 @@ export default {
   line-height 36px
 
 .reader-aside
-  border 1px solid #eee
-  border-right 0px
+  border 1px solid #DCDFE6
   text-align left
-  height 876px
+  height 868px
+  box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
   overflow hidden
 
 .reader-main
-  border 1px solid #eee
-  padding 16px
+  //border 1px solid #eee
+  padding 0px 10px
   height 876px
+  overflow hidden
 
 .reader-content-wrap
   box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
@@ -123,7 +124,7 @@ export default {
   text-align left
 
 .reader-content-div
-  height 786px
+  height 816px
   padding 0px
   overflow-y hidden
   border 1px solid #DCDFE6

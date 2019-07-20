@@ -45,7 +45,7 @@ export default {
           container.style.marginTop = topHeight + "px"
         }
       }
-      let heightLimit = 786 - topHeight;
+      let heightLimit = 816 - topHeight;
 
       var i = 0;
       var lastHeight = 0;

@@ -8,16 +8,18 @@
       </span>
     </div>
     <el-input v-show="showFilter" placeholder="输入关键字进行过滤" v-model="filterText" size="small"></el-input>
-    <div class="toc-tree">
-      <el-tree
-        class="filter-tree"
-        :data="data"
-        :props="defaultProps"
-        default-expand-all
-        :filter-node-method="filterNode"
-        @node-click="tocSelected"
-        ref="tree"
-      ></el-tree>
+    <div v-bar class="toc-vbar">
+      <div class="toc-tree">
+        <el-tree
+          class="filter-tree"
+          :data="data"
+          :props="defaultProps"
+          default-expand-all
+          :filter-node-method="filterNode"
+          @node-click="tocSelected"
+          ref="tree"
+        ></el-tree>
+      </div>
     </div>
   </div>
 </template>
@@ -66,15 +68,18 @@ export default {
     },
     toggleSearch() {
       if (this.showFilter) {
-        this.filterText = ""
+        this.filterText = "";
       }
       this.showFilter = !this.showFilter;
     }
-  },
-
+  }
 };
 </script>
 
+<style lang="stylus">
+.toc-vbar.vb > .vb-dragger
+  left 0
+</style>
 <style lang="stylus" scoped>
 .toc-tree-container
   padding 10px
@@ -91,11 +96,11 @@ export default {
     font-weight bold
 
 .toc-tree
-  overflow hidden
+  max-height 866px
 
 .right
   float right
-  margint-right 20px
+  margin-right 10px
 
 #toc-search
   color #409EFF
