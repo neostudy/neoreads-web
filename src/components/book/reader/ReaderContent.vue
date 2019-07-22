@@ -26,6 +26,7 @@ import { setTimeout } from "timers";
 import { isFunction } from "util";
 import PagerMixin from "./PagerMixin.js";
 import SelectionMixin from "./SelectionMixin.js";
+import {NOTES} from "src/js/note/note.js";
 import DictMixin from "./DictMixin.js";
 import NoteMixin from "./NoteMixin.js";
 var mdi = require("markdown-it")({
@@ -49,7 +50,6 @@ export default {
       timeout: null,
       gutters: [1, 1, 2, 1, 1, 2, 1, 0, 0],
       needRebind: true,
-      notes: {},
       paras: [],
       oparas: []
     };
@@ -175,8 +175,8 @@ export default {
 
         // update store.select context
         let isFav = span.classList.contains("mark");
-        let sid = span.sentid;
-        let note = self.notes[sid];
+        let noteid = span.noteid;
+        let note = NOTES.getNote(noteid);
         // the popbar shows itself when self.selectContext changes
         let ctx = {
           isFav: isFav,
@@ -189,6 +189,15 @@ export default {
             paraid: span.parentNode.lastChild.id,
             pos: 0
           },
+          pos: {
+            // TODO replace ids with pos
+            bookid: self.bookid,
+            chapid: self.chapid,
+            sentid: span.nextSibling.id,
+            paraid: span.parentNode.lastChild.id,
+            start: 0,
+            end: 0
+          },
           note: note,
           // TODO:
           // The mouse might move away when this timeout hits,
@@ -200,6 +209,7 @@ export default {
           }
         };
         self.$store.dispatch("select", ctx);
+        EVENT_BUS.$emit("SELECT_SENTENCE");
 
         // open popbar for this sentence
         EVENT_BUS.$emit("OPEN_POPBAR");
@@ -269,10 +279,10 @@ export default {
       let span = sent.previousSibling;
       if (isFav) {
         span.classList.add("mark");
-        this.addNote(paraid, sentid);
+        this.addFav(paraid, sentid);
       } else {
         span.classList.remove("mark");
-        this.removeNote(paraid, sentid);
+        this.removeFav(sentid);
       }
     }
   }

@@ -20,10 +20,10 @@
         <el-row>
           <el-col :span="12">
             <div class="reader-content-wrap">
-            <reader-toolbar @is-ruby="isRuby = $event"></reader-toolbar>
-            <div class="reader-content-div">
-              <reader-content :bookid="bookid" :chapid="chapid" :is-ruby="isRuby"></reader-content>
-            </div>
+              <reader-toolbar @is-ruby="isRuby = $event"></reader-toolbar>
+              <div class="reader-content-div">
+                <reader-content :bookid="bookid" :chapid="chapid" :is-ruby="isRuby"></reader-content>
+              </div>
             </div>
           </el-col>
           <el-col :span="12">
@@ -42,6 +42,7 @@ import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
 import Pinyin from "../tools/Pinyin";
 import { EVENT_BUS } from "src/eventbus.js";
+import {NOTES} from "src/js/note/note.js";
 
 export default {
   components: {
@@ -64,10 +65,16 @@ export default {
     };
   },
   created() {
+    // init singletons:
+    NOTES.init(this.$store, this.$axios);
+    this.$store.dispatch("setChapid", {
+      bookid: this.bookid,
+      chapid: this.chapid
+    });
 
     this.$store.dispatch("setActiveMenuIndex", "/library");
-    
-    EVENT_BUS.$emit("HIDE_NAVMENU")
+
+    EVENT_BUS.$emit("HIDE_NAVMENU");
 
     // get toc and chapter id
     let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
@@ -94,9 +101,7 @@ export default {
     next();
   },
   methods: {
-    goBack() {
-
-    }
+    goBack() {}
   }
 };
 </script>
@@ -111,17 +116,17 @@ export default {
   border 1px solid #DCDFE6
   text-align left
   height 913px
-  box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
+  box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04)
   overflow hidden
 
 .reader-main
-  //border 1px solid #eee
+  // border 1px solid #eee
   padding 0px 10px
   height 930px
   overflow hidden
 
 .reader-content-wrap
-  box-shadow 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04)
+  box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04)
 
 .reader-toolbar
   border 1px solid #DCDFE6

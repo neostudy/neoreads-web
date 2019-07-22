@@ -1,50 +1,29 @@
+import {NOTES} from "src/js/note/note.js"
+
 export default {
   methods: {
-    addNote(paraid, sentid) {
-      var json = {
-        ntype: 0, // mark
-        ptype: 1, // position: sent
-        bookid: this.bookid,
-        chapid: this.chapid,
-        paraid: paraid,
-        sentid: sentid,
-        wordid: "0000"
-      };
-      console.log("add note:", json);
+    addFav(paraid, sentid) {
       let self = this;
-
-      this.authPost("/api/v1/note/add", json).then(res => {
-        let note = res.data;
-        self.notes[sentid] = note;
-        self.applyNote(note);
+      NOTES.addFav().then(note => {
+        self.applyNote(note)
       });
     },
-    removeNote(paraid, sentid) {
-      let note = this.notes[sentid];
-      if (!note) return;
-      let noteid = note.id;
-      if (noteid) {
-        console.log("removing note:", noteid);
-        this.authGet("/api/v1/note/remove/" + noteid);
-      }
+    removeFav(sentid) {
+      NOTES.removeFav(sentid)
     },
     // fetch notes from server
     // should be called once per chapter
     fetchNotes() {
       let self = this;
-      let query = "bookid=" + this.bookid + "&chapid=" + this.chapid;
-      this.authGet("/api/v1/note/list?" + query).then(res => {
-        console.log("fetched notes:", res);
-        for (let n of res.data) {
-          self.notes[n.sentid] = n;
-        }
-        self.bindNotes();
-      });
+      NOTES.fetchNotes().then(notes => {
+        self.bindNotes()
+      })
     },
     bindNotes() {
       console.log("binding notes");
-      for (var sentid in this.notes) {
-        let note = this.notes[sentid];
+      let notes = NOTES.allNotes;
+      for (var noteid in notes) {
+        let note = notes[noteid];
         this.applyNote(note);
       }
     },
@@ -53,6 +32,7 @@ export default {
       if (sent) {
         let span = sent.previousSibling;
         span.sentid = n.sentid;
+        span.noteid = n.noteid;
         if (n.ntype == 0) {
           //mark
           span.classList.add("mark");

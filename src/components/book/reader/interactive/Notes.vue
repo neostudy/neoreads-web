@@ -2,10 +2,14 @@
   <div class="note tab-pane" v-show="isShow">
     <div class="note-section">
       <div class="note-section-title">
+        <span class="right">
+          <el-rate :value="4.5" disabled show-score text-color="#ff9900" score-template="{value}"></el-rate>
+        </span>
+        <span class="right"></span>
         当前句子
-        <faicon v-if="isFav" title="取消收藏" icon="heart" @click="fav"></faicon>
-        <faicon v-if="!isFav" title="收藏" :icon="['far', 'heart']" @click="fav"></faicon>
-        </div>
+        <faicon v-if="isFav" title="取消收藏" icon="heart" class="red" @click="removeFav"></faicon>
+        <faicon v-if="!isFav" title="收藏" :icon="['far', 'heart']" @click="addFav"></faicon>
+      </div>
       <div class="note-ref">{{ctx.text}}</div>
     </div>
     <div class="note-section my-note">
@@ -26,23 +30,32 @@
     </div>
     <div class="note-section friends-notes">
       <div class="note-section-title">
+        <span class="right">
+          <label class="sort-by">按评价</label>
+          <faicon icon="sort" title="排序" @click="sortFriendNotes"></faicon>
+        </span>
         好友笔记
-        <faicon icon="sort" title="排序" class="right" @click="sortFriendNotes"></faicon>
       </div>
     </div>
     <div class="note-section all-notes">
       <div class="note-section-title">
+        <span class="right">
+          <label class="sort-by">按评价</label>
+          <faicon icon="sort" title="排序" @click="sortAllNotes"></faicon>
+        </span>
         全部笔记
-        <faicon icon="sort" title="排序" class="right" @click="sortAllNotes"></faicon>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { EVENT_BUS } from "src/eventbus.js";
+import { NOTES } from "src/js/note/note.js";
 export default {
   data() {
     return {
+      ctx: {},
       note: {
         ctx: {
           text: ""
@@ -52,9 +65,6 @@ export default {
     };
   },
   computed: {
-    ctx: function() {
-      return this.$store.getters.select;
-    },
     isShow: function() {
       return this.ctx.text != undefined && this.ctx.text != "";
     },
@@ -65,7 +75,17 @@ export default {
       return this.ctx.isFav;
     }
   },
+  created() {
+    EVENT_BUS.$on("SELECT_SENTENCE", this.updateContext);
+  },
   methods: {
+    updateContext() {
+      // TODO: if an editing is in process, ask the user to hold
+      this.ctx = this.$store.getters.select;
+      NOTES.updateCtx();
+      console.log("nm ctx:", NOTES.ctx);
+      console.log("nm id:", NOTES.id);
+    },
     getNote() {
       let ctx = this.ctx;
       if (!ctx) {
@@ -101,18 +121,11 @@ export default {
         let noteid = res.data.id;
       });
     },
-    removeNote() {
-
-    },
-    fav() {
-
-    },
-    sortFriendNotes() {
-
-    },
-    sortAllNotes() {
-
-    }
+    removeNote() {},
+    addFav() {},
+    removeFav() {},
+    sortFriendNotes() {},
+    sortAllNotes() {}
   }
 };
 </script>
@@ -145,13 +158,20 @@ export default {
         color #409EFF
         cursor pointer
 
+      svg.red
+        color #F66
+
       .right
         float right
+
+      .sort-by
+        font-weight normal
+        color #999
 
     .note-content
       border 2px dashed #D9ECFF
       background-color #F7FBFF
       border-radius 2px
       padding 10px 20px
-      font-size 1.0em
+      font-size 1em
 </style>

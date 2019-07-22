@@ -81,37 +81,7 @@ export default {
   },
   mounted() {
     this.py = toPinyin("你好");
-
-    let scrollpane = document
-      .getElementById("reader-interactive-panel")
-      .getElementsByClassName("el-tabs__content")[0];
-    console.log(scrollpane);
-    let paneNotes = document.getElementById("pane-notes");
-
-    scrollpane.onwheel = function(event) {
-      if (event.deltaY < 0) {
-        console.log(
-          "tops:",
-          paneNotes.scrollTop,
-          paneNotes.clientTop,
-          paneNotes.offsetTop
-        );
-        // wheel up
-        console.log("wheel up:", event.deltaY);
-        //paneNotes.style.marginTop = - event.deltaY + "px";
-      } else {
-        // wheel down
-        console.log("wheel down", event.deltaY);
-        console.log(
-          "tops:",
-          paneNotes.scrollTop,
-          paneNotes.clientTop,
-          paneNotes.offsetTop
-        );
-        //paneNotes.style.marginTop = - event.deltaY + "px";
-      }
-    };
-  },
+ },
   computed: {
     ctx: function() {
       return this.$store.getters.select;
