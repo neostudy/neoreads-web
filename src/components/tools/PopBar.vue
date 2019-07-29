@@ -22,6 +22,7 @@
 
 <script>
 import { EVENT_BUS } from "src/eventbus.js";
+import { NOTES } from "src/js/note/note.js";
 export default {
   props: ["id"],
   data() {
@@ -71,7 +72,8 @@ export default {
       this.$message("Quotes");
     },
     reposition() {
-      let ctx = this.$store.getters.select;
+      //let ctx = this.$store.getters.select;
+      let ctx = NOTES.ctx;
       this.isFavorite = ctx.isFav;
       this.note = ctx.note;
       let rec = ctx.rect;

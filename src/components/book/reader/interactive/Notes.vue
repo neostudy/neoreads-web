@@ -55,7 +55,6 @@ import { NOTES } from "src/js/note/note.js";
 export default {
   data() {
     return {
-      ctx: {},
       note: {
         ctx: {
           text: ""
@@ -65,6 +64,9 @@ export default {
     };
   },
   computed: {
+    ctx: function() {
+      return NOTES.ctx;
+    },
     isShow: function() {
       return this.ctx.text != undefined && this.ctx.text != "";
     },
@@ -76,7 +78,7 @@ export default {
     }
   },
   created() {
-    EVENT_BUS.$on("SELECT_SENTENCE", this.updateContext);
+    EVENT_BUS.$on("CONTEXT_UPDATED", this.updateContext);
   },
   methods: {
     updateContext() {
@@ -122,7 +124,9 @@ export default {
       });
     },
     removeNote() {},
-    addFav() {},
+    addFav() {
+      NOTES.addFav();
+    },
     removeFav() {},
     sortFriendNotes() {},
     sortAllNotes() {}

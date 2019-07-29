@@ -61,6 +61,7 @@
 
 <script>
 import { EVENT_BUS } from "src/eventbus.js";
+import { NOTES } from "src/js/note/note.js";
 import { toPinyin } from "src/js/phonetics/pinyingen.js";
 
 import Notes from "./interactive/Notes.vue";
@@ -77,14 +78,14 @@ export default {
     };
   },
   created() {
-    EVENT_BUS.$on("OPEN_NOTES", this.openNotes);
+    //EVENT_BUS.$on("OPEN_NOTES", this.openNotes);
   },
   mounted() {
     this.py = toPinyin("你好");
- },
+  },
   computed: {
     ctx: function() {
-      return this.$store.getters.select;
+      return NOTES.ctx;
     },
     isShow: function() {
       return this.ctx.text != undefined && this.ctx.text != "";
@@ -104,9 +105,6 @@ export default {
         }
       }
     },
-    ctx: function(n, o) {
-      console.log("CTX changed:", n);
-    }
   },
   methods: {
     playMp3(url) {

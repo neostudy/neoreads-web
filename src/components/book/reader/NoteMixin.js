@@ -1,15 +1,16 @@
 import {NOTES} from "src/js/note/note.js"
+import {EVENT_BUS} from "src/eventbus.js"
 
 export default {
+  created() {
+    EVENT_BUS.$on("NOTE_ADDED", this.applyNote)
+  },
   methods: {
-    addFav(paraid, sentid) {
-      let self = this;
-      NOTES.addFav().then(note => {
-        self.applyNote(note)
-      });
+    addFav() {
+      NOTES.addFav();
     },
-    removeFav(sentid) {
-      NOTES.removeFav(sentid)
+    removeFav(noteid) {
+      NOTES.removeFav(noteid)
     },
     // fetch notes from server
     // should be called once per chapter
@@ -32,7 +33,7 @@ export default {
       if (sent) {
         let span = sent.previousSibling;
         span.sentid = n.sentid;
-        span.noteid = n.noteid;
+        span.noteid = n.id;
         if (n.ntype == 0) {
           //mark
           span.classList.add("mark");

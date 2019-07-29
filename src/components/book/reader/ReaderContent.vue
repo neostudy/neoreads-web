@@ -208,8 +208,12 @@ export default {
             clientY: event.clientY
           }
         };
+
+        //NOTES.updateCtx(ctx);
+        
         self.$store.dispatch("select", ctx);
-        EVENT_BUS.$emit("SELECT_SENTENCE");
+
+        // EVENT_BUS.$emit("CONTEXT_UPDATED");
 
         // open popbar for this sentence
         EVENT_BUS.$emit("OPEN_POPBAR");
@@ -279,10 +283,11 @@ export default {
       let span = sent.previousSibling;
       if (isFav) {
         span.classList.add("mark");
-        this.addFav(paraid, sentid);
+        this.addFav();
       } else {
+        console.log(span.noteid)
         span.classList.remove("mark");
-        this.removeFav(sentid);
+        this.removeFav(span.noteid);
       }
     }
   }

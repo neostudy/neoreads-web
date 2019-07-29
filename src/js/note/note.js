@@ -1,8 +1,21 @@
+import { EVENT_BUS } from "src/eventbus.js"
 var _cnt = 0
 class NoteManager {
   $store;
   $axios;
-  ctx;
+  /*
+  ctx = {
+    pos: {
+      bookid: '',
+      chapid: '',
+      paraid: '',
+      sentid: '',
+      start: 0,
+      end: 0
+    }
+
+  };
+  */
   id;
   notes = {};
 
@@ -11,15 +24,15 @@ class NoteManager {
     this.$axios = axios;
   }
 
-  init(store, axios) {
+  init(store, axios, bookid, chapid) {
     this.$store = store;
     this.$axios = axios;
     this.id = ++_cnt;
-    this.updateCtx();
-  }
-
-  updateCtx() {
-    this.ctx = this.$store.getters.select;
+    this.$store.dispatch("setChapid", {
+      bookid: bookid,
+      chapid: chapid
+    });
+    console.log("CTX INITE:", this.ctx)
   }
 
   fetchNotes() {
@@ -38,13 +51,16 @@ class NoteManager {
     return this.notes;
   }
 
+  get ctx() {
+    return this.$store.getters.select;
+  }
+
   getNote(noteid) {
     return this.notes[noteid];
   }
 
   addFav() {
     var pos = this.ctx.pos;
-    console.log(pos)
     var json = {
       ntype: 0, // mark
       ptype: 1, // position: sent
@@ -57,8 +73,12 @@ class NoteManager {
     let self = this;
 
     return this.authPost("/api/v1/note/add", json).then(res => {
-      let note = res.data;
-      self.notes[note.id] = note;
+      let noteid = res.data.id;
+      let note = json;
+      note.id = noteid;
+      self.notes[noteid] = note;
+      EVENT_BUS.$emit("NOTE_ADDED", note)
+      this.$store.dispatch("addFav")
       return note;
     }).catch(error => {
       console.log(error);
@@ -70,7 +90,10 @@ class NoteManager {
     let note = this.notes[noteid];
     if (!note) return;
     console.log("removing note:", noteid);
-    this.authGet("/api/v1/note/remove/" + noteid);
+    let self = this;
+    this.authGet("/api/v1/note/remove/" + noteid).then(res=>{
+      self.$store.dispatch("removeFav")
+    });
   }
 
   // utils
