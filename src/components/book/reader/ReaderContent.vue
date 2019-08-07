@@ -211,11 +211,8 @@ export default {
           }
         };
 
-        //NOTES.updateCtx(ctx);
-        
         self.$store.dispatch("select", ctx);
-
-        // EVENT_BUS.$emit("CONTEXT_UPDATED");
+        EVENT_BUS.$emit("CONTEXT_UPDATED");
 
         // open popbar for this sentence
         EVENT_BUS.$emit("OPEN_POPBAR");

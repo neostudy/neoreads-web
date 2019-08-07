@@ -100,20 +100,34 @@ class NoteManager {
 
   saveNote(content) {
     let ctx = this.ctx;
-    var json = {
-      ntype: 1, // note
-      ptype: 1, // position: sentence
-      bookid: ctx.pos.bookid,
-      chapid: ctx.pos.chapid,
-      paraid: ctx.pos.paraid,
-      sentid: ctx.pos.sentid,
-      content: content,
-    };
-    console.log("add note:", json);
+    console.log("ctx:", ctx)
+    if (!'note' in ctx || !ctx.note) {
+      ctx.note = {};
+    }
+    console.log("ctx:", ctx)
+    let note = ctx.note;
+    console.log("note:", note)
+    var url = '';
+    if ('id' in note) { // modify
+      note.content = content;
+      url = "/api/v1/note/modify";
+    } else { // create 
+      note = {
+        ntype: 1, // note
+        ptype: 1, // position: sentence
+        bookid: ctx.pos.bookid,
+        chapid: ctx.pos.chapid,
+        paraid: ctx.pos.paraid,
+        sentid: ctx.pos.sentid,
+        content: content,
+      };
+      url = "/api/v1/note/add";
+    }
+
+    console.log("save note:", note);
     let self = this;
-    return this.authPost("/api/v1/note/add", json).then(res => {
+    return this.authPost(url, note).then(res => {
       let noteid = res.data.id;
-      let note = json;
       note.id = noteid;
       self.notes[noteid] = note;
       EVENT_BUS.$emit("NOTE_ADDED", note);

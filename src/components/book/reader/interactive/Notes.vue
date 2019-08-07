@@ -19,11 +19,10 @@
         <faicon icon="trash" title="删除" class="right" @click="removeNote"></faicon>
       </div>
       <div class="note-pane">
-        <div v-show="!needNote" class="note-content">
+        <div v-show="!isEdit" class="note-content">
           <span v-html="noteContent"></span>
-
         </div>
-        <div v-show="needNote" class="note-editor">
+        <div v-show="isEdit" class="note-editor">
           <mavon-editor v-model="note.content"></mavon-editor>
           <br />
           <el-button type="primary" @click="saveNote">保存</el-button>
@@ -62,10 +61,8 @@ var mdi = require("markdown-it")({
 export default {
   data() {
     return {
+      isEdit: false,
       note: {
-        ctx: {
-          text: ""
-        },
         content: ""
       }
     };
@@ -77,8 +74,8 @@ export default {
     isShow: function() {
       return this.ctx.text != undefined && this.ctx.text != "";
     },
-    needNote: function() {
-      return this.getNote() == "";
+    needEdit: function() {
+      return this.getNote() == "" || this.isEdit;
     },
     isFav: function() {
       return this.ctx.isFav;
@@ -93,11 +90,8 @@ export default {
   },
   methods: {
     updateContext() {
-      // TODO: if an editing is in process, ask the user to hold
-      this.ctx = this.$store.getters.select;
-      NOTES.updateCtx();
-      console.log("nm ctx:", NOTES.ctx);
-      console.log("nm id:", NOTES.id);
+      this.isEdit = false;
+      this.note.content = this.getNote();
     },
     getNote() {
       let ctx = this.ctx;
@@ -115,15 +109,19 @@ export default {
     openNotes() {
       this.tab = "notes";
     },
-    editNote() {},
+    editNote() {
+      this.isEdit = true;
+    },
     saveNote() {
       this.$message("saving note: " + this.note.content);
       NOTES.saveNote(this.note.content);
+      this.isEdit = false;
     },
     removeNote() {
       //console.log("current note:", this.ctx.note)
       let noteid = this.ctx.note.id;
       NOTES.removeNote(noteid);
+      this.isEdit = false;
     },
     addFav() {
       EVENT_BUS.$emit("fav", true);
