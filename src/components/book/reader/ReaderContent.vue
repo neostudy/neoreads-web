@@ -14,7 +14,7 @@
       <div v-for="(g, i) in gutters" :key="i" :style="gutterStyle(g)"></div>
     </el-aside>
 
-    <pop-bar id="pop" v-show="false" @fav="fav"></pop-bar>
+    <pop-bar id="pop" v-show="false"></pop-bar>
   </el-container>
 </template>
 
@@ -61,6 +61,8 @@ export default {
     console.log("root:", this.$root);
     EVENT_BUS.$on("PREV_PAGE", () => this.prevPage(this.paras));
     EVENT_BUS.$on("NEXT_PAGE", () => this.nextPage(this.paras));
+    EVENT_BUS.$on("fav", (isFav) => this.fav(isFav));
+    EVENT_BUS.$on("toggleNote", (isOn) => this.toggleNote(isOn));
   },
   mounted() {
     this.registerWheel();
@@ -278,6 +280,10 @@ export default {
       let ctx = this.$store.getters.select;
       this.markFav(isFav, ctx.ids.paraid, ctx.ids.sentid);
     },
+    toggleNote(isOn) {
+      let ctx = this.$store.getters.select;
+      this.markNote(isOn, ctx.ids.paraid, ctx.ids.sentid);
+    },
     markFav(isFav, paraid, sentid) {
       let sent = document.getElementById(sentid);
       let span = sent.previousSibling;
@@ -288,6 +294,15 @@ export default {
         console.log(span.noteid)
         span.classList.remove("mark");
         this.removeFav(span.noteid);
+      }
+    },
+    markNote(isOn, paraid, sentid) {
+      let sent = document.getElementById(sentid);
+      let span = sent.previousSibling;
+      if (isFav) {
+        span.classList.add("note");
+      } else {
+        span.classList.remove("note");
       }
     }
   }

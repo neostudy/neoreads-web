@@ -8,6 +8,9 @@ const state = {
       start: 0,
       end: 0
     },
+    note: {
+      content: '',
+    },
     text: '',
   }
 }

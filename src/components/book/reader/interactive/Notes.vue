@@ -19,8 +19,11 @@
         <faicon icon="trash" title="删除" class="right" @click="removeNote"></faicon>
       </div>
       <div class="note-pane">
-        <div v-if="!needNote" class="note-content">{{getNote()}}</div>
-        <div v-if="needNote" class="note-editor">
+        <div v-show="!needNote" class="note-content">
+          <span v-html="noteContent"></span>
+
+        </div>
+        <div v-show="needNote" class="note-editor">
           <mavon-editor v-model="note.content"></mavon-editor>
           <br />
           <el-button type="primary" @click="saveNote">保存</el-button>
@@ -52,6 +55,10 @@
 <script>
 import { EVENT_BUS } from "src/eventbus.js";
 import { NOTES } from "src/js/note/note.js";
+var mdi = require("markdown-it")({
+  html: true
+});
+
 export default {
   data() {
     return {
@@ -75,6 +82,10 @@ export default {
     },
     isFav: function() {
       return this.ctx.isFav;
+    },
+    noteContent() {
+      let n = this.getNote();
+      return mdi.render(n)
     }
   },
   created() {
@@ -107,27 +118,19 @@ export default {
     editNote() {},
     saveNote() {
       this.$message("saving note: " + this.note.content);
-      let ctx = this.note.ctx;
-      var json = {
-        ntype: 1, // note
-        ptype: 1, // position: sentence
-        bookid: ctx.ids.bookid,
-        chapid: ctx.ids.chapid,
-        paraid: ctx.ids.paraid,
-        sentid: ctx.ids.sentid,
-        content: this.note.content
-      };
-      console.log("add note:", json);
-      let self = this;
-      this.authPost("/api/v1/note/add", json).then(res => {
-        let noteid = res.data.id;
-      });
+      NOTES.saveNote(this.note.content);
     },
-    removeNote() {},
+    removeNote() {
+      //console.log("current note:", this.ctx.note)
+      let noteid = this.ctx.note.id;
+      NOTES.removeNote(noteid);
+    },
     addFav() {
-      NOTES.addFav();
+      EVENT_BUS.$emit("fav", true);
     },
-    removeFav() {},
+    removeFav() {
+      EVENT_BUS.$emit("fav", false);
+    },
     sortFriendNotes() {},
     sortAllNotes() {}
   }

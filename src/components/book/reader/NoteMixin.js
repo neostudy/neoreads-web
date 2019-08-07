@@ -1,9 +1,10 @@
-import {NOTES} from "src/js/note/note.js"
-import {EVENT_BUS} from "src/eventbus.js"
+import { NOTES } from "src/js/note/note.js"
+import { EVENT_BUS } from "src/eventbus.js"
 
 export default {
   created() {
     EVENT_BUS.$on("NOTE_ADDED", this.applyNote)
+    EVENT_BUS.$on("NOTE_REMOVED", this.clearNote)
   },
   methods: {
     addFav() {
@@ -46,5 +47,24 @@ export default {
         }
       }
     },
+    clearNote(n) {
+      let sent = document.getElementById(n.sentid);
+      if (sent) {
+        let span = sent.previousSibling;
+        span.sentid = n.sentid;
+        span.noteid = n.id;
+        if (n.ntype == 0) {
+          //mark
+          span.classList.remove("mark");
+        } else if (n.ntype == 1) {
+          // note
+          span.classList.remove("note");
+          span.title = "";
+        } else {
+          span.classList.remove("other-note");
+        }
+      }
+
+    }
   }
 }

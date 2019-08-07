@@ -24,6 +24,7 @@ class NoteManager {
     this.$axios = axios;
   }
 
+  // initialize NoteManager
   init(store, axios, bookid, chapid) {
     this.$store = store;
     this.$axios = axios;
@@ -91,8 +92,46 @@ class NoteManager {
     if (!note) return;
     console.log("removing note:", noteid);
     let self = this;
-    this.authGet("/api/v1/note/remove/" + noteid).then(res=>{
+    this.authGet("/api/v1/note/remove/" + noteid).then(res => {
       self.$store.dispatch("removeFav")
+      delete self.notes[noteid]
+    });
+  }
+
+  saveNote(content) {
+    let ctx = this.ctx;
+    var json = {
+      ntype: 1, // note
+      ptype: 1, // position: sentence
+      bookid: ctx.pos.bookid,
+      chapid: ctx.pos.chapid,
+      paraid: ctx.pos.paraid,
+      sentid: ctx.pos.sentid,
+      content: content,
+    };
+    console.log("add note:", json);
+    let self = this;
+    return this.authPost("/api/v1/note/add", json).then(res => {
+      let noteid = res.data.id;
+      let note = json;
+      note.id = noteid;
+      self.notes[noteid] = note;
+      EVENT_BUS.$emit("NOTE_ADDED", note);
+      this.$store.dispatch("addNote", note);
+      return note;
+    }).catch(error => {
+      console.log(error);
+      throw error;
+    });
+  }
+
+  removeNote(noteid) {
+    let self = this;
+    this.authGet("/api/v1/note/remove/" + noteid).then(res => {
+      let note = self.notes[noteid];
+      EVENT_BUS.$emit("NOTE_REMOVED", note);
+      self.$store.dispatch("removeNote")
+      delete self.notes[noteid];
     });
   }
 

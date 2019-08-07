@@ -67,12 +67,6 @@ export default {
   created() {
     // init singletons:
     NOTES.init(this.$store, this.$axios, this.bookid, this.chapid);
-    /*
-    this.$store.dispatch("setChapid", {
-      bookid: this.bookid,
-      chapid: this.chapid
-    });
-    */
 
     this.$store.dispatch("setActiveMenuIndex", "/library");
 

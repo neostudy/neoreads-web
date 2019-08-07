@@ -1,4 +1,4 @@
-import { SELECT_CONTEXT, SET_CHAPID, ADD_FAV, REMOVE_FAV } from './types';
+import { SELECT_CONTEXT, SET_CHAPID, ADD_FAV, REMOVE_FAV, ADD_NOTE, REMOVE_NOTE } from './types';
 
 
 export default {
@@ -16,5 +16,11 @@ export default {
   },
   [REMOVE_FAV](state, param) {
     state.selectContext.isFav = false;
-  }
+  },
+  [ADD_NOTE](state, note) {
+    state.selectContext.note = note;
+  },
+  [REMOVE_NOTE](state, param) {
+    state.selectContext.note = {};
+  },
 }

@@ -59,7 +59,7 @@ export default {
       } else {
         this.isFavorite = true;
       }
-      this.$emit("fav", this.isFavorite);
+      EVENT_BUS.$emit("fav", this.isFavorite);
     },
     openNotes() {
       this.$message("NOTE");
