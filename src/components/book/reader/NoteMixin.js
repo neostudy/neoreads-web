@@ -10,8 +10,8 @@ export default {
     addFav() {
       NOTES.addFav();
     },
-    removeFav(noteid) {
-      NOTES.removeFav(noteid)
+    removeFav() {
+      NOTES.removeFav()
     },
     // fetch notes from server
     // should be called once per chapter
@@ -30,11 +30,16 @@ export default {
       }
     },
     applyNote(n) {
+      console.log("appply Note:", n)
       let sent = document.getElementById(n.sentid);
       if (sent) {
         let span = sent.previousSibling;
         span.sentid = n.sentid;
-        span.noteid = n.id;
+        if (!span.noteids) {
+          span.noteids = n.id;
+        } else {
+          span.noteids = span.noteids + "," + n.id;
+        }
         if (n.ntype == 0) {
           //mark
           span.classList.add("mark");
@@ -51,8 +56,6 @@ export default {
       let sent = document.getElementById(n.sentid);
       if (sent) {
         let span = sent.previousSibling;
-        span.sentid = n.sentid;
-        span.noteid = n.id;
         if (n.ntype == 0) {
           //mark
           span.classList.remove("mark");

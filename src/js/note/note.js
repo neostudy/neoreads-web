@@ -3,19 +3,6 @@ var _cnt = 0
 class NoteManager {
   $store;
   $axios;
-  /*
-  ctx = {
-    pos: {
-      bookid: '',
-      chapid: '',
-      paraid: '',
-      sentid: '',
-      start: 0,
-      end: 0
-    }
-
-  };
-  */
   id;
   notes = {};
 
@@ -87,14 +74,15 @@ class NoteManager {
     });
   }
 
-  removeFav(noteid) {
-    let note = this.notes[noteid];
+  removeFav() {
+    let favid = this.ctx.favid;
+    let note = this.notes[favid];
     if (!note) return;
-    console.log("removing note:", noteid);
+    console.log("removing fav:", favid);
     let self = this;
-    this.authGet("/api/v1/note/remove/" + noteid).then(res => {
+    this.authGet("/api/v1/note/remove/" + favid).then(res => {
       self.$store.dispatch("removeFav")
-      delete self.notes[noteid]
+      delete self.notes[favid]
     });
   }
 
@@ -166,8 +154,6 @@ class NoteManager {
       }
     });
   }
-
-
 }
 
 export const NOTES = new NoteManager();

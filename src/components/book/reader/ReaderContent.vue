@@ -26,7 +26,7 @@ import { setTimeout } from "timers";
 import { isFunction } from "util";
 import PagerMixin from "./PagerMixin.js";
 import SelectionMixin from "./SelectionMixin.js";
-import {NOTES} from "src/js/note/note.js";
+import { NOTES } from "src/js/note/note.js";
 import DictMixin from "./DictMixin.js";
 import NoteMixin from "./NoteMixin.js";
 var mdi = require("markdown-it")({
@@ -61,8 +61,8 @@ export default {
     console.log("root:", this.$root);
     EVENT_BUS.$on("PREV_PAGE", () => this.prevPage(this.paras));
     EVENT_BUS.$on("NEXT_PAGE", () => this.nextPage(this.paras));
-    EVENT_BUS.$on("fav", (isFav) => this.fav(isFav));
-    EVENT_BUS.$on("toggleNote", (isOn) => this.toggleNote(isOn));
+    EVENT_BUS.$on("fav", isFav => this.fav(isFav));
+    EVENT_BUS.$on("toggleNote", isOn => this.toggleNote(isOn));
   },
   mounted() {
     this.registerWheel();
@@ -177,11 +177,31 @@ export default {
 
         // update store.select context
         let isFav = span.classList.contains("mark");
-        let noteid = span.noteid;
-        let note = NOTES.getNote(noteid);
+        let noteids = span.noteids;
+        let note = {};
+        let favid = '';
+        if (noteids != undefined) {
+          noteids = noteids.split(",");
+          console.log("noteids:", noteids);
+          for (var i = 0; i < noteids.length; ++i) {
+            let id = noteids[i];
+            let n = NOTES.getNote(id);
+            if (n == undefined) continue;
+            if (n.ntype == 0) {
+              // mark
+              isFav = true;
+              favid = n.id;
+            } else if (n.ntype == 1) {
+              // note
+              note = n;
+            }
+          }
+        }
+
         // the popbar shows itself when self.selectContext changes
         let ctx = {
           isFav: isFav,
+          favid: favid,
           rect: span.getBoundingClientRect(),
           text: span.textContent,
           ids: {
@@ -288,9 +308,9 @@ export default {
         span.classList.add("mark");
         this.addFav();
       } else {
-        console.log(span.noteid)
+        //console.log(span.noteids);
         span.classList.remove("mark");
-        this.removeFav(span.noteid);
+        this.removeFav();
       }
     },
     markNote(isOn, paraid, sentid) {
