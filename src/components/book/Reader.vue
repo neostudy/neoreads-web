@@ -2,9 +2,10 @@
   <el-container>
     <el-header class="reader-header" height="30px">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item to="/library">
-          <faicon icon="stream" class="breadcrum-icon"></faicon>&nbsp;书斋
+        <el-breadcrumb-item to="/home">
+          <faicon icon="stream" class="breadcrum-icon"></faicon>首页
         </el-breadcrumb-item>
+        <el-breadcrumb-item to="/library">书斋</el-breadcrumb-item>
         <el-breadcrumb-item>
           <a href="/">史记</a>
         </el-breadcrumb-item>
@@ -140,4 +141,7 @@ export default {
 
 .reader-content-pane.ruby
   font-size 24px
+
+.breadcrum-icon
+  margin-right 10px
 </style>
