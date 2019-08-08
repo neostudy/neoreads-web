@@ -87,7 +87,7 @@ export default {
   watch: {
     chapid: function(newValue, oldValue) {
       console.log("chapid changed:", oldValue, newValue);
-      if (newValue != "") {
+      if (newValue && newValue != "") {
         this.fetchContent();
       }
     },
@@ -112,6 +112,7 @@ export default {
   },
   methods: {
     fetchContent() {
+      console.log("fetching content for [", this.bookid, ":", this.chapid, "]");
       if (this.bookid != "" && this.chapid != "") {
         this.loading = true;
         let self = this;
@@ -144,8 +145,8 @@ export default {
           self.needRebind = true;
           self.loading = false;
         });
+        this.fetchNotes();
       }
-      this.fetchNotes();
     },
     // rebind command popper to all sentences and paragraphs
     // TODO: deal with paragraph
@@ -179,7 +180,7 @@ export default {
         let isFav = span.classList.contains("mark");
         let noteids = span.noteids;
         let note = {};
-        let favid = '';
+        let favid = "";
         if (noteids != undefined) {
           noteids = noteids.split(",");
           console.log("noteids:", noteids);

@@ -76,6 +76,8 @@ const routes = [
   }
 ]
 
-export default new Router({
+const router = new Router({
   routes
 });
+
+export default router;

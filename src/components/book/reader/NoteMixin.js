@@ -30,7 +30,6 @@ export default {
       }
     },
     applyNote(n) {
-      console.log("appply Note:", n)
       let sent = document.getElementById(n.sentid);
       if (sent) {
         let span = sent.previousSibling;

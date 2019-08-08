@@ -100,17 +100,19 @@ export default {
       return this.$store.getters.activeMenuIndex;
     }
   },
-  beforeRouteUpdate(to, from, next) {
-    console.log("going to route:", to)
-    if (to.path.startsWith("/reader")) {
-      this.isNavShow = false;
-    } else {
-      this.isNavShow = true;
-    }
-    next();
-  },
   created() {
-    EVENT_BUS.$on("HIDE_NAVMENU", this.hideNavMenu)
+    EVENT_BUS.$on("HIDE_NAVMENU", this.hideNavMenu);
+
+    // hide menubar in reader
+    let self = this;
+    this.$router.beforeEach((to, from, next) => {
+      if (to.path.startsWith("/reader")) {
+        self.isNavShow = false;
+      } else {
+        self.isNavShow = true;
+      }
+      next();
+    });
   },
   mounted() {
     console.log("locale:", this.$i18n.locale);
@@ -203,5 +205,4 @@ export default {
 
     .user.login
       color gray
-
 </style>

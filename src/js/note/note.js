@@ -23,11 +23,17 @@ class NoteManager {
     console.log("CTX INITE:", this.ctx)
   }
 
+  relocate(bookid, chapid) {
+    this.$store.dispatch("setChapid", {
+      bookid: bookid,
+      chapid: chapid
+    });
+  }
+
   fetchNotes() {
     let self = this;
     let query = "bookid=" + this.ctx.pos.bookid + "&chapid=" + this.ctx.pos.chapid;
     return this.authGet("/api/v1/note/list?" + query).then(res => {
-      console.log("fetched notes:", res);
       for (let n of res.data) {
         self.notes[n.id] = n;
       }

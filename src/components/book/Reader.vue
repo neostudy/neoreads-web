@@ -42,7 +42,7 @@ import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
 import Pinyin from "../tools/Pinyin";
 import { EVENT_BUS } from "src/eventbus.js";
-import {NOTES} from "src/js/note/note.js";
+import { NOTES } from "src/js/note/note.js";
 
 export default {
   components: {
@@ -54,8 +54,8 @@ export default {
   },
   data() {
     return {
-      bookid: this.$route.params.bookid,
-      chapid: this.$route.params.chapid,
+      bookid: this.$route.params.bookid || "",
+      chapid: this.$route.params.chapid || "",
       isRuby: false,
       idata: {
         dict: {}
@@ -66,6 +66,7 @@ export default {
   },
   created() {
     // init singletons:
+    console.log("INITING NOTES");
     NOTES.init(this.$store, this.$axios, this.bookid, this.chapid);
 
     this.$store.dispatch("setActiveMenuIndex", "/library");
@@ -79,8 +80,9 @@ export default {
       let toc = res.data;
       let chap1 = toc[0];
       if (!self.chapid) {
-        self.chapid = chap1.id;
         self.$router.push("/reader/" + self.bookid + "/" + chap1.id);
+        self.chapid = chap1.id;
+        NOTES.relocate(self.bookid, self.chapid);
       }
       self.toc = toc;
     });
@@ -88,12 +90,13 @@ export default {
     EVENT_BUS.$on("TOGGLE_TOC", () => (this.showTOC = !this.showTOC));
     EVENT_BUS.$on("HIDE_TOC", () => (this.showTOC = false));
   },
-  mounted() {
-    //this.lookupWord("天");
+  beforeRouteEnter(to, from, next) {
+    next();
   },
   beforeRouteUpdate(to, from, next) {
     this.bookid = to.params.bookid;
     this.chapid = to.params.chapid;
+    NOTES.relocate(this.bookid, this.chapid);
     next();
   },
   methods: {
