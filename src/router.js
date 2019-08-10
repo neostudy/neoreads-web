@@ -14,6 +14,10 @@ import Notes from './components/book/Notes.vue'
 import Login from './components/user/Login.vue'
 import Register from './components/user/Register.vue'
 
+import ReviewBook from "./components/reviews/ReviewBook.vue"
+import ReviewPlan from "./components/reviews/ReviewPlan.vue"
+import ReviewChapter from "./components/reviews/ReviewChapter.vue"
+
 Vue.use(Router)
 
 const routes = [
@@ -73,7 +77,20 @@ const routes = [
   {
     path: '/dev',
     component: Dev
+  },
+  {
+    path: '/review/book/:bookid',
+    component: ReviewBook
+  },
+  {
+    path: '/review/plan/:bookid',
+    component: ReviewPlan
+  },
+  {
+    path: '/review/chapter/:bookid/:chapid',
+    component: ReviewChapter
   }
+
 ]
 
 const router = new Router({

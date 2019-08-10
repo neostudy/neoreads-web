@@ -179,4 +179,5 @@ export default {
       border-radius 2px
       padding 10px 20px
       font-size 1em
+      line-height 1.5em
 </style>

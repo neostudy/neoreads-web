@@ -1,5 +1,9 @@
 <template>
-    <div>Notes</div>
+  <div>
+    <h1>Works</h1>
+
+    <div><el-button type="primary">写文章</el-button></div>
+  </div>
 </template>
 
 <script>
