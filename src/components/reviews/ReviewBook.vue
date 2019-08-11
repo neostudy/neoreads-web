@@ -11,7 +11,7 @@
             <el-progress :percentage="ch.progress"></el-progress>
           </el-col>
           <el-col :span="4">
-            <el-button @click="goReviewChapter(ch.id)">温习章节</el-button>
+            <el-button @click="goReviewChapter(ch)">温习章节</el-button>
           </el-col>
         </el-row>
       </el-main>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {CONTENTS} from "src/js/content/contents.js"
 export default {
   data() {
     return {
@@ -28,6 +29,10 @@ export default {
     };
   },
   created() {
+    // init ContentManager.
+    // TODO: move all managers to a central location
+    CONTENTS.init(this.$store, this.$axios)
+    
     // fetch chapters and their review progresses
     let url = "/api/v1/reviews/" + this.bookid + "/chapters";
     let self = this;
@@ -51,8 +56,10 @@ export default {
     */
   },
   methods: {
-    goReviewChapter(chapid) {
-      this.$router.push('/review/chapter/'+this.bookid+'/'+chapid);
+    goReviewChapter(ch) {
+      // set current chapter info (main: title)
+      this.$store.dispatch("setChapter", ch)
+      this.$router.push("/review/chapter/" + this.bookid + "/" + ch.id);
     }
   }
 };

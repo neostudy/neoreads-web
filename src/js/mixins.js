@@ -7,13 +7,12 @@ export default {
         }
       });
     },
-
     authPost(url, json) {
       return this.$axios.post(url, json, {
         headers: {
           Authorization: `Bearer ${this.$store.getters.token}`
         }
       });
-    }
+    },
   }
 }

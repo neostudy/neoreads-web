@@ -2,7 +2,7 @@ const state = {
   selectContext: {
     pos: {
       bookid: '',
-      chapid:'',
+      chapid: '',
       paraid: '',
       sentid: '',
       start: 0,
@@ -12,6 +12,9 @@ const state = {
       content: '',
     },
     text: '',
+  },
+  chapter: {
+    title: '',
   }
 }
 
