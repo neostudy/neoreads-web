@@ -11,6 +11,7 @@ class ContentManager {
   title = '';
   element = null;
   initialized = false;
+  last = {};
 
   constructor(store, axios) {
     this.$store = store;
@@ -27,6 +28,13 @@ class ContentManager {
   }
 
   fetchChapter(bookid, chapid) {
+    let self = this;
+    if (bookid == this.last.bookid && chapid == this.last.chapid) { // already fetched
+      console.log("content already loaded")
+      return new Promise((resolve, reject) =>{
+        resolve(self.content);
+      })
+    }
     console.log("fetching content for [", bookid, ":", chapid, "]");
     if (bookid && bookid != "" && chapid && chapid != "") {
       let self = this;
@@ -36,7 +44,11 @@ class ContentManager {
         let data = res.data;
         self.content = data.content;
         self.title = data.title;
-        self.parseContent()
+        self.parseContent();
+        self.last = {
+          bookid: bookid,
+          chapid: chapid
+        };
         return self.contents;
       });
     } else {
