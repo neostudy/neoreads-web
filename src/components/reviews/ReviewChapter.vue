@@ -19,7 +19,7 @@
           </el-row>
         </el-main>
       </el-container>
-      <div id="chapter-content"></div>
+      <div id="chapter-content-dummy"></div>
     </div>
   </div>
 </template>
@@ -98,6 +98,4 @@ export default {
     font-weight bold
     font-size 1.3em
 
-#chapter-content
-  display none
 </style>

@@ -12,7 +12,19 @@
             </div>
           </el-aside>
           <el-main class="review-note-pane">
-            <review-note-pane></review-note-pane>
+            <el-button-group>
+              <el-button
+                title="快捷键：向上翻页键或使用鼠标滚轴"
+                @click="prevPage"
+                size="small"
+                plain
+                icon="el-icon-arrow-left"
+              ></el-button>
+              <el-button title="快捷键：向下翻页键或使用鼠标滚轴" @click="nextPage" size="small" plain>
+                <i class="el-icon-arrow-right el-icon--right"></i>
+              </el-button>
+            </el-button-group>
+            <notes></notes>
           </el-main>
         </el-container>
         <el-footer></el-footer>
@@ -24,11 +36,14 @@
 <script>
 import ReviewContentPane from "./ReviewContentPane.vue";
 import ReviewNotePane from "./ReviewNotePane.vue";
+import Notes from "../book/reader/interactive/Notes.vue";
 import { CONTENTS } from "src/js/content/contents.js";
+import { NOTES } from "src/js/note/note.js";
 export default {
   components: {
     ReviewContentPane,
-    ReviewNotePane
+    ReviewNotePane,
+    Notes
   },
   data() {
     return {
@@ -42,8 +57,12 @@ export default {
   },
   created() {
     CONTENTS.init(this.$store, this.$axios);
+    NOTES.init(this.$store, this.$axios, this.bookid, this.chapid);
     let self = this;
     CONTENTS.fetchChapter(this.bookid, this.chapid).then(res => {
+      document
+        .getElementById("chapter-content-pane")
+        .appendChild(CONTENTS.element);
       self.fetchNotes();
       if (!self.title) {
         self.title = CONTENTS.title;
@@ -70,6 +89,45 @@ export default {
             self.notes[sentid].push(n);
           }
           self.sents = CONTENTS.getNotedSents(self.notes);
+
+          // TODO: 重新调整self.sents，不用再遍历一遍
+          for (let sn of self.sents) {
+            if (sn.id == self.sentid) {
+              // the popbar shows itself when self.selectContext changes
+              let ctx = {
+                isFav: !!sn.fav,
+                favid: sn.fav ? sn.fav.id : "",
+                text: sn.text,
+                pos: {
+                  // TODO replace ids with pos
+                  bookid: self.bookid,
+                  chapid: self.chapid,
+                  sentid: self.sentid,
+                  paraid: "",
+                  start: 0,
+                  end: 0
+                },
+                note: sn.note
+              };
+              self.$store.dispatch("select", ctx);
+              EVENT_BUS.$emit("CONTEXT_UPDATED");
+            }
+          }
+
+          // highlight current sent
+          let contentEl = document.getElementById("chapter-content");
+          console.log("contenEL:", contentEl);
+          if (contentEl) {
+            let sents = contentEl.getElementsByTagName("sent");
+            for (let s of sents) {
+              if (s.id == self.sentid) {
+                let sentEl = s.previousSibling;
+                if (sentEl) {
+                  sentEl.classList.add("mark");
+                }
+              }
+            }
+          }
           console.log(self.sents);
         })
         .catch(error => {
@@ -92,9 +150,44 @@ export default {
     border 1px solid #eee
     border-radius 5px
     margin-right 10px
+    text-align left
 
   .review-note-pane
     padding 20px
     border 1px solid #eee
     border-radius 5px
+</style>
+
+<!-- NOTE: no scoped here for this to work -->
+<style lang="stylus">
+#chapter-content-pane
+  p
+    margin-bottom 20px
+    border-radius 4px
+    font-size 20px
+    line-height 36px
+    transition background-color 300ms ease-in
+
+    span
+      padding 4px 0
+      background-color white
+      border-radius 4px
+      transition background-color 300ms ease-in
+
+    span:hover
+      background-color #D9ECFF
+      cursor pointer
+
+    span.mark
+      background-color #FFFFB3
+
+    span.note
+      background-color #FFCFA0
+
+  ruby
+    rb
+      font-size 28px
+
+    rt
+      font-size 8px
 </style>

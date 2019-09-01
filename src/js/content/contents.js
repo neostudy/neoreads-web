@@ -29,9 +29,10 @@ class ContentManager {
 
   fetchChapter(bookid, chapid) {
     let self = this;
-    if (bookid == this.last.bookid && chapid == this.last.chapid) { // already fetched
-      console.log("content already loaded")
-      return new Promise((resolve, reject) =>{
+    if (bookid == this.last.bookid && chapid == this.last.chapid && this.content) { // already fetched
+      console.log("content already fetched:")
+      return new Promise((resolve, reject) => {
+        self.parseContent();
         resolve(self.content);
       })
     }
@@ -57,13 +58,33 @@ class ContentManager {
   }
 
   parseContent() {
-    let c = this.content;
     let el = document.getElementById("chapter-content")
-    if (!el) return;
+    console.log("parsing content:", el)
+    if (!el) {
+      el = document.createElement("div")
+      el.id = "chapter-content"
+    }
     //el.hidden = true;
-    el.innerHTML = mdi.render(this.content);
+    if (!el.textContent) {
+      let md = mdi.render(this.content);
+      let mdps = md
+        .split(/<\/?p>/g)
+        .map(ln => ln.trim())
+        .filter(ln => ln != "")
+        .map(ln => "<p>" + ln + "</p>")
+        .map(ln =>
+          ln.replace(/>([^<]+)</g, '><span class="content-text">$1</span><')
+        );
+
+      for (let i = 0; i < mdps.length; ++i) {
+        let d = document.createElement("div");
+        d.innerHTML = mdps[i];
+        el.appendChild(d);
+      }
+    }
     this.element = el;
     console.log("el:", el)
+    console.log("content:", this.content.substr(0, 10))
     console.log("text:", this.getSentText("DWYz"))
   }
 

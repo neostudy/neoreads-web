@@ -1,5 +1,5 @@
 <template>
-  <div class="note tab-pane" v-show="isShow">
+  <div id="note-tab-panel" class="note tab-pane" v-show="isShow">
     <div class="note-section">
       <div class="note-section-title">
         <span class="right">
@@ -136,7 +136,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#reader-interactive-panel
+#note-tab-panel
   .note-section
     padding 10px
     margin-bottom 10px
