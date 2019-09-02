@@ -12,7 +12,7 @@
     </el-col>
     <el-col :span="2" :offset="1" class="note-progress-pane">
       <div class="review-button">
-        <el-button @click="goReviewSent(sent)" type="primary" size="small">温习</el-button>
+        <el-button @click="goReviewSent" type="primary" size="small">温习</el-button>
       </div>
       <div class="review-progress">
         <el-progress type="circle" :width="60" :percentage="60"></el-progress>
@@ -41,8 +41,8 @@ export default {
     },
   },
   methods: {
-    goReviewSent(sent) {
-      this.$emit('go-review-sent', sent)
+    goReviewSent() {
+      this.$emit('go-review-sent', this.sent, this.order)
     }
   }
 };

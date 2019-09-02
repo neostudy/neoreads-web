@@ -14,23 +14,11 @@ export default {
       let self = this;
       span.onclick = function(event) {
         console.log("click");
-        self.$emit("select", { sentid: sent.id, el: span, event: event});
+        self.$emit("select", { sentid: sent.id, el: span, event: event });
       };
     }
-
-    // TODO: should move this function to Chapter.vue, but we can't decide when are these paragraphs mounted.
-
-    //this.hightLightCurrentSent()
   },
-  methods: {
-   hightLightCurrentSent() {
-      let sent = document.getElementById(this.highlight)
-      let span = sent.previousSibling;
-      if (span) {
-        span.classList.add("mark");
-      }
-    }
-  }
+  methods: {}
 };
 </script>
 

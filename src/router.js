@@ -92,6 +92,10 @@ const routes = [
     component: ReviewChapter
   },
   {
+    path: '/review/chapter/:bookid/:chapid/:sentid',
+    component: ReviewChapter
+  },
+  {
     path: '/review/sent/:bookid/:chapid/:sentid',
     component: ReviewSent
   }

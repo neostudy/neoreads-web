@@ -67,12 +67,22 @@ export default {
       return mdps;
     },
     hightLightCurrentSent() {
+      console.log("highlighting")
+      if (!this.highlight) return;
+      // remove old highlights
+      for (let span of this.$el.getElementsByClassName("mark")) {
+        span.classList.remove("mark")
+      }
+      // add new highlight
       let sent = document.getElementById(this.highlight);
       let span = sent.previousSibling;
       if (span) {
         span.classList.add("mark");
       }
-      span.scrollIntoView();
+      span.scrollIntoView();//{block: "center"});
+      let pane = document.getElementById("chapter-content-pane")
+      if (!pane) return;
+      pane.scrollBy(0, -100);
     }
   }
 };

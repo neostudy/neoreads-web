@@ -2,22 +2,31 @@
   <div>
     <div id="review-sent-pane">
       <el-container>
-        <el-header height="60px">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
-        </el-header>
         <el-container>
           <el-aside width="700px">
             <div class="review-content-pane">
-              <chapter :bookid="bookid" :chapid="chapid" @content-loaded="contentLoaded" :highlight="sentid"></chapter>
+              <chapter
+                :bookid="bookid"
+                :chapid="chapid"
+                @content-loaded="contentLoaded"
+                :highlight="sentid"
+              ></chapter>
             </div>
           </el-aside>
           <el-main class="review-note-pane">
+            <el-button size="small" @click="goChapter">返回笔记列表</el-button>
+            <el-divider direction="vertical"></el-divider>
             <el-button-group>
-              <el-button title="快捷键：向上翻页键或使用鼠标滚轴" size="small" plain icon="el-icon-arrow-left"></el-button>
-              <el-button title="快捷键：向下翻页键或使用鼠标滚轴" size="small" plain>
+              <el-button @click="prevSent" size="small" plain icon="el-icon-arrow-left">上一句</el-button>
+              <el-button @click="nextSent" size="small" plain>
+                下一句
                 <i class="el-icon-arrow-right el-icon--right"></i>
               </el-button>
             </el-button-group>
+
+            <div style="width: 200px;display:inline-block;float:right;line-height:32px;height:32px;">
+              <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
+            </div>
             <notes></notes>
           </el-main>
         </el-container>
@@ -37,6 +46,7 @@ import { NOTES } from "src/js/note/note.js";
 import { EVENT_BUS } from "src/eventbus.js";
 
 export default {
+  props: ["sentid", "show"],
   components: {
     ReviewContentPane,
     ReviewNotePane,
@@ -47,23 +57,31 @@ export default {
     return {
       bookid: this.$route.params.bookid,
       chapid: this.$route.params.chapid,
-      sentid: this.$route.params.sentid,
       title: "",
       notes: {},
       sents: [],
       content: "",
-      curSent : ""
+      curSent: ""
     };
   },
   created() {
     let self = this;
-    CONTENTS.init(this.$store, this.$axios);
+    //CONTENTS.init(this.$store, this.$axios);
     NOTES.init(this.$store, this.$axios, this.bookid, this.chapid);
   },
   methods: {
     contentLoaded() {
       this.content = CONTENTS.content;
-      this.fetchNotes();
+      // this.fetchNotes();
+    },
+    prevSent() {
+      this.$emit("next-sent", -1);
+    },
+    nextSent() {
+      this.$emit("next-sent", 1);
+    },
+    goChapter() {
+      this.$emit("go-chapter");
     },
     // TODO: move this feature into NOTES
     fetchNotes() {
@@ -86,6 +104,7 @@ export default {
           }
           self.sents = CONTENTS.getNotedSents(self.notes);
 
+          /*
           // TODO: 重新调整self.sents，不用再遍历一遍
           for (let sn of self.sents) {
             if (sn.id == self.sentid) {
@@ -109,7 +128,7 @@ export default {
               EVENT_BUS.$emit("CONTEXT_UPDATED");
             }
           }
-
+          */
 
           /*
           let contentEl = document.getElementById("chapter-content");
