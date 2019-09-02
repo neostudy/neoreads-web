@@ -7,7 +7,10 @@
           <el-divider direction="vertical"></el-divider>
           <el-button icon="el-icon-caret-right" type="primary" size="small">开始温习</el-button>
           <div style="width:300px;float:right;margin-right:20px;">
+            <neo-progress :text-inside="true" :stroke-width="18" :now="13" :total="20"></neo-progress>
+            <!--
             <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
+            -->
           </div>
           <label style="float: right;">温习进度：</label>
         </el-header>
@@ -32,11 +35,13 @@ import { CONTENTS } from "src/js/content/contents.js";
 import { NOTES } from "src/js/note/note.js";
 import { EVENT_BUS } from "src/eventbus.js";
 import ReviewNote from "./ReviewNote.vue";
-import ReviewDetail from "./ReviewSent.vue";
+import ReviewDetail from "./ReviewDetail.vue";
+import NeoProgress from "../tools/Progress.vue";
 export default {
   components: {
     ReviewNote,
-    ReviewDetail
+    ReviewDetail,
+    NeoProgress
   },
   data() {
     return {

@@ -17,7 +17,6 @@ import Register from './components/user/Register.vue'
 import ReviewBook from "./components/reviews/ReviewBook.vue"
 import ReviewPlan from "./components/reviews/ReviewPlan.vue"
 import ReviewChapter from "./components/reviews/ReviewChapter.vue"
-import ReviewSent from "./components/reviews/ReviewSent.vue"
 
 Vue.use(Router)
 
@@ -95,11 +94,6 @@ const routes = [
     path: '/review/chapter/:bookid/:chapid/:sentid',
     component: ReviewChapter
   },
-  {
-    path: '/review/sent/:bookid/:chapid/:sentid',
-    component: ReviewSent
-  }
-
 ]
 
 const router = new Router({
