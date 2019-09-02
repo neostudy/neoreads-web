@@ -66,6 +66,7 @@ class ContentManager {
     }
     //el.hidden = true;
     if (!el.textContent) {
+      console.log("contents:", this.content)
       let md = mdi.render(this.content);
       let mdps = md
         .split(/<\/?p>/g)

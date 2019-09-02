@@ -8,19 +8,13 @@
         <el-container>
           <el-aside width="700px">
             <div class="review-content-pane">
-              <review-content-pane></review-content-pane>
+              <chapter :bookid="bookid" :chapid="chapid" @content-loaded="contentLoaded" :highlight="sentid"></chapter>
             </div>
           </el-aside>
           <el-main class="review-note-pane">
             <el-button-group>
-              <el-button
-                title="快捷键：向上翻页键或使用鼠标滚轴"
-                @click="prevPage"
-                size="small"
-                plain
-                icon="el-icon-arrow-left"
-              ></el-button>
-              <el-button title="快捷键：向下翻页键或使用鼠标滚轴" @click="nextPage" size="small" plain>
+              <el-button title="快捷键：向上翻页键或使用鼠标滚轴" size="small" plain icon="el-icon-arrow-left"></el-button>
+              <el-button title="快捷键：向下翻页键或使用鼠标滚轴" size="small" plain>
                 <i class="el-icon-arrow-right el-icon--right"></i>
               </el-button>
             </el-button-group>
@@ -37,13 +31,17 @@
 import ReviewContentPane from "./ReviewContentPane.vue";
 import ReviewNotePane from "./ReviewNotePane.vue";
 import Notes from "../book/reader/interactive/Notes.vue";
+import Chapter from "../content/Chapter.vue";
 import { CONTENTS } from "src/js/content/contents.js";
 import { NOTES } from "src/js/note/note.js";
+import { EVENT_BUS } from "src/eventbus.js";
+
 export default {
   components: {
     ReviewContentPane,
     ReviewNotePane,
-    Notes
+    Notes,
+    Chapter
   },
   data() {
     return {
@@ -52,24 +50,22 @@ export default {
       sentid: this.$route.params.sentid,
       title: "",
       notes: {},
-      sents: []
+      sents: [],
+      content: "",
+      curSent : ""
     };
   },
   created() {
+    let self = this;
     CONTENTS.init(this.$store, this.$axios);
     NOTES.init(this.$store, this.$axios, this.bookid, this.chapid);
-    let self = this;
-    CONTENTS.fetchChapter(this.bookid, this.chapid).then(res => {
-      document
-        .getElementById("chapter-content-pane")
-        .appendChild(CONTENTS.element);
-      self.fetchNotes();
-      if (!self.title) {
-        self.title = CONTENTS.title;
-      }
-    });
   },
   methods: {
+    contentLoaded() {
+      this.content = CONTENTS.content;
+      this.fetchNotes();
+    },
+    // TODO: move this feature into NOTES
     fetchNotes() {
       // fetch chapters and their review progresses
       let url = "/api/v1/reviews/notes/" + this.bookid + "/" + this.chapid;
@@ -114,7 +110,8 @@ export default {
             }
           }
 
-          // highlight current sent
+
+          /*
           let contentEl = document.getElementById("chapter-content");
           console.log("contenEL:", contentEl);
           if (contentEl) {
@@ -129,6 +126,7 @@ export default {
             }
           }
           console.log(self.sents);
+          */
         })
         .catch(error => {
           console.log(error);

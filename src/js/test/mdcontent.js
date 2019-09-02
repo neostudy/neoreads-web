@@ -1,19 +1,3 @@
-<template>
-  <div>
-    <div>
-      <news-item v-for="(p,i) in paras" :key="i" :html="p"></news-item>
-    </div>
-    <el-button @click="add"></el-button>
-  </div>
-</template>
-
-<script>
-import NewsItem from "../news/NewsItem.vue";
-
-var mdi = require("markdown-it")({
-  html: true
-});
-
 var mdContent = `## 卷一 五帝本纪第一<sent id="DWYz"></sent>
 <para id="kqYx"></para>
 
@@ -399,34 +383,5 @@ var mdContent = `## 卷一 五帝本纪第一<sent id="DWYz"></sent>
 <para id="-xy4"></para>
 
 `;
-export default {
-  components: {
-    NewsItem
-  },
-  data() {
-    return {
-      paras: []
-    };
-  },
-  created() {
-    let md = mdi.render(mdContent);
-    let mdps = md
-      .split(/<\/?p>/g)
-      .map(ln => ln.trim())
-      .filter(ln => ln != "")
-      .map(ln => "<p>" + ln + "</p>")
-      .map(ln =>
-        ln.replace(/>([^<]+)</g, '><span class="content-text">$1</span><')
-      );
-    this.paras = mdps;
 
-    this.$store.dispatch("setActiveMenuIndex", "/news");
-  },
-  methods: {
-    add() {
-      this.paras.push("<button>A</button>");
-    }
-  }
-};
-</script>
-
+export default mdContent;
