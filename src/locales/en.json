@@ -1,11 +1,13 @@
 {
-  "home": "Home",
-  "library": "Library",
-  "reviews": "Reviews",
-  "news": "News",
-  "works": "Works",
-  "friends": "Friends",
-  "dev": "Dev",
+  "menu": {
+    "home": "Home",
+    "library": "Library",
+    "reviews": "Reviews",
+    "news": "News",
+    "works": "Works",
+    "friends": "Friends",
+    "dev": "Dev"
+  },
   "en": "English",
   "zh": "Chinese",
   "search-placeholder": "Book titles, author names",
@@ -14,5 +16,11 @@
   "register": "Register",
   "sitename": "NeoReads",
   "logo-neo": "Neo",
-  "logo-reads": "Reads"
+  "logo-reads": "Reads",
+  "works": {
+    "articles": "Articles",
+    "collections": "Collections",
+    "books": "Books",
+    "public": "Public"
+  }
 }

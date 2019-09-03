@@ -10,7 +10,7 @@
                   <span class="theme">{{$t('logo-neo')}}</span>
                   <span class="black">{{$t('logo-reads')}}</span>
                 </router-link>
-                <span id="logo-version">v0.1</span>
+                <span id="logo-version">v0.1.4</span>
               </div>
             </el-col>
             <el-col :span="12">
@@ -22,25 +22,25 @@
                 router
               >
                 <el-menu-item index="/home">
-                  <span class="theme">{{$t('home')}}</span>
+                  <span class="theme">{{$t('menu.home')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/library">
-                  <span class="theme">{{$t('library')}}</span>
+                  <span class="theme">{{$t('menu.library')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/reviews">
-                  <span class="theme">{{$t('reviews')}}</span>
+                  <span class="theme">{{$t('menu.reviews')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/news">
-                  <span class="theme">{{$t('news')}}</span>
+                  <span class="theme">{{$t('menu.news')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/works">
-                  <span class="theme">{{$t('works')}}</span>
+                  <span class="theme">{{$t('menu.works')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/friends">
-                  <span class="theme">{{$t('friends')}}</span>
+                  <span class="theme">{{$t('menu.friends')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/dev">
-                  <span class="theme">{{$t('dev')}}</span>
+                  <span class="theme">{{$t('menu.dev')}}</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -140,7 +140,7 @@ export default {
   padding 0
 </style>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 #app
   font-family 'Avenir', Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
@@ -205,4 +205,13 @@ export default {
 
     .user.login
       color gray
+
+div.center-pane
+  text-align center
+  margin 0px auto
+  width 1268px
+  border 1px solid #eee
+  border-radius 4px
+  padding 20px
+  min-height 800px
 </style>

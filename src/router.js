@@ -5,7 +5,14 @@ import Home from './components/top/Home.vue'
 import Library from './components/top/Library.vue'
 import Reviews from './components/top/Reviews.vue'
 import News from './components/top/News.vue'
+
 import Works from './components/top/Works.vue'
+import Articles from './components/works/Articles.vue'
+import Collections from './components/works/Collections.vue'
+import Books from './components/works/Books.vue'
+import Public from './components/works/Public.vue'
+import Write from "./components/works/Write.vue"
+
 import Friends from './components/top/Friends.vue'
 import Dev from './components/top/Dev.vue'
 import Book from './components/book/Book.vue'
@@ -44,7 +51,37 @@ const routes = [
   },
   {
     path: '/works',
-    component: Works
+    component: Works,
+    children: [
+      {
+        path: '',
+        component: Articles
+      },
+      {
+        path: 'articles',
+        component: Articles
+      },
+      {
+        path: 'collections',
+        component: Collections 
+      },
+      {
+        path: 'books',
+        component: Books 
+      },
+      {
+        path: 'public',
+        component: Public 
+      },
+      {
+        path: 'write',
+        component: Write
+      },
+      {
+        path: 'write/:artid',
+        component: Write
+      }
+    ]
   },
   {
     path: '/notes',
