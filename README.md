@@ -4,7 +4,7 @@
 
 Website for neoreads, written in vue.js
 
-欢迎大家提issue。
+欢迎大家提出建议和问题。
 
 ## 核心特色 | Core Features
 
@@ -27,7 +27,7 @@ Website for neoreads, written in vue.js
 
 - [x] 温习界面：书籍列表
 - [x] 温习界面：章节列表
-- [x ] 温习界面：笔记列表
+- [x] 温习界面：笔记列表
 
 #### 笔记温习流程：
 
@@ -173,8 +173,9 @@ Website for neoreads, written in vue.js
 - [x] 注册前端
 - [x] 登录前端
 - [x] JWT前端
-- [ ] JWT Token定时刷新
-- [ ] 在JWT中增加PID
+- [x] JWT Token定时刷新
+- [ ] 检测所有auth请求的结果，如果遇到401，则调用token_refresh尝试重新登录
+- [x] 在JWT中增加PID
 - [x] 利用Vuex实现简单的前端Auth
 - [ ] 前端权限管理
 - [ ] 使用[vuelidate](https://github.com/vuelidate/vuelidate)进行表单验证

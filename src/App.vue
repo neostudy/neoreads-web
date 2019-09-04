@@ -113,6 +113,9 @@ export default {
       }
       next();
     });
+
+    // check token
+    this.checkToken();
   },
   mounted() {
     console.log("locale:", this.$i18n.locale);
@@ -129,6 +132,40 @@ export default {
     },
     hideNavMenu() {
       this.isNavShow = false;
+    },
+    checkToken() {
+      console.log("chekcing token:");
+      console.log("cur user:", this.$store.getters.user);
+      let tokenSince = this.$store.getters.tokenSince;
+      let expireIn = this.$store.getters.expireIn;
+      let minute = 1000 * 60;
+      console.log("token expire:", this.$store.getters.expire);
+      console.log("expire in ", expireIn / minute, " minutes");
+      if (expireIn / minute < 30) {
+        this.refreshToken();
+      }
+    },
+    refreshToken() {
+      console.log("refreshing token...");
+      let refreshUrl = "/api/v1/token/refresh";
+      let self = this;
+      this.authGet(refreshUrl)
+        .then(res => {
+          let token = res.data.token;
+          let expire = res.data.expire;
+          let user = {
+            token: token,
+            expire: expire
+          };
+          self.$store.dispatch("refreshToken", user);
+          self.$router.push("/home");
+        })
+        .catch(err => {
+          console.log("refresh failed!", err)
+          self.$message("用户登录过期，请重新登录！");
+          this.$store.dispatch("logout");
+          self.$router.push("/usr/login");
+        });
     }
   }
 };

@@ -39,7 +39,6 @@ export default {
   },
   created() {
     this.$store.dispatch("setActiveMenuIndex", "/none");
-    console.log("token:", this.$store.getters.token);
   },
   methods: {
     login() {
