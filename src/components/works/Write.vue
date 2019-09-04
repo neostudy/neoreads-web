@@ -9,7 +9,7 @@
           <el-input size="large" class="write-title" v-model="title" placeholder="请输入标题"></el-input>
         </div>
         <div class="write-editor-pane">
-          <mavon-editor v-model="content" placeholder="请输入正文..." :boxShadow="false"></mavon-editor>
+          <mavon-editor id="write-mavon-editor" v-model="content" placeholder="请输入正文..." :boxShadow="false"></mavon-editor>
           <br />
           <el-button type="primary" @click="save">保存</el-button>
           <el-button @click="cancel()">取消</el-button>
@@ -107,4 +107,8 @@ export default {
 
   .write-title-pane
     margin-bottom 10px
+
+#write-mavon-editor
+  min-height 500px
+  max-height 650px
 </style>

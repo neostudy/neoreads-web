@@ -95,7 +95,7 @@ class NoteManager {
   saveNote(content) {
     let ctx = this.ctx;
     console.log("ctx:", ctx)
-    if (!'note' in ctx || !ctx.note) {
+    if (!('note' in ctx) || !ctx.note) {
       ctx.note = {};
     }
     console.log("ctx:", ctx)

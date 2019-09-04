@@ -9,6 +9,9 @@ module.exports = {
     externals: {
       'vue': 'Vue',
       'element-ui' : 'ELEMENT',
+      'mavon-editor': 'MavonEditor',
+      'markdown-it': 'MarkdownIt',
+      '@fortawesome/fontawesome-svg-core': 'library',
     }
   },
   pluginOptions: {

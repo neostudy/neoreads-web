@@ -41,7 +41,6 @@ import TocTree from "./TocTree";
 import ReaderToolbar from "./reader/toolbar/ReaderToolbar";
 import ReaderContent from "./reader/ReaderContent";
 import Interactive from "./reader/Interactive";
-import Pinyin from "../tools/Pinyin";
 import { EVENT_BUS } from "src/eventbus.js";
 import { NOTES } from "src/js/note/note.js";
 
@@ -51,7 +50,6 @@ export default {
     ReaderToolbar,
     ReaderContent,
     Interactive,
-    Pinyin
   },
   data() {
     return {

@@ -97,7 +97,7 @@ export default {
               n.progress = 75;
             }
             let sentid = n.sentid;
-            if (!sentid in self.notes || !self.notes[sentid]) {
+            if (!(sentid in self.notes) || !self.notes[sentid]) {
               self.notes[sentid] = [];
             }
             self.notes[sentid].push(n);
