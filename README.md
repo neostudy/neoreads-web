@@ -68,7 +68,7 @@ Website for neoreads, written in vue.js
 - [x] 文章修改
 - [x] 展示修改时间
 - [ ] 创建时间
-- [ ] 文章删除
+- [x] 文章删除
 - [ ] 全文详细阅读
 - [x] 按时间排序
 - [ ] 点击排序按钮顺序相反
@@ -76,6 +76,17 @@ Website for neoreads, written in vue.js
 - [ ] 长文章在列表中的折叠和展开功能
 - [ ] Markdown展示（现在用maven-editor的预览功能暂代）
 - [ ] 沉浸式阅读（参考maven-editor的这个功能）
+
+#### 文集
+
+- [x] 增
+- [x] 删
+- [x] 查
+- [x] 改
+
+#### 其他
+
+- [x] 在会话中存储“以文”当前活跃的菜单栏
 
 #### 发表的文章
 

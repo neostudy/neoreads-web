@@ -54,9 +54,12 @@ export default {
     Articles
   },
   data() {
-    return {
-      worksIndex: "/works/articles"
-    };
+    return {};
+  },
+  computed: {
+    worksIndex() {
+      return this.$store.getters.activeWorksMenu;
+    }
   },
   created() {
     this.$store.dispatch("setActiveMenuIndex", "/works");

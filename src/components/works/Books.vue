@@ -10,6 +10,9 @@
 
 <script>
 export default {
+  created() {
+    this.$store.dispatch("setActiveWorksMenu", "/works/books")
+  }
   
 }
 </script>

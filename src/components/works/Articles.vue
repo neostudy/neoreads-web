@@ -36,6 +36,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch("setActiveWorksMenu", "/works/articles")
     this.authGet("/api/v1/articles/list").then(res => {
       this.articles = res.data;
     });

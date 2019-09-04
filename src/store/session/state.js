@@ -15,6 +15,9 @@ const state = {
   },
   chapter: {
     title: '',
+  },
+  works : {
+    activeMenu : '/works/articles'
   }
 }
 

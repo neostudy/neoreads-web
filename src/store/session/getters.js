@@ -7,5 +7,8 @@ export default {
     console.log("state: ", state)
     console.log("gettting: ", state.chapter)
     return state.chapter;
+  },
+  activeWorksMenu(state) {
+    return state.works.activeMenu;
   }
 }

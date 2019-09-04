@@ -41,6 +41,7 @@ export default {
     };
   },
   created() {
+    this.$store.dispatch("setActiveWorksMenu", "/works/collections")
     this.authGet("/api/v1/collections/list")
       .then(res => {
         console.log("got collections:", res.data);
