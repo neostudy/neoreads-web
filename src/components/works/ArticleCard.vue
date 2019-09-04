@@ -7,8 +7,17 @@
       </span>
     </div>
     <!--<div class="article-content" v-html="mdContent"></div>-->
-    
-    <mavon-editor :ishljs="true" :subfield="false" defaultOpen="preview" :value="article.content" :toolbarsFlag="false" :editable="false" placeholder="请输入正文..." :boxShadow="false"></mavon-editor>
+
+    <mavon-editor
+      :ishljs="true"
+      :subfield="false"
+      defaultOpen="preview"
+      :value="article.content"
+      :toolbarsFlag="false"
+      :editable="false"
+      placeholder="请输入正文..."
+      :boxShadow="false"
+    ></mavon-editor>
     <div class="article-toolbar">
       <span>
         <faicon icon="heart" size="lg" class="mark"></faicon>
@@ -26,11 +35,9 @@
         <faicon icon="quote-left" size="lg"></faicon>
         <label>58</label>
       </span>
+      <span class="modtime">更新于：{{lastModTime}}</span>
       <span class="right">
         <faicon icon="trash" title="删除" class="right" @click="removeArticle"></faicon>
-      </span>
-      <span class="right modtime">
-        更新于：{{lastModTime}}
       </span>
     </div>
   </div>
@@ -50,14 +57,25 @@ export default {
     },
     // TODO: make it more human readable, like ignore date when it's today, ignore time when it's earlier, and has a tooltip
     lastModTime() {
-      return this.article.modtime.substr(0, 19).replace('T', ' ');
+      return this.article.modtime.substr(0, 19).replace("T", " ");
     }
   },
   methods: {
     editArticle() {
-      this.$router.push('/works/write/'+this.article.id)
+      this.$router.push("/works/write/" + this.article.id);
     },
-    removeArticle() {}
+    removeArticle() {
+      this.$confirm("确认删除文章？")
+        .then(_ => {
+          this.authGet("/api/v1/article/remove/" + this.article.id).then(
+            res => {
+              this.$message("文章删除成功");
+              this.$emit('article-removed', this.article.id)
+            }
+          );
+        })
+        .catch(_ => {});
+    }
   }
 };
 </script>

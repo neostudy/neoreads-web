@@ -14,7 +14,7 @@
       <el-main>
         <div class="article-list">
           <div class="article-item-wrap" v-for="(a, i) in articles" :key="i">
-            <article-card :article="a"></article-card>
+            <article-card @article-removed="articleRemoved" :article="a"></article-card>
           </div>
         </div>
       </el-main>
@@ -43,6 +43,9 @@ export default {
   methods: {
     goWrite() {
       this.$router.push("/works/write");
+    },
+    articleRemoved(artid) {
+      this.articles = this.articles.filter(a => a.id != artid)
     }
   }
 };
