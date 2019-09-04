@@ -36,7 +36,7 @@ export default {
   created() {
     if (this.isEdit) {
       // fetch article content
-      this.authGet("/api/v1/article/get/" + this.artid).then(res => {
+      this.authGet("/api/v1/articles/get/" + this.artid).then(res => {
         let article = res.data;
         this.title = article.title;
         this.content = article.content;
@@ -50,13 +50,13 @@ export default {
       } else if (!this.content) {
         this.$alert("内容未填写", "注意：");
       } else {
-        let url = "/api/v1/article/add";
+        let url = "/api/v1/articles/add";
         let data = {
           title: this.title,
           content: this.content
         };
         if (this.isEdit) {
-          url = "/api/v1/article/modify";
+          url = "/api/v1/articles/modify";
           data.id = this.artid;
         }
         this.authPost(url, data)

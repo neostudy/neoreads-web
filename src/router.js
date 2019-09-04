@@ -13,6 +13,8 @@ import Books from './components/works/Books.vue'
 import Public from './components/works/Public.vue'
 import Write from "./components/works/Write.vue"
 
+import EditCollection from "./components/works/collections/EditCollection.vue";
+
 import Friends from './components/top/Friends.vue'
 import Dev from './components/top/Dev.vue'
 import Book from './components/book/Book.vue'
@@ -62,25 +64,33 @@ const routes = [
         component: Articles
       },
       {
-        path: 'collections',
-        component: Collections 
-      },
-      {
-        path: 'books',
-        component: Books 
-      },
-      {
-        path: 'public',
-        component: Public 
-      },
-      {
         path: 'write',
         component: Write
       },
       {
         path: 'write/:artid',
         component: Write
-      }
+      },
+      {
+        path: 'collections',
+        component: Collections,
+      },
+      {
+        path: 'collections/edit',
+        component: EditCollection
+      },
+      {
+        path: 'collections/edit/:colid',
+        component: EditCollection
+      },
+      {
+        path: 'books',
+        component: Books
+      },
+      {
+        path: 'public',
+        component: Public
+      },
     ]
   },
   {

@@ -36,7 +36,7 @@ export default {
     };
   },
   created() {
-    this.authGet("/api/v1/article/list").then(res => {
+    this.authGet("/api/v1/articles/list").then(res => {
       this.articles = res.data;
     });
   },

@@ -67,7 +67,7 @@ export default {
     removeArticle() {
       this.$confirm("确认删除文章？")
         .then(_ => {
-          this.authGet("/api/v1/article/remove/" + this.article.id).then(
+          this.authGet("/api/v1/articles/remove/" + this.article.id).then(
             res => {
               this.$message("文章删除成功");
               this.$emit('article-removed', this.article.id)
