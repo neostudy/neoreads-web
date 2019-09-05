@@ -1,0 +1,211 @@
+<template>
+  <div id="book-edit-pane">
+    <el-container>
+      <el-header class="title-pane" height="50px">
+        <span v-if="isEdit" class="title">编辑书籍</span>
+        <span v-if="!isEdit" class="title">创作新书</span>
+      </el-header>
+      <el-main>
+        <el-form ref="book-form" :model="book">
+          <el-container>
+            <el-aside class="book-cover-pane" width="190px">
+              <i v-if="!this.imgUrl" class="el-icon-plus avatar-uploader-icon" @click="openImgUpload">请上传封面</i>
+              <img v-if="this.imgUrl" :src="imgUrl" @click="openImgUpload" />
+              <img-upload
+                field="file"
+                @crop-success="onCropSucc"
+                @crop-upload-success="onCropUploadSucc"
+                @crop-upload-fail="onCropUploadFail"
+                v-model="showImgUpload"
+                :width="188"
+                :height="265"
+                url="/api/v1/upload/img"
+                :params="params"
+                :headers="headers"
+                img-format="png"
+              ></img-upload>
+            </el-aside>
+            <el-main class="book-info-pane">
+              <div class="book-title-pane">
+                <el-form-item>
+                  <el-input
+                    size="large"
+                    class="book-title"
+                    v-model="book.title"
+                    placeholder="请输入书名"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="book-intro-pane">
+                <el-form-item>
+                  <el-input
+                    size="large"
+                    class="book-intro"
+                    type="textarea"
+                    :rows="6"
+                    v-model="book.intro"
+                    placeholder="请输入简介"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="book-tags-pane">标签</div>
+            </el-main>
+          </el-container>
+          <div class="book-toc-pane">目录</div>
+          <div class="book-toolbar">
+            <el-button type="primary" @click="save">保存</el-button>
+            <el-button @click="cancel()">取消</el-button>
+          </div>
+        </el-form>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import ImgUpload from "vue-image-crop-upload";
+export default {
+  components: {
+    ImgUpload
+  },
+  data() {
+    return {
+      book: {
+        id: this.$route.params.bookid,
+        cover: "",
+        title: "",
+        intro: "",
+        tags: [],
+        toc: []
+      },
+      params: {},
+      headers: {},
+      imgUrl: "",
+      showImgUpload: false
+    };
+  },
+  computed: {
+    isEdit() {
+      return !!this.bookid;
+    }
+  },
+  created() {
+    this.$store.dispatch("setActiveWorksMenu", "/works/books");
+
+    this.headers["Authorization"] = `Bearer ${this.$store.getters.token}`;
+
+    if (this.isEdit) {
+      // fetch book info
+      this.authGet("/api/v1/works/books/get/" + this.colid).then(res => {
+        this.book = res.data;
+      });
+    }
+  },
+  methods: {
+    save() {
+      if (!this.book.title) {
+        this.$alert("标题未填写", "注意：");
+      } else if (!this.book.intro) {
+        this.$alert("简介未填写", "注意：");
+      } else {
+        let url = "/api/v1/books/add";
+        let data = this.book;
+        if (this.isEdit) {
+          url = "/api/v1/books/modify";
+          data.id = this.book.id;
+        }
+        console.log(url);
+        this.authPost(url, data)
+          .then(res => {
+            this.$message("书籍信息保存成功");
+            this.goToList();
+          })
+          .catch(error => {
+            this.$message("书籍信息保存失败：" + error);
+          });
+      }
+    },
+    cancel() {
+      if (this.title || this.intro) {
+        this.$confirm("文集未保存，确认退出？")
+          .then(_ => {
+            this.goToList();
+          })
+          .catch(_ => {});
+      } else {
+        this.goToList();
+      }
+    },
+    goToList() {
+      this.$router.push("/works/books");
+    },
+    openImgUpload() {
+      this.showImgUpload = true;
+    },
+    onCropSucc(imgUrl, field) {
+      console.log("crop succ!", field)
+      //this.imgUrl = imgUrl
+    },
+    onCropUploadSucc(json, field) {
+      console.log("upload succ!", json, field)
+      let imgid = json.imgid
+      this.imgUrl = '/res/img/' + imgid + '_' + field + '.png'
+      this.book.cover = imgid
+      console.log(this.book)
+    },
+    onCropUploadFail() {
+      console.log("upload faile!")
+    },
+  }
+};
+</script>
+
+
+<style lang="stylus" scoped>
+#book-edit-pane
+  text-align left
+  padding 0
+
+  .title-pane
+    border-bottom 1px solid #eee
+    height 50px
+
+    span.title
+      font-weight bold
+      font-size 1.2em
+
+    span.right
+      float right
+
+  .book-cover-pane
+    text-align center
+    vertical-align center
+    width 190px
+    height 267px
+    line-height 265px
+    border 1px solid #eee
+    border-radius 4px
+    overflow hidden
+
+  .book-info-pane
+    padding 0px
+    margin-left 20px
+
+  .book-title-pane
+    margin-bottom 10px
+
+  .book-intro-pane
+    margin-bottom 10px
+
+  .book-tags-pane
+    margin-bottom 10px
+    height 60px
+    padding 10px 20px
+
+  .book-toc-pane
+    min-height 200px
+    padding 10px 20px
+
+  .book-toolbar
+    padding 10px 20px
+</style>

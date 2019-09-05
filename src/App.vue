@@ -10,7 +10,7 @@
                   <span class="theme">{{$t('logo-neo')}}</span>
                   <span class="black">{{$t('logo-reads')}}</span>
                 </router-link>
-                <span id="logo-version">v0.1.6</span>
+                <span id="logo-version">v0.1.7</span>
               </div>
             </el-col>
             <el-col :span="12">
@@ -135,7 +135,6 @@ export default {
     },
     checkToken() {
       console.log("chekcing token:");
-      console.log("cur user:", this.$store.getters.user);
       let tokenSince = this.$store.getters.tokenSince;
       let expireIn = this.$store.getters.expireIn;
       let minute = 1000 * 60;
@@ -158,7 +157,7 @@ export default {
             expire: expire
           };
           self.$store.dispatch("refreshToken", user);
-          self.$router.push("/home");
+          // self.$router.push("/home");
         })
         .catch(err => {
           console.log("refresh failed!", err)

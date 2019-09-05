@@ -6,13 +6,13 @@ module.exports = {
         src: path.resolve(__dirname, 'src')
       }
     },
-    externals: {
-      'vue': 'Vue',
-      'element-ui' : 'ELEMENT',
+    externals: [{
+      //'vue': 'Vue',
+      //'element-ui': 'ELEMENT',
       'mavon-editor': 'MavonEditor',
-      'markdown-it': 'MarkdownIt',
-      '@fortawesome/fontawesome-svg-core': 'library',
-    }
+      'markdown-it': 'markdownit',
+    },
+    ]
   },
   pluginOptions: {
     i18n: {
@@ -40,6 +40,14 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'
+        }
+      },
+       '/res': {
+        target: 'http://localhost:8090/',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/res': '/res'
         }
       },
       '/content': {

@@ -20,7 +20,8 @@
   "works": {
     "articles": "文章",
     "collections": "文集",
-    "books": "书籍",
+    "books": "著作",
+    "translations": "译作",
     "public": "协作"
   }
 }

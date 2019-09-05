@@ -111,7 +111,7 @@ export default {
           })
           .catch(_ => {});
       } else {
-        this.goArticles();
+        this.goCollections();
       }
     },
     goCollections() {

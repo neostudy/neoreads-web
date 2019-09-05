@@ -28,6 +28,12 @@
                 {{$t('works.books')}}
               </span>
             </el-menu-item>
+            <el-menu-item index="/works/translations">
+              <span class="works-menu theme">
+                <faicon icon="globe-asia"></faicon>
+                {{$t('works.translations')}}
+              </span>
+            </el-menu-item>
             <el-menu-item index="/works/public">
               <span class="works-menu theme">
                 <faicon icon="hands-helping"></faicon>

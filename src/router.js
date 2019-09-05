@@ -10,10 +10,12 @@ import Works from './components/top/Works.vue'
 import Articles from './components/works/Articles.vue'
 import Collections from './components/works/Collections.vue'
 import Books from './components/works/Books.vue'
+import Translations from './components/works/Translations.vue'
 import Public from './components/works/Public.vue'
 import Write from "./components/works/Write.vue"
 
 import EditCollection from "./components/works/collections/EditCollection.vue";
+import EditBook from './components/works/books/EditBook.vue'
 
 import Friends from './components/top/Friends.vue'
 import Dev from './components/top/Dev.vue'
@@ -86,6 +88,18 @@ const routes = [
       {
         path: 'books',
         component: Books
+      },
+      {
+        path: 'books/edit',
+        component: EditBook,
+      },
+      {
+        path: 'books/edit/:bookid',
+        component: EditBook,
+      },
+      {
+        path: 'translations',
+        component: Translations
       },
       {
         path: 'public',
