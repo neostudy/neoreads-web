@@ -9,7 +9,14 @@
         <el-form ref="book-form" :model="book">
           <el-container>
             <el-aside class="book-cover-pane" width="190px">
-              <i v-if="!coverUrl" class="el-icon-plus avatar-uploader-icon" @click="openImgUpload">请上传封面</i>
+              <faicon style="color: #409EFF;" size="lg" v-if="!coverUrl" @click="openImgUpload" icon="upload"></faicon>&nbsp;<span @click="openImgUpload">上传封面</span>
+              <!--
+              <i
+                v-if="!coverUrl"
+                class="el-icon-plus avatar-uploader-icon"
+                @click="openImgUpload"
+              >请上传封面</i>
+              -->
               <img v-if="coverUrl" :src="coverUrl" @click="openImgUpload" />
               <img-upload
                 field="file"
@@ -42,15 +49,27 @@
                     size="large"
                     class="book-intro"
                     type="textarea"
-                    :rows="6"
+                    :rows="9"
                     v-model="book.intro"
                     placeholder="请输入简介"
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="book-tags-pane">标签</div>
             </el-main>
           </el-container>
+          <div class="book-tags-pane">
+              <multiselect
+                v-model="book.tags"
+                :options="tagOptions"
+                :searchable="true"
+                :close-on-select="false"
+                :show-labels="false"
+                :multiple="true"
+                :taggable="true"
+                @tag="addTag"
+                placeholder="选择或新建书籍标签"
+              ></multiselect>
+          </div>
           <div class="book-toc-pane">目录</div>
           <div class="book-toolbar">
             <el-button type="primary" @click="save">保存</el-button>
@@ -64,9 +83,11 @@
 
 <script>
 import ImgUpload from "vue-image-crop-upload";
+import Multiselect from "vue-multiselect";
 export default {
   components: {
-    ImgUpload
+    ImgUpload,
+    Multiselect
   },
   data() {
     return {
@@ -80,8 +101,9 @@ export default {
       },
       params: {},
       headers: {},
-      imgUrl: "",
-      showImgUpload: false
+      showImgUpload: false,
+      // tag options
+      tagOptions: ["文学", "历史", "天文", "地理"]
     };
   },
   computed: {
@@ -89,8 +111,12 @@ export default {
       return !!this.book.id;
     },
     coverUrl() {
-      return `/res/img/${this.book.cover}_file.png`;
-    },
+      if (this.book.cover) {
+        return `/res/img/${this.book.cover}_file.png`;
+      } else {
+        return "";
+      }
+    }
   },
   created() {
     this.$store.dispatch("setActiveWorksMenu", "/works/books");
@@ -100,7 +126,7 @@ export default {
       // fetch book info
       this.authGet("/api/v1/books/get/" + this.book.id).then(res => {
         this.book = res.data;
-        console.log("got book:", this.book)
+        console.log("got book:", this.book);
       });
     }
   },
@@ -144,27 +170,41 @@ export default {
       this.showImgUpload = true;
     },
     onCropSucc(imgUrl, field) {
-      console.log("crop succ!", field)
+      console.log("crop succ!", field);
       //this.imgUrl = imgUrl
     },
     onCropUploadSucc(json, field) {
-      console.log("upload succ!", json, field)
-      let imgid = json.imgid
-      this.book.cover = imgid
-      console.log(this.book)
+      console.log("upload succ!", json, field);
+      let imgid = json.imgid;
+      this.book.cover = imgid;
+      console.log(this.book);
     },
     onCropUploadFail() {
-      console.log("upload faile!")
+      console.log("upload faile!");
     },
+    addTag(newTag) {
+      this.tagOptions.push(newTag);
+      this.book.tags.push(newTag);
+    }
   }
 };
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style lang="stylus">
+.multiselect__tag
+  background-color #409EFF
+
+.multiselect__option--highlight
+  background-color #409EFF
+</style>
 
 <style lang="stylus" scoped>
+
 #book-edit-pane
   text-align left
   padding 0
+
 
   .title-pane
     border-bottom 1px solid #eee
@@ -195,17 +235,20 @@ export default {
     margin-bottom 10px
 
   .book-intro-pane
+    margin-top 25px
     margin-bottom 10px
+
+    .book-intro
+      padding 0px
 
   .book-tags-pane
     margin-bottom 10px
     height 60px
-    padding 10px 20px
+    padding 0px
 
   .book-toc-pane
-    min-height 200px
-    padding 10px 20px
+    min-height 100px
 
   .book-toolbar
-    padding 10px 20px
+    padding 0px
 </style>
