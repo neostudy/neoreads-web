@@ -86,6 +86,6 @@ div.center-pane
       margin-right 4px
 
   .works-content-pane
-    padding 0 20px
+    padding 0 0 0 20px
 </style>
 

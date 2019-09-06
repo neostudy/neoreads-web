@@ -22,6 +22,11 @@
     "collections": "Collections",
     "books": "Books",
     "translations": "Translations",
-    "public": "Public"
+    "public": "Public",
+    "bookdetail": {
+      "toc" : "TOC",
+      "comments" : "Comments"
+    }
+
   }
 }

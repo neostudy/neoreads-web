@@ -90,8 +90,9 @@ Website for neoreads, written in vue.js
 - [x] 删
 - [x] 查
 - [x] 改
-- [ ] 目录
-- [ ] 标签管理
+- [ ] 书籍详细信息页面
+- [x] 目录编辑
+- [x] 标签编辑
 - [ ] 发布/出版
 - [ ] 分享书籍
 

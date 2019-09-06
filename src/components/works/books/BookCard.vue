@@ -8,6 +8,7 @@
           :alt="book.title"
           :title="book.title"
           class="cover"
+          @click="openBookDetails"
         />
         <dummy-cover v-if="coverUrl == ''" :title="book.title"></dummy-cover>
       </el-aside>
@@ -43,12 +44,6 @@
       <faicon icon="pen" title="编辑" @click="editBook"></faicon>
       <faicon icon="share-alt" title="分享" @click="shareBook"></faicon>
       <faicon class="grey" icon="trash" title="删除" @click="removeBook"></faicon>
-      <!--
-      <el-button-group>
-      <el-button type="primary" size="small" icon="el-icon-edit">编辑</el-button>
-      <el-button type="info" size="small" icon="el-icon-delete">删除</el-button>
-      </el-button-group>
-      -->
     </div>
   </div>
 </template>
@@ -95,6 +90,9 @@ export default {
             this.$message("书籍删除失败！ " + err);
           });
       });
+    },
+    openBookDetails() {
+      this.$router.push("/works/books/detail/" + this.book.id + "/toc");
     }
   }
 };
@@ -119,6 +117,7 @@ div.book-info
     background-position center
     background-size 100%
     box-shadow 2px 4px 6px #bbb
+    cursor pointer
 
   .el-main
     height 220px

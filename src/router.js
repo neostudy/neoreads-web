@@ -16,6 +16,9 @@ import Write from "./components/works/Write.vue"
 
 import EditCollection from "./components/works/collections/EditCollection.vue";
 import EditBook from './components/works/books/EditBook.vue'
+import BookDetail from './components/works/books/BookDetail.vue'
+import BookToc from './components/works/books/BookToc.vue'
+import BookComments from './components/works/books/BookComments.vue'
 
 import Friends from './components/top/Friends.vue'
 import Dev from './components/top/Dev.vue'
@@ -96,6 +99,21 @@ const routes = [
       {
         path: 'books/edit/:bookid',
         component: EditBook,
+      },
+      {
+        path:'books/detail/:bookid',
+        component: BookDetail,
+        children: [
+          {
+            path: 'toc',
+            component: BookToc
+          },
+          {
+            path: 'comments',
+            component: BookComments
+          }
+
+        ]
       },
       {
         path: 'translations',

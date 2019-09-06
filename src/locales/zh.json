@@ -22,6 +22,11 @@
     "collections": "文集",
     "books": "著作",
     "translations": "译作",
-    "public": "协作"
+    "public": "协作",
+
+    "bookdetail": {
+      "toc" : "目录",
+      "comments" : "评论"
+    }
   }
 }

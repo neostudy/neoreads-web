@@ -9,14 +9,11 @@
         <el-form ref="book-form" :model="book">
           <el-container>
             <el-aside class="book-cover-pane" width="190px">
-              <faicon style="color: #409EFF;" size="lg" v-if="!coverUrl" @click="openImgUpload" icon="upload"></faicon>&nbsp;<span @click="openImgUpload">上传封面</span>
-              <!--
-              <i
-                v-if="!coverUrl"
-                class="el-icon-plus avatar-uploader-icon"
-                @click="openImgUpload"
-              >请上传封面</i>
-              -->
+              <span v-if="!coverUrl">
+                <faicon style="color: #409EFF;" size="lg" @click="openImgUpload" icon="upload"></faicon>&nbsp;
+                <span @click="openImgUpload">上传封面</span>
+              </span>
+
               <img v-if="coverUrl" :src="coverUrl" @click="openImgUpload" />
               <img-upload
                 field="file"
@@ -58,19 +55,22 @@
             </el-main>
           </el-container>
           <div class="book-tags-pane">
-              <multiselect
-                v-model="book.tags"
-                :options="tagOptions"
-                :searchable="true"
-                :close-on-select="false"
-                :show-labels="false"
-                :multiple="true"
-                :taggable="true"
-                @tag="addTag"
-                placeholder="选择或新建书籍标签"
-              ></multiselect>
+            <multiselect
+              v-model="book.tags"
+              :options="tagOptions"
+              :searchable="true"
+              :close-on-select="false"
+              :show-labels="false"
+              :multiple="true"
+              :taggable="true"
+              @tag="addTag"
+              placeholder="选择或新建书籍标签"
+            ></multiselect>
           </div>
-          <div class="book-toc-pane">目录</div>
+          <div class="book-toc-pane">
+            目录
+            <toc-editor></toc-editor>
+          </div>
           <div class="book-toolbar">
             <el-button type="primary" @click="save">保存</el-button>
             <el-button @click="cancel()">取消</el-button>
@@ -84,10 +84,12 @@
 <script>
 import ImgUpload from "vue-image-crop-upload";
 import Multiselect from "vue-multiselect";
+import TocEditor from "./TocEditor";
 export default {
   components: {
     ImgUpload,
-    Multiselect
+    Multiselect,
+    TocEditor
   },
   data() {
     return {
@@ -200,11 +202,9 @@ export default {
 </style>
 
 <style lang="stylus" scoped>
-
 #book-edit-pane
   text-align left
   padding 0
-
 
   .title-pane
     border-bottom 1px solid #eee
@@ -248,6 +248,7 @@ export default {
 
   .book-toc-pane
     min-height 100px
+    margin-bottom 10px
 
   .book-toolbar
     padding 0px
