@@ -78,9 +78,24 @@ export default {
     onClick() {
       console.log("On book info click");
     },
-    editBook() {},
-    shareBook() {},
-    removeBook() {}
+    editBook() {
+      this.$router.push("/works/books/edit/" + this.book.id);
+    },
+    shareBook() {
+      // TODO: implement this
+    },
+    removeBook() {
+      this.$confirm("确认删除书籍？").then(_ => {
+        this.authGet("api/v1/books/remove/" + this.book.id)
+          .then(res => {
+            this.$message("书籍删除成功");
+            this.$emit("book-removed", this.book.id);
+          })
+          .catch(err => {
+            this.$message("书籍删除失败！ " + err);
+          });
+      });
+    }
   }
 };
 </script>
@@ -131,7 +146,7 @@ div.book-info
       line-height 20px
       font-size 12px
       color #999
-    
+
     .rate
       margin-top 91px
 

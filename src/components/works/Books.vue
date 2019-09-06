@@ -4,7 +4,7 @@
       <el-header class="title-pane" height="50px">
         <span class="title">我的著作</span>
         <span class="right">
-          <el-divider direction="vertical"></el-divider>按时间排序
+          <el-divider direction="vertical"></el-divider>按名称排序
           <faicon icon="sort" title="排序"></faicon>
         </span>
         <span class="right">

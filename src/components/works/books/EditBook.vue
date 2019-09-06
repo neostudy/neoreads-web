@@ -9,8 +9,8 @@
         <el-form ref="book-form" :model="book">
           <el-container>
             <el-aside class="book-cover-pane" width="190px">
-              <i v-if="!this.imgUrl" class="el-icon-plus avatar-uploader-icon" @click="openImgUpload">请上传封面</i>
-              <img v-if="this.imgUrl" :src="imgUrl" @click="openImgUpload" />
+              <i v-if="!coverUrl" class="el-icon-plus avatar-uploader-icon" @click="openImgUpload">请上传封面</i>
+              <img v-if="coverUrl" :src="coverUrl" @click="openImgUpload" />
               <img-upload
                 field="file"
                 @crop-success="onCropSucc"
@@ -86,18 +86,21 @@ export default {
   },
   computed: {
     isEdit() {
-      return !!this.bookid;
-    }
+      return !!this.book.id;
+    },
+    coverUrl() {
+      return `/res/img/${this.book.cover}_file.png`;
+    },
   },
   created() {
     this.$store.dispatch("setActiveWorksMenu", "/works/books");
-
     this.headers["Authorization"] = `Bearer ${this.$store.getters.token}`;
 
     if (this.isEdit) {
       // fetch book info
-      this.authGet("/api/v1/works/books/get/" + this.colid).then(res => {
+      this.authGet("/api/v1/books/get/" + this.book.id).then(res => {
         this.book = res.data;
+        console.log("got book:", this.book)
       });
     }
   },
@@ -112,9 +115,7 @@ export default {
         let data = this.book;
         if (this.isEdit) {
           url = "/api/v1/books/modify";
-          data.id = this.book.id;
         }
-        console.log(url);
         this.authPost(url, data)
           .then(res => {
             this.$message("书籍信息保存成功");
@@ -149,7 +150,6 @@ export default {
     onCropUploadSucc(json, field) {
       console.log("upload succ!", json, field)
       let imgid = json.imgid
-      this.imgUrl = '/res/img/' + imgid + '_' + field + '.png'
       this.book.cover = imgid
       console.log(this.book)
     },
