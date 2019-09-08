@@ -1,0 +1,81 @@
+dftColor = #409EFF
+dftDeepColor = #3096FF
+dftBorderColor = #C6E2FF
+dftBgColor = #E2F0FF
+
+.markdown-content
+  p, h1, h2, h3, h4
+    margin 1.2em 0
+
+  p
+    font-size 1.1em
+    line-height 1.6em
+
+  strong
+    font-size 1.1em
+    color dftColor
+
+  ol
+    counter-reset section /* Creates a new instance of the section counter with each ol element */
+    list-style-type none
+
+    li
+      margin 1.2em 0
+
+    li::before
+      counter-increment section /* Increments only this instance of the section counter */
+      content counters(section, '.') '' /* Combines the values of all instances of the section counter, separated by a period */
+      margin-right 0.5em
+      background-color dftColor
+      color white
+      font-weight bold
+      padding 3px 8px
+      border-radius 50%
+
+  ul
+    li
+      color #3c3c3c
+      display block
+      list-style none
+      margin 1.2em 0
+      padding 0
+      position relative
+
+    li::before
+      color dftColor
+      content '\2022'
+      font-size 1.5em
+      margin-right 0.3em
+      padding 3px 8px
+
+  sup, sub
+    font-size 0.5em
+
+  blockquote
+    border-left 0.25em solid #ccc
+    padding 0 1em
+    font-size 0.9em
+    color #666
+
+  table
+    border-spacing 0
+    border-collapse collapse
+    border 1px solid dftDeepColor
+
+    thead
+      tr
+        border-bottom 1px solid dftDeepColor
+
+        th
+          font-weight bold
+          border 1px solid dftBorderColor
+          padding 0.5em 1em
+          background-color dftBgColor
+
+    tbody
+      tr
+        border-top 1px solid #000
+
+        td
+          border 1px solid dftBorderColor
+          padding 0.5em 1em

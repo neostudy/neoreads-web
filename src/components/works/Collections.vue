@@ -16,10 +16,14 @@
           >新建文集</el-button>
         </span>
       </el-header>
-      <el-main>
-        <div class="collection-list">
-          <div class="collection-item-wrap" v-for="(c, i) in collections" :key="i">
-            <collection-card :collection="c" @collection-removed="collectionRemoved"></collection-card>
+      <el-main class="collection-list-pane">
+        <div v-bar>
+          <div class="collection-list-wrap">
+            <div class="collection-list">
+              <div class="collection-item-wrap" v-for="(c, i) in collections" :key="i">
+                <collection-card :collection="c" @collection-removed="collectionRemoved"></collection-card>
+              </div>
+            </div>
           </div>
         </div>
       </el-main>
@@ -41,7 +45,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("setActiveWorksMenu", "/works/collections")
+    this.$store.dispatch("setActiveWorksMenu", "/works/collections");
     this.authGet("/api/v1/collections/list")
       .then(res => {
         console.log("got collections:", res.data);
@@ -78,4 +82,13 @@ export default {
 
     span.right
       float right
+
+  .collection-list-pane
+    padding 20px 0 20px 20px
+
+    .collection-list-wrap
+      max-height 780px
+
+      .collection-list
+        margin-right 20px
 </style>

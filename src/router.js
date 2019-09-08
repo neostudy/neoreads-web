@@ -12,9 +12,12 @@ import Collections from './components/works/Collections.vue';
 import Books from './components/works/Books.vue';
 import Translations from './components/works/Translations.vue';
 import Public from './components/works/Public.vue';
-import Write from './components/works/Write.vue';
+
+import Write from './components/works/articles/Write.vue';
+import ViewArticle from './components/works/articles/ViewArticle.vue';
 
 import EditCollection from './components/works/collections/EditCollection.vue';
+
 import EditBook from './components/works/books/EditBook.vue';
 import BookDetail from './components/works/books/BookDetail.vue';
 import BookToc from './components/works/books/BookToc.vue';
@@ -70,6 +73,10 @@ const routes = [
       {
         path: 'articles',
         component: Articles
+      },
+      {
+        path: 'articles/:artid',
+        component: ViewArticle
       },
       {
         path: 'write',

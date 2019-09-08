@@ -230,6 +230,7 @@ Website for neoreads, written in vue.js
 ### 技术
 
 - [ ] 尝试用Vue.js的方式实现文章内容加载
+- [ ] 将所有用到`<faicon>`的地方封装成自己的控件，以方便未来切换图标库
 
 ## 版块 | Sitemap
 

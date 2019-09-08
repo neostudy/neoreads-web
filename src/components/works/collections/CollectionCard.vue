@@ -16,9 +16,11 @@
         </div>
       </el-col>
       <el-col :span="16">
+        <!--
         <div class="collection-toolbar">
           <span>文章列表</span>
         </div>
+        -->
         <div class="collection-articles">
           <div class="collection-select-pane">
             <el-table
@@ -27,7 +29,11 @@
               tooltip-effect="dark"
               style="width: 100%"
             >
-              <el-table-column prop="title" label="文章标题" width="600"></el-table-column>
+              <el-table-column label="文章标题" width="600">
+                <template slot-scope="scope">
+                  <el-link type="info" @click="viewArticle(scope.row)">{{scope.row.title}}</el-link>
+                </template>
+              </el-table-column>
               <el-table-column label="最近更新">
                 <template slot-scope="scope">{{ scope.row.modtime }}</template>
               </el-table-column>
@@ -51,9 +57,11 @@ export default {
   computed: {},
   created() {
     // fetch articles for selection
-    this.authGet("/api/v1/articles/collection/" + this.collection.id).then(res => {
-      this.articles = res.data;
-    });
+    this.authGet("/api/v1/articles/collection/" + this.collection.id).then(
+      res => {
+        this.articles = res.data;
+      }
+    );
   },
   methods: {
     editcollection() {
@@ -70,6 +78,9 @@ export default {
           );
         })
         .catch(_ => {});
+    },
+    viewArticle(article) {
+      this.$router.push(`/works/articles/${article.id}`);
     }
   }
 };
@@ -89,6 +100,7 @@ export default {
       font-size 1.2em
       padding 10px
       border-bottom 1px dashed #eee
+      line-height 27px
 
       span.right
         float right

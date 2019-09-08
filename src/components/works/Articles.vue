@@ -11,10 +11,14 @@
           <el-button type="primary" size="small" icon="el-icon-edit" @click="goWrite">写文章</el-button>
         </span>
       </el-header>
-      <el-main>
-        <div class="article-list">
-          <div class="article-item-wrap" v-for="(a, i) in articles" :key="i">
-            <article-card @article-removed="articleRemoved" :article="a"></article-card>
+      <el-main class="article-list-pane">
+        <div v-bar>
+          <div class="article-list-vbar">
+            <div class="article-list">
+            <div class="article-item-wrap" v-for="(a, i) in articles" :key="i">
+              <article-card @article-removed="articleRemoved" :article="a"></article-card>
+            </div>
+            </div>
           </div>
         </div>
       </el-main>
@@ -25,7 +29,7 @@
 </template>
 
 <script>
-import ArticleCard from "./ArticleCard.vue";
+import ArticleCard from "./articles/ArticleCard.vue";
 export default {
   components: {
     ArticleCard
@@ -36,7 +40,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("setActiveWorksMenu", "/works/articles")
+    this.$store.dispatch("setActiveWorksMenu", "/works/articles");
     this.authGet("/api/v1/articles/list").then(res => {
       this.articles = res.data;
     });
@@ -46,7 +50,7 @@ export default {
       this.$router.push("/works/write");
     },
     articleRemoved(artid) {
-      this.articles = this.articles.filter(a => a.id != artid)
+      this.articles = this.articles.filter(a => a.id != artid);
     }
   }
 };
@@ -68,4 +72,13 @@ export default {
 
     span.right
       float right
+
+  .article-list-pane
+    padding 20px 0 20px 20px
+
+    .article-list-vbar
+      max-height 760px
+
+      .article-list
+        padding-right 20px
 </style>

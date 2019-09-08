@@ -1,7 +1,7 @@
 <template>
   <div class="article-item">
     <div class="article-title">
-      {{article.title}}
+      <a class="article-link" @click="viewArticle">{{article.title}}</a>
       <span class="right">
         <faicon icon="pen" title="编辑" @click="editArticle" size="sm"></faicon>
       </span>
@@ -75,6 +75,9 @@ export default {
           );
         })
         .catch(_ => {});
+    },
+    viewArticle() {
+      this.$router.push(`/works/articles/${this.article.id}`)
     }
   }
 };
@@ -96,6 +99,12 @@ export default {
       svg
         color #409eff
         cursor pointer
+    
+    a.article-link
+      cursor pointer
+
+    a.article-link:hover
+      color #409EFF
 
   .article-content
     padding 10px
