@@ -4,7 +4,7 @@
       第{{i+1}}章：
       <label v-if="i+1 != editNum">{{ch}}</label>
       <faicon v-if="i+1 != editNum" icon="pen" @click="editChapter(i+1)"></faicon>
-      <el-input v-if="i+1 == editNum" v-model="chapters[i]" @keyup.native.enter="editNum=0"></el-input>
+      <el-input v-if="i+1 == editNum" v-model="ch.title" @keyup.native.enter="chapterEdited"></el-input>
       <span class="right">
         <faicon icon="trash"></faicon>
       </span>
@@ -25,26 +25,47 @@
 
 <script>
 export default {
+  props: ["value"],
   data() {
     return {
-      chapters: [],
+      chapters: this.value,
       title: "",
       editNum: 0
     };
+  },
+  created() {
+    console.log("value at creation:", this.value)
+    console.log("chapters at creation:", this.chapters)
+
   },
   computed: {
     count() {
       return this.chapters.length + 1;
     }
   },
+  watch: {
+    value: function(n, o) {
+      console.log("prop value changed:", o, n)
+      this.chapters = n;
+    }
+  },
   methods: {
     addChapter() {
-      this.chapters.push(this.title);
+      this.chapters.push({
+        id: '',
+        order: this.chapters.length,
+        title: this.title
+      });
       this.title = "";
+      this.$emit("input", this.chapters)
     },
     editChapter(n) {
       this.editNum = n;
     },
+    chapterEdited() {
+      this.editNum = 0;
+      this.$emit("input", this.chapters)
+    }
   }
 };
 </script>

@@ -8,14 +8,14 @@
           :alt="book.title"
           :title="book.title"
           class="cover"
-          @click="openBookDetails"
+          @click="openBookDetail"
         />
         <dummy-cover v-if="coverUrl == ''" :title="book.title"></dummy-cover>
       </el-aside>
       <el-main>
-        <h4 class="name">
-          <span>{{book.title}}</span>
-        </h4>
+        <a class="name">
+          <span @click="openBookDetail">{{book.title}}</span>
+        </a>
         <p class="desc" :title="book.intro">{{book.intro}}</p>
         <p class="rate">
           <el-rate v-model="rate" disabled show-score></el-rate>
@@ -91,7 +91,7 @@ export default {
           });
       });
     },
-    openBookDetails() {
+    openBookDetail() {
       this.$router.push("/works/books/detail/" + this.book.id + "/toc");
     }
   }
@@ -124,20 +124,12 @@ div.book-info
     padding 0px 0px 0px 6px
 
     .name
-      height 22px
-      line-height 22px
-      font-size 15px
+      height 24px
+      line-height 24px
+      font-weight bold
+      font-size 1.2em
       color #333 !important
-
-      .status
-        margin-left 10px
-        font-size 12px
-
-      .finished
-        color red
-
-      .serial
-        color green
+      cursor pointer
 
     .desc
       margin-top 5px

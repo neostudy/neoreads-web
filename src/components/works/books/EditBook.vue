@@ -69,7 +69,7 @@
           </div>
           <div class="book-toc-pane">
             目录
-            <toc-editor></toc-editor>
+            <toc-editor v-model="book.toc"></toc-editor>
           </div>
           <div class="book-toolbar">
             <el-button type="primary" @click="save">保存</el-button>
