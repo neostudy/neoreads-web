@@ -19,7 +19,7 @@ Website for neoreads, written in vue.js
   - 未来打算引入更多正版书籍
 - 独创的评注引用功能
 - 温故知新：碎片化学习进度管理
-- 以文会友：跨时间社交
+- 以文会友：跨时间知识社交
 
 ## 版块 | Sitemap
 
