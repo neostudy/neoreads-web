@@ -10,7 +10,7 @@
                   <span class="theme">{{$t('logo-neo')}}</span>
                   <span class="black">{{$t('logo-reads')}}</span>
                 </router-link>
-                <span id="logo-version">v0.1.9</span>
+                <span id="logo-version">v0.2.0</span>
               </div>
             </el-col>
             <el-col :span="12">
