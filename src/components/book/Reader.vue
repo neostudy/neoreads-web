@@ -6,11 +6,12 @@
           <faicon icon="stream" class="breadcrum-icon"></faicon>首页
         </el-breadcrumb-item>
         <el-breadcrumb-item to="/library">书斋</el-breadcrumb-item>
-        <el-breadcrumb-item>
-          <a href="/">史记</a>
+        <el-breadcrumb-item :to="'/book/' + bookid">
+        {{book.title}}
         </el-breadcrumb-item>
-        <el-breadcrumb-item>第1章</el-breadcrumb-item>
-        <el-breadcrumb-item>卷一 五帝本纪第一</el-breadcrumb-item>
+        <el-breadcrumb-item>
+          {{chapter.title}}
+          </el-breadcrumb-item>
       </el-breadcrumb>
     </el-header>
     <el-container>
@@ -54,7 +55,14 @@ export default {
   data() {
     return {
       bookid: this.$route.params.bookid || "",
+      book:{
+        id: this.$route.params.bookid || "",
+        title: 'Dummy书名'
+      },
       chapid: this.$route.params.chapid || "",
+      chapter: {
+        title: 'Dummy章节名'
+      },
       isRuby: false,
       idata: {
         dict: {}
@@ -72,14 +80,27 @@ export default {
 
     EVENT_BUS.$emit("HIDE_NAVMENU");
 
+    // get book info
+    let url = `api/v1/book/${this.bookid}`
+    this.$axios.get(url).then(res => {
+      this.book = res.data
+    }).catch(error => {
+      console.log("err requesting:"+url, error)
+    });
+
     // get toc and chapter id
-    let tocUrl = "/api/v1/book/" + this.bookid + "/toc";
+    let tocUrl = `/api/v1/book/${this.bookid}/toc`;
     let self = this;
     this.$axios.get(tocUrl).then(res => {
       let toc = res.data;
+      for (let ch of toc) {
+        if (ch.id == this.chapid) {
+          this.chapter = ch;
+        }
+      }
       let chap1 = toc[0];
       if (!self.chapid) {
-        self.$router.push("/reader/" + self.bookid + "/" + chap1.id);
+        self.$router.push(`/reader/${self.bookid}/${chap1.id}`);
         self.chapid = chap1.id;
         NOTES.relocate(self.bookid, self.chapid);
       }

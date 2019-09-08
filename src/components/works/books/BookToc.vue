@@ -116,8 +116,8 @@ export default {
         margin-right 5px
         cursor pointer
 
-    li:nth-child(odd)
-      background-color #eee
+//    li:nth-child(odd)
+//      background-color #eee
 
     li:hover
       background-color #E2F0FF

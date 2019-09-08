@@ -32,6 +32,8 @@ import ReviewBook from "./components/reviews/ReviewBook.vue"
 import ReviewPlan from "./components/reviews/ReviewPlan.vue"
 import ReviewChapter from "./components/reviews/ReviewChapter.vue"
 
+import Profile from "./components/users/Profile.vue"
+
 Vue.use(Router)
 
 const routes = [
@@ -173,6 +175,10 @@ const routes = [
     path: '/review/chapter/:bookid/:chapid/:sentid',
     component: ReviewChapter
   },
+  {
+    path: '/:user/',
+    component: Profile,
+  }
 ]
 
 const router = new Router({

@@ -138,6 +138,9 @@ export default {
           } else {
             self.paras = mdps;
           }
+          if (self.paras.length == 0) { // 没有内容
+            self.paras.push('<h4>暂无内容</h4>')
+          }
           self.pages = [];
           self.curPage = 0;
           self.endChapter = false;
