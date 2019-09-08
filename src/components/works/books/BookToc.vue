@@ -78,10 +78,9 @@ export default {
     },
     viewChapter(chapter) {
       this.$router.push('/reader/' + this.bookid + '/' + chapter.id)
-
     },
     editChapter(chapter) {
-
+      this.$router.push(`/works/books/edit/${this.bookid}/${chapter.id}`)
     }
   }
 };

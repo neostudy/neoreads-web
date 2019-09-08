@@ -1,38 +1,39 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-import Home from './components/top/Home.vue'
-import Library from './components/top/Library.vue'
-import Reviews from './components/top/Reviews.vue'
-import News from './components/top/News.vue'
+import Home from './components/top/Home.vue';
+import Library from './components/top/Library.vue';
+import Reviews from './components/top/Reviews.vue';
+import News from './components/top/News.vue';
 
-import Works from './components/top/Works.vue'
-import Articles from './components/works/Articles.vue'
-import Collections from './components/works/Collections.vue'
-import Books from './components/works/Books.vue'
-import Translations from './components/works/Translations.vue'
-import Public from './components/works/Public.vue'
-import Write from "./components/works/Write.vue"
+import Works from './components/top/Works.vue';
+import Articles from './components/works/Articles.vue';
+import Collections from './components/works/Collections.vue';
+import Books from './components/works/Books.vue';
+import Translations from './components/works/Translations.vue';
+import Public from './components/works/Public.vue';
+import Write from './components/works/Write.vue';
 
-import EditCollection from "./components/works/collections/EditCollection.vue";
-import EditBook from './components/works/books/EditBook.vue'
-import BookDetail from './components/works/books/BookDetail.vue'
-import BookToc from './components/works/books/BookToc.vue'
-import BookComments from './components/works/books/BookComments.vue'
+import EditCollection from './components/works/collections/EditCollection.vue';
+import EditBook from './components/works/books/EditBook.vue';
+import BookDetail from './components/works/books/BookDetail.vue';
+import BookToc from './components/works/books/BookToc.vue';
+import BookComments from './components/works/books/BookComments.vue';
+import EditChapter from './components/works/books/EditChapter.vue';
 
-import Friends from './components/top/Friends.vue'
-import Dev from './components/top/Dev.vue'
-import Book from './components/book/Book.vue'
-import Reader from './components/book/Reader.vue'
-import Notes from './components/book/Notes.vue'
-import Login from './components/user/Login.vue'
-import Register from './components/user/Register.vue'
+import Friends from './components/top/Friends.vue';
+import Dev from './components/top/Dev.vue';
+import Book from './components/book/Book.vue';
+import Reader from './components/book/Reader.vue';
+import Notes from './components/book/Notes.vue';
+import Login from './components/user/Login.vue';
+import Register from './components/user/Register.vue';
 
-import ReviewBook from "./components/reviews/ReviewBook.vue"
-import ReviewPlan from "./components/reviews/ReviewPlan.vue"
-import ReviewChapter from "./components/reviews/ReviewChapter.vue"
+import ReviewBook from './components/reviews/ReviewBook.vue';
+import ReviewPlan from './components/reviews/ReviewPlan.vue';
+import ReviewChapter from './components/reviews/ReviewChapter.vue';
 
-import Profile from "./components/users/Profile.vue"
+import Profile from './components/users/Profile.vue';
 
 Vue.use(Router)
 
@@ -101,6 +102,10 @@ const routes = [
       {
         path: 'books/edit/:bookid',
         component: EditBook,
+      },
+      {
+        path: 'books/edit/:bookid/:chapid',
+        component: EditChapter,
       },
       {
         path:'books/detail/:bookid',
