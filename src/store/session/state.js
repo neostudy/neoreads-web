@@ -18,6 +18,9 @@ const state = {
   },
   works : {
     activeMenu : '/works/articles'
+  },
+  news : {
+    activeMenu: '/news/home'
   }
 }
 

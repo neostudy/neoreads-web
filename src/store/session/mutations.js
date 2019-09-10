@@ -1,4 +1,4 @@
-import { SELECT_CONTEXT, SET_CHAPID, SET_CHAPTER, ADD_FAV, REMOVE_FAV, ADD_NOTE, REMOVE_NOTE, SET_ACTIVE_WORKS_MENU } from './types';
+import { SELECT_CONTEXT, SET_CHAPID, SET_CHAPTER, ADD_FAV, REMOVE_FAV, ADD_NOTE, REMOVE_NOTE, SET_ACTIVE_WORKS_MENU, SET_ACTIVE_NEWS_MENU } from './types';
 
 
 export default {
@@ -30,5 +30,9 @@ export default {
   // Works
   [SET_ACTIVE_WORKS_MENU](state, param) {
     state.works.activeMenu = param;
-  }
+  },
+  // News
+  [SET_ACTIVE_NEWS_MENU](state, param) {
+    state.news.activeMenu = param;
+  },
 }

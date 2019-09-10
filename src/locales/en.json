@@ -24,9 +24,15 @@
     "translations": "Translations",
     "public": "Public",
     "bookdetail": {
-      "toc" : "TOC",
-      "comments" : "Comments"
+      "toc": "TOC",
+      "comments": "Comments"
     }
-
+  },
+  "news": {
+    "home": "综合",
+    "hot": "热点",
+    "weekly": "周报",
+    "monthly": "月刊",
+    "yearly": "年鉴"
   }
 }

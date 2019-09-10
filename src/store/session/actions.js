@@ -1,4 +1,4 @@
-import { SELECT_CONTEXT, SET_CHAPID, SET_CHAPTER, ADD_FAV, REMOVE_FAV, ADD_NOTE, REMOVE_NOTE, SET_ACTIVE_WORKS_MENU } from './types'
+import { SELECT_CONTEXT, SET_CHAPID, SET_CHAPTER, ADD_FAV, REMOVE_FAV, ADD_NOTE, REMOVE_NOTE, SET_ACTIVE_WORKS_MENU, SET_ACTIVE_NEWS_MENU } from './types'
 
 export default {
   select: ({ commit }, param) => commit(SELECT_CONTEXT, param),
@@ -11,4 +11,7 @@ export default {
 
   // works
   setActiveWorksMenu: ({ commit }, param) => commit(SET_ACTIVE_WORKS_MENU, param),
+
+  // news
+  setActiveNewsMenu: ({ commit }, param) => commit(SET_ACTIVE_NEWS_MENU, param)
 }

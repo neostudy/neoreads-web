@@ -4,7 +4,14 @@ import Router from 'vue-router';
 import Home from './components/top/Home.vue';
 import Library from './components/top/Library.vue';
 import Reviews from './components/top/Reviews.vue';
+
 import News from './components/top/News.vue';
+import NewsHome from "./components/news/Home.vue";
+import NewsHot from "./components/news/Hot.vue";
+import NewsWeekly from "./components/news/Weekly.vue";
+import NewsMonthly from "./components/news/Monthly.vue";
+import NewsYearly from "./components/news/Yearly.vue";
+import CreateNews from "./components/news/CreateNews.vue";
 
 import Works from './components/top/Works.vue';
 import Articles from './components/works/Articles.vue';
@@ -60,7 +67,38 @@ const routes = [
   },
   {
     path: '/news',
-    component: News
+    component: News,
+    children: [
+      {
+        path: '',
+        component: NewsHome,
+      },
+      {
+        path: 'home',
+        component: NewsHome
+      },
+      {
+        path: 'hot',
+        component: NewsHot
+      },
+      {
+        path: 'weekly',
+        component: NewsWeekly
+      },
+      {
+        path: 'monthly',
+        component: NewsMonthly
+      },
+      {
+        path: 'yearly',
+        component: NewsYearly
+      },
+
+      {
+        path: "create",
+        component: CreateNews
+      }
+    ]
   },
   {
     path: '/works',

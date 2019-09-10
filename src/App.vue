@@ -249,5 +249,5 @@ div.center-pane
   border 1px solid #eee
   border-radius 4px
   padding 20px
-  min-height 800px
+  min-height 850px
 </style>
