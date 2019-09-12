@@ -163,7 +163,7 @@ export default {
           console.log("refresh failed!", err)
           self.$message("用户登录过期，请重新登录！");
           this.$store.dispatch("logout");
-          self.$router.push("/usr/login");
+          self.$router.push("/user/login");
         });
     }
   }
