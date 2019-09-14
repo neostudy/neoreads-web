@@ -11,10 +11,13 @@
           <el-header height="36px" class="top-toolbar">
             <tag v-for="tag in news.tags" :key="tag.name" :tag="tag" @click="tagClicked(tag)"></tag>
             <a class="link-source" :href="news.source">({{news.source}})</a>
+            <span class="external-link">
+              <nicon :title="news.link" i="external-link-alt" @click="openExternal(news.link)"></nicon>
+            </span>
           </el-header>
           <el-main class="content-pane">
-            <h3 class="news-title">{{news.title}}</h3>
-            <div class="news-intro">{{news.intro}}</div>
+            <h3 class="news-title" @click="viewNewsItem(news)">{{news.title}}</h3>
+            <div class="news-intro">{{news.summary}}</div>
           </el-main>
           <el-footer height="30px" class="bottom-toolbar">
             <nistat i="heart" value="15"></nistat>
@@ -29,10 +32,12 @@
 <script>
 import Nistat from "../tools/NeoStatIcon.vue";
 import Tag from "./Tag.vue";
+import Nicon from "../tools/NeoIcon.vue";
 export default {
   components: {
     Tag,
-    Nistat
+    Nistat,
+    Nicon
   },
   props: ["news", "number"],
   methods: {
@@ -40,7 +45,13 @@ export default {
       document.getElementsByClassName("left-toolbar").classList.add("active");
     },
     tagClicked(tag) {
-      console.log("clicking tag:", tag)
+      console.log("clicking tag:", tag);
+    },
+    viewNewsItem(news) {
+      this.$router.push(`/news/view/${news.id}`);
+    },
+    openExternal(link) {
+      window.open(link, "_blank");
     }
   }
 };
@@ -82,16 +93,20 @@ export default {
 
       .news-title
         font-size 1.5em
+        cursor pointer
+
+        &:hover
+          color #409EEF
+          text-decoration underline
 
       .news-intro
         margin-top 10px
-        font-size 1.0em
+        font-size 1em
         min-height 100px
 
     .top-toolbar
       padding 0
       padding-top 4px
-      
 
       .tag-wrap
         margin-right 5px
@@ -100,10 +115,14 @@ export default {
         color #999
         text-decoration none
 
-        &:hover 
+        &:hover
           text-decoration underline
 
+      .external-link
+        float right
+
     .bottom-toolbar
+      margin-top 10px
       padding 0
       line-height 30px
 

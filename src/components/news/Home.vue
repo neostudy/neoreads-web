@@ -39,7 +39,8 @@ export default {
   },
   data() {
     return {
-      newsList: [
+      newsList: [],
+      newsListDummy: [
         {
           tags: [
             { name: "商业", kind: "topic" },
@@ -62,7 +63,7 @@ export default {
           intro:
             "中新社华盛顿9月9日电 美国国会民主党领袖、众议院议长佩洛西和参议院少数党领袖舒默当地时间9日联合致信美国总统特朗普，要求其支持控枪法案。\n 佩洛西和舒默在信中说，特朗普需要就控枪法案立即表态支持，以尽快结束美国频繁出现枪击事件的局面。特朗普的态度将决定控枪法案是否能在共和党控制的参议院通过。他们希望特朗普不要向美国全国步枪协会压力妥协，而错过这一在全美推行控枪政策的“难得机遇”"
         },
-{
+        {
           tags: [
             { name: "国际要闻", kind: "topic" },
             { name: "特朗普", kind: "who" }
@@ -72,7 +73,7 @@ export default {
           intro:
             "中新社华盛顿9月9日电 美国国会民主党领袖、众议院议长佩洛西和参议院少数党领袖舒默当地时间9日联合致信美国总统特朗普，要求其支持控枪法案。\n 佩洛西和舒默在信中说，特朗普需要就控枪法案立即表态支持，以尽快结束美国频繁出现枪击事件的局面。特朗普的态度将决定控枪法案是否能在共和党控制的参议院通过。他们希望特朗普不要向美国全国步枪协会压力妥协，而错过这一在全美推行控枪政策的“难得机遇”"
         },
-{
+        {
           tags: [
             { name: "国际要闻", kind: "topic" },
             { name: "特朗普", kind: "who" }
@@ -90,10 +91,17 @@ export default {
   },
   created() {
     this.$store.dispatch("setActiveNewsMenu", "/news/home");
+
+    this.fetchNews();
   },
   methods: {
     createPost() {
       this.$router.push("/news/create");
+    },
+    fetchNews() {
+      this.$axios.get("/api/v1/news/list").then(res => {
+        this.newsList = res.data;
+      });
     }
   }
 };

@@ -25,6 +25,7 @@
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "mavon-editor": "^2.7.5",
+    "node-readability": "^3.0.0",
     "pinyin": "^2.9.0",
     "popper.js": "^1.15.0",
     "stylus": "^0.54.7",

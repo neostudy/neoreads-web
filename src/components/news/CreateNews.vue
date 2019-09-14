@@ -27,9 +27,9 @@
         </div>
         <div class="post-form">
           <div class="external-link-pane" v-show="postType === 'link'">
-            <el-input size="large" class="write-title" v-model="title" placeholder="请输入链接URL">
+            <el-input size="large" class="write-title" v-model="link" placeholder="请输入链接URL">
               <template slot="prepend">https://</template>
-              <el-button slot="append" icon="el-icon-search">解析</el-button>
+              <el-button slot="append" icon="el-icon-search" @click="analyzeUrl">解析</el-button>
             </el-input>
           </div>
           <div class="write-title-pane">
@@ -41,7 +41,7 @@
               type="textarea"
               rows="6"
               class="write-title"
-              v-model="title"
+              v-model="summary"
               placeholder="请输入概要"
             ></el-input>
           </div>
@@ -65,38 +65,59 @@
 </template>
 
 <script>
-import ExternalLink from "./create/ExternalLink.vue";
-import Post from "./create/Post.vue";
+import { parseHostname } from "src/js/string.js"
 export default {
   components: {
-    ExternalLink,
-    Post
   },
   data() {
     return {
       postType: "link",
-      artid: this.$route.params.artid,
+      newsid: this.$route.params.newsid,
       title: "",
+      link: "",
+      summary: "",
       content: ""
     };
   },
   computed: {
     isEdit() {
-      return !!this.artid;
+      return !!this.newsid;
     }
   },
   created() {
     if (this.isEdit) {
-      // fetch article content
-      this.authGet("/api/v1/articles/get/" + this.artid).then(res => {
-        let article = res.data;
-        this.title = article.title;
-        this.content = article.content;
+      // fetch news content
+      this.authGet("/api/v1/news/get/" + this.newsid).then(res => {
+        let news = res.data;
+        this.title = news.title;
+        this.content = news.content;
       });
     }
   },
   methods: {
-    publish() {},
+    publish() {
+      let url = "/api/v1/news/add";
+      let data = {
+        title: this.title,
+        content: this.content,
+        link :this.link,
+        summary: this.summary,
+        kind: this.getKind(),
+        source: this.getSource()
+      };
+      if (this.isEdit) {
+        url = "/api/v1/news/modify";
+        data.id = this.newsid;
+      }
+      this.authPost(url, data)
+        .then(res => {
+          this.$message("记事保存成功");
+          this.goNews();
+        })
+        .catch(error => {
+          this.$message("记事保存失败：" + error);
+        });
+    },
     saveDraft() {
       if (!this.title) {
         this.$alert("标题未填写", "注意：");
@@ -115,7 +136,7 @@ export default {
         this.authPost(url, data)
           .then(res => {
             this.$message("文章保存成功");
-            this.goArticles();
+            this.goNews();
           })
           .catch(error => {
             this.$message("文章保存失败：" + error);
@@ -126,15 +147,33 @@ export default {
       if (this.title || this.content) {
         this.$confirm("文章未保存，确认退出？")
           .then(_ => {
-            this.goArticles();
+            this.goNews();
           })
           .catch(_ => {});
       } else {
-        this.goArticles();
+        this.goNews();
       }
     },
-    goArticles() {
-      this.$router.push("/works/articles");
+    goNews() {
+      this.$router.push("/news");
+    },
+    analyzeUrl() {},
+    getKind() {
+      if (this.postType === 'link') {
+        return 0;
+      } else if (this.postType === 'post') {
+        return 1;
+      } else if (this.postType === 'media') {
+        return 2;
+      }
+    },
+    getSource() {
+      if (!this.link) {
+        return "";
+      } else {
+        let hostname = parseHostname(this.link)
+        return hostname;
+      }
     }
   }
 };
