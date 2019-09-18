@@ -89,17 +89,33 @@ export default {
       sort: ""
     };
   },
+  computed: {
+    tagid: function() {
+      return this.$route.query.tagid;
+    }
+
+  },
   created() {
     this.$store.dispatch("setActiveNewsMenu", "/news/home");
-
     this.fetchNews();
+  },
+  watch : {
+    tagid : function() {
+      console.log("tagid changed")
+      this.fetchNews()
+    } 
   },
   methods: {
     createPost() {
       this.$router.push("/news/create");
     },
     fetchNews() {
-      this.$axios.get("/api/v1/news/list").then(res => {
+      let url = "/api/v1/news/list";
+      let tagid = this.$route.query.tagid;
+      if (tagid) {
+        url = url + "?tagid=" + tagid;
+      }
+      this.$axios.get(url).then(res => {
         this.newsList = res.data;
       });
     }

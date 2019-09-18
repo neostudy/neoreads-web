@@ -9,9 +9,9 @@
       <el-main class="main-pane">
         <el-container>
           <el-header height="36px" class="top-toolbar">
-            <tag v-for="tag in news.tags" :key="tag.tag" :tag="tag" @click="tagClicked(tag)"></tag>
-            <a class="link-source" :href="news.source">({{news.source}})</a>
-            <span class="external-link">
+            <tag v-for="tag in news.tagsjson" :key="tag.tag" :tag="tag" @click="tagClicked(tag)"></tag>
+            <a class="link-source" :href="news.source" v-if="news.kind == 0">({{news.source}})</a>
+            <span class="external-link" v-if="news.kind == 0">
               <nicon :title="news.link" i="external-link-alt" @click="openExternal(news.link)"></nicon>
             </span>
           </el-header>
@@ -46,6 +46,7 @@ export default {
     },
     tagClicked(tag) {
       console.log("clicking tag:", tag);
+      this.$router.push(`/news?tagid=${tag.id}`)
     },
     viewNewsItem(news) {
       this.$router.push(`/news/view/${news.id}`);
@@ -99,6 +100,7 @@ export default {
           color #409EEF
           text-decoration underline
 
+
       .news-intro
         margin-top 10px
         font-size 1em
@@ -120,6 +122,7 @@ export default {
 
       .external-link
         float right
+        font-size 1em
 
     .bottom-toolbar
       margin-top 10px

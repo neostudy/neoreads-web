@@ -1,17 +1,24 @@
 <template>
-  <div class="tag-wrap" :class="tag.kind" @click="clicked">
+  <div class="tag-wrap" :class="kindClass" @click="clicked">
     <nsicon :i="itype" :value="tag.tag"></nsicon>
   </div>
 </template>
 
 <script>
 import Nsicon from "../tools/NeoStatIcon.vue";
-let map = {
-  topic: "comment",
-  what: "hashtag",
-  who: "user",
-  where: "globe-asia",
-  when: "moon"
+let kindMap = {
+  0: "topic", // topic
+  1: "event", // event
+  2: "people", // people
+  3: "place", // place
+  4: "time" // time
+};
+let kindIconMap = {
+  0: "comment", // topic
+  1: "hashtag", // event
+  2: "user", // people
+  3: "globe-asia", // place
+  4: "moon" // time
 };
 export default {
   components: {
@@ -20,12 +27,15 @@ export default {
   props: ["tag"],
   computed: {
     itype() {
-      let kind = map[this.tag.kind];
+      let kind = kindIconMap[this.tag.kind];
       if (!kind) {
         return "comments";
       } else {
         return kind;
       }
+    },
+    kindClass() {
+      return kindMap[this.tag.kind];
     }
   },
   methods: {
@@ -48,25 +58,23 @@ export default {
   background-color #E2F0FF
   border 1px solid #409EFF
 
-.tag-wrap.what
+.tag-wrap.event
   color #FD8042
   background-color #FDE4D8
   border 1px solid #FD8042
 
-.tag-wrap.where
+.tag-wrap.place
   color teal
   background-color #def2f0
   border 1px solid teal
 
-.tag-wrap.who
+.tag-wrap.people
   color #A076E5
-  background-color  #DEDAE5
+  background-color #DEDAE5
   border 1px solid #A076E5
 
-.tag-wrap.when
+.tag-wrap.time
   color yellow
   background-color #E2F0FF
   border 1px solid #409EFF
-
-
 </style>
