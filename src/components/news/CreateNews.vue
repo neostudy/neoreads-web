@@ -54,7 +54,7 @@
             <label>标题：</label>
             <el-input size="large" class="write-title" v-model="title" placeholder="请输入标题"></el-input>
           </div>
-          <div class="write-intro-pane" v-show="postType === 'link'">
+          <div class="write-intro-pane">
             <label>梗概：</label>
             <el-input
               size="large"
