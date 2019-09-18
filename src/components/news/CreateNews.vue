@@ -26,16 +26,36 @@
           -->
         </div>
         <div class="post-form">
+          <div class="tags-select-pane">
+            <el-row>
+              <el-col :span="8">
+                <label>话题标签：</label>
+                <tag-select ref="topicTags" kind="0"></tag-select>
+              </el-col>
+              <el-col :span="8">
+                <label>事件标签：</label>
+                <tag-select ref="eventTags" kind="1"></tag-select>
+              </el-col>
+              <el-col :span="8">
+                <label>人物标签：</label>
+                <tag-select ref="peopleTags" kind="2"></tag-select>
+              </el-col>
+            </el-row>
+          </div>
+
           <div class="external-link-pane" v-show="postType === 'link'">
+            <label>外链地址：</label>
             <el-input size="large" class="write-title" v-model="link" placeholder="请输入链接URL">
               <template slot="prepend">https://</template>
               <el-button slot="append" icon="el-icon-search" @click="analyzeUrl">解析</el-button>
             </el-input>
           </div>
           <div class="write-title-pane">
+            <label>标题：</label>
             <el-input size="large" class="write-title" v-model="title" placeholder="请输入标题"></el-input>
           </div>
           <div class="write-intro-pane" v-show="postType === 'link'">
+            <label>梗概：</label>
             <el-input
               size="large"
               type="textarea"
@@ -46,6 +66,7 @@
             ></el-input>
           </div>
           <div class="write-editor-pane" v-show="postType === 'post'">
+            <label>正文：</label>
             <mavon-editor
               id="write-mavon-editor"
               v-model="content"
@@ -65,9 +86,11 @@
 </template>
 
 <script>
-import { parseHostname } from "src/js/string.js"
+import { parseHostname } from "src/js/string.js";
+import TagSelect from "../tools/TagSelect.vue";
 export default {
   components: {
+    TagSelect
   },
   data() {
     return {
@@ -93,6 +116,12 @@ export default {
         this.content = news.content;
       });
     }
+
+    // load tags
+    this.fetchTags();
+  },
+  mounted() {
+
   },
   methods: {
     publish() {
@@ -100,10 +129,11 @@ export default {
       let data = {
         title: this.title,
         content: this.content,
-        link :this.link,
+        link: this.link,
         summary: this.summary,
         kind: this.getKind(),
-        source: this.getSource()
+        source: this.getSource(),
+        tags: this.getTags()
       };
       if (this.isEdit) {
         url = "/api/v1/news/modify";
@@ -135,17 +165,17 @@ export default {
         }
         this.authPost(url, data)
           .then(res => {
-            this.$message("文章保存成功");
+            this.$message("记事保存成功");
             this.goNews();
           })
           .catch(error => {
-            this.$message("文章保存失败：" + error);
+            this.$message("记事保存失败：" + error);
           });
       }
     },
     cancel() {
       if (this.title || this.content) {
-        this.$confirm("文章未保存，确认退出？")
+        this.$confirm("记事未保存，确认退出？")
           .then(_ => {
             this.goNews();
           })
@@ -159,11 +189,11 @@ export default {
     },
     analyzeUrl() {},
     getKind() {
-      if (this.postType === 'link') {
+      if (this.postType === "link") {
         return 0;
-      } else if (this.postType === 'post') {
+      } else if (this.postType === "post") {
         return 1;
-      } else if (this.postType === 'media') {
+      } else if (this.postType === "media") {
         return 2;
       }
     },
@@ -171,9 +201,28 @@ export default {
       if (!this.link) {
         return "";
       } else {
-        let hostname = parseHostname(this.link)
+        let hostname = parseHostname(this.link);
         return hostname;
       }
+    },
+    getTags() {
+      let topicTags = this.$refs.topicTags.tags
+      let peopleTags = this.$refs.peopleTags.tags
+      let eventTags = this.$refs.eventTags.tags
+      let tags = topicTags.concat(peopleTags).concat(eventTags)
+      return tags
+    },
+    fetchTags() {
+      this.$axios.get('/api/v1/tags/news/list?t=topic').then(res => {
+        this.$refs.topicTags.options = res.data;
+      })
+      this.$axios.get('/api/v1/tags/news/list?t=event').then(res => {
+        this.$refs.eventTags.options = res.data;
+      })
+      this.$axios.get('/api/v1/tags/news/list?t=people').then(res => {
+        this.$refs.peopleTags.options = res.data;
+      })
+
     }
   }
 };
@@ -184,6 +233,9 @@ export default {
 #write-pane
   text-align left
   padding 0
+
+  label
+    line-height 36px
 
   .title-pane
     border-bottom 1px solid #eee
@@ -198,6 +250,12 @@ export default {
       float right
       font-weight bold
       font-size 1.2em
+
+  .tags-select-pane
+    margin-bottom 20px
+
+    .el-col
+      padding 0 20px 0 0
 
   .write-title-pane
     margin-bottom 20px

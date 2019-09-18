@@ -1,6 +1,6 @@
 <template>
   <div class="tag-wrap" :class="tag.kind" @click="clicked">
-    <nsicon :i="itype" :value="tag.name"></nsicon>
+    <nsicon :i="itype" :value="tag.tag"></nsicon>
   </div>
 </template>
 

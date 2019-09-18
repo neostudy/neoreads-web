@@ -9,7 +9,7 @@
       <el-main class="main-pane">
         <el-container>
           <el-header height="36px" class="top-toolbar">
-            <tag v-for="tag in news.tags" :key="tag.name" :tag="tag" @click="tagClicked(tag)"></tag>
+            <tag v-for="tag in news.tags" :key="tag.tag" :tag="tag" @click="tagClicked(tag)"></tag>
             <a class="link-source" :href="news.source">({{news.source}})</a>
             <span class="external-link">
               <nicon :title="news.link" i="external-link-alt" @click="openExternal(news.link)"></nicon>
