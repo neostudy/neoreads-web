@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-bar>
+    <div v-bar v-if="!noScroll">
       <div id="article-content-pane" class="markdown-content">
         <paragraph
           v-for="(p,i) in paras"
@@ -11,13 +11,16 @@
         ></paragraph>
       </div>
     </div>
+    <div v-if="noScroll" class="markdown-content">
+      <paragraph v-for="(p,i) in paras" :key="i" :html="p" @select="select" :highlight="highlight"></paragraph>
+    </div>
   </div>
 </template>
 
 <script>
 import Paragraph from "./Paragraph.vue";
 var hljs = require("highlight.js");
-import 'highlight.js/styles/github.css';
+import "highlight.js/styles/github.css";
 var mdi = require("markdown-it")({
   html: true,
   linkify: true,
@@ -44,7 +47,7 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-ins"));
 
 export default {
-  props: ["title", "content"],
+  props: ["title", "content", "noScroll"],
   components: {
     Paragraph
   },

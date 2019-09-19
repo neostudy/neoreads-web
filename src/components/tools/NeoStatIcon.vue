@@ -1,5 +1,5 @@
 <template>
-  <div class="neo-stat-icon">
+  <div class="neo-stat-icon" @click="$emit('click')">
     <nicon :i="i" :value="value"></nicon>
   </div>
 </template>

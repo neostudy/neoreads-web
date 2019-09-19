@@ -12,6 +12,7 @@ import NewsWeekly from "./components/news/Weekly.vue";
 import NewsMonthly from "./components/news/Monthly.vue";
 import NewsYearly from "./components/news/Yearly.vue";
 import CreateNews from "./components/news/CreateNews.vue";
+import ViewNews from "./components/news/ViewNews.vue";
 
 import Works from './components/top/Works.vue';
 import Articles from './components/works/Articles.vue';
@@ -97,6 +98,10 @@ const routes = [
       {
         path: "create",
         component: CreateNews
+      },
+      {
+        path: "view/:newsid",
+        component: ViewNews
       }
     ]
   },
