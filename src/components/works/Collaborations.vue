@@ -38,7 +38,7 @@ export default {
   },
   created() {
     this.$store.dispatch("setActiveWorksMenu", "/works/collaborations");
-    this.authGet("/api/v1/collaborations/mine")
+    this.authGet("/api/v1/books/my/collaborations")
       .then(res => {
         console.log("got books:", res.data);
         this.books = res.data;

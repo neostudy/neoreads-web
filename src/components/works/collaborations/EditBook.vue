@@ -57,6 +57,8 @@
           <div class="book-authors-pane">
             <multiselect
               v-model="authors"
+              label="fullname"
+              track-by="id"
               :options="authorOptions"
               :searchable="true"
               :close-on-select="false"
@@ -81,8 +83,8 @@
               @tag="addTag"
               placeholder="选择或新建书籍标签"
             ></multiselect>
-            <el-dialog title="作者信息" :visible.sync="isAuthorDialogVisible">
-              <edit-author :name="newAuthor"></edit-author>
+            <el-dialog width="68%" title="作者信息" :visible.sync="isAuthorDialogVisible">
+              <edit-author :name="newAuthor" @author-added="authorAdded"></edit-author>
             </el-dialog>
           </div>
           <div class="book-toc-pane">
@@ -129,7 +131,8 @@ export default {
       // author
       authors: [],
       authorOptions: [],
-      isAuthorDialogVisible: false
+      isAuthorDialogVisible: false,
+      newAuthor: ""
     };
   },
   computed: {
@@ -148,6 +151,11 @@ export default {
     this.$store.dispatch("setActiveWorksMenu", "/works/collaborations");
     this.headers["Authorization"] = `Bearer ${this.$store.getters.token}`;
 
+    // fetch authors
+    this.$axios.get("/api/v1/people/list").then(res => {
+      this.authorOptions = res.data
+    });
+
     if (this.isEdit) {
       // fetch book info
       this.authGet("/api/v1/books/get/" + this.book.id).then(res => {
@@ -165,6 +173,7 @@ export default {
       } else {
         let url = "/api/v1/books/add";
         let data = this.book;
+        data.authors = this.authors;
         if (this.isEdit) {
           url = "/api/v1/books/modify";
         }
@@ -215,6 +224,11 @@ export default {
     addAuthor(author) {
       this.newAuthor = author;
       this.isAuthorDialogVisible = true;
+    },
+    authorAdded(author) {
+      this.isAuthorDialogVisible = false;
+      this.authorOptions.push(author);
+      this.authors.push(author);
     },
     searchAuthor(name) {
       console.log("searching for author:", name);

@@ -157,8 +157,14 @@ export default {
         }
         this.authPost(url, data)
           .then(res => {
+            console.log("returnning:", res.data)
             this.$message("作者信息保存成功");
-            this.goToList();
+            if (this.name) {
+              this.author.id = res.data.id;
+              this.$emit("author-added", this.author);
+            } else {
+              this.goToList();
+            }
           })
           .catch(error => {
             this.$message("作者信息保存失败：" + error);
