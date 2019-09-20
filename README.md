@@ -26,6 +26,7 @@ Website for neoreads, written in vue.js
 - 首页|Home：常用信息入口，可以自定义
   - 书籍分类
   - 最近阅读
+  - 热门作者
   - 书籍推荐
   - 温故概览
   - 知识图谱
@@ -184,6 +185,10 @@ Website for neoreads, written in vue.js
 - [ ] 标签展示
 - [ ] 发布/出版
 - [ ] 分享书籍
+
+#### 协作
+
+- [ ] 上传新书
 
 
 #### 其他

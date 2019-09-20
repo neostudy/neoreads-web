@@ -5,7 +5,7 @@
     "reviews": "温故",
     "news": "知新",
     "works": "以文",
-    "friends": "会友",
+    "people": "会友",
     "dev": "开发"
   },
   "en": "英文",
@@ -22,7 +22,7 @@
     "collections": "文集",
     "books": "著作",
     "translations": "译作",
-    "public": "协作",
+    "collaborations": "协作",
 
     "bookdetail": {
       "toc" : "目录",
@@ -36,5 +36,12 @@
     "weekly": "周报",
     "monthly": "月刊",
     "yearly": "年鉴"
+  },
+  "people" : {
+    "authors": "作者",
+    "translators": "译者",
+    "readers": "读者",
+    "friends": "笔友",
+    "groups": "小组"
   }
 }

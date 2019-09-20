@@ -19,7 +19,7 @@ import Articles from './components/works/Articles.vue';
 import Collections from './components/works/Collections.vue';
 import Books from './components/works/Books.vue';
 import Translations from './components/works/Translations.vue';
-import Public from './components/works/Public.vue';
+import Collaborations from './components/works/Collaborations.vue';
 
 import Write from './components/works/articles/Write.vue';
 import ViewArticle from './components/works/articles/ViewArticle.vue';
@@ -32,7 +32,12 @@ import BookToc from './components/works/books/BookToc.vue';
 import BookComments from './components/works/books/BookComments.vue';
 import EditChapter from './components/works/books/EditChapter.vue';
 
-import Friends from './components/top/Friends.vue';
+import EditCollabBook from './components/works/collaborations/EditBook.vue';
+
+import People from './components/top/People.vue';
+import Authors from './components/people/Authors.vue';
+import EditAuthor from './components/people/EditAuthor.vue';
+
 import Dev from './components/top/Dev.vue';
 import Book from './components/book/Book.vue';
 import Reader from './components/book/Reader.vue';
@@ -177,9 +182,13 @@ const routes = [
         component: Translations
       },
       {
-        path: 'public',
-        component: Public
+        path: 'collaborations',
+        component: Collaborations
       },
+      {
+        path: 'collaborations/edit',
+        component: EditCollabBook
+      }
     ]
   },
   {
@@ -187,8 +196,18 @@ const routes = [
     component: Notes
   },
   {
-    path: '/friends',
-    component: Friends
+    path: '/people',
+    component: People,
+    children: [
+      {
+        path: 'authors',
+        component: Authors
+      },
+      {
+        path: 'authors/edit',
+        component: EditAuthor
+      }
+    ]
   },
   {
     path: '/book/:id',

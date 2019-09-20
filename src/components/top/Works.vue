@@ -34,10 +34,10 @@
                 {{$t('works.translations')}}
               </span>
             </el-menu-item>
-            <el-menu-item index="/works/public">
+            <el-menu-item index="/works/collaborations">
               <span class="works-menu theme">
                 <faicon icon="hands-helping"></faicon>
-                {{$t('works.public')}}
+                {{$t('works.collaborations')}}
               </span>
             </el-menu-item>
           </el-menu>
