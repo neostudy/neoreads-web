@@ -7,6 +7,9 @@
           <span class="edit">
             <faicon icon="edit" @click="editChapter(ch)"></faicon>
           </span>
+          <span class="edit">
+            <faicon icon="language" title="翻译" @click="translateChapter(ch)"></faicon>
+          </span>
 
         </li>
       </ul>
@@ -81,6 +84,9 @@ export default {
     },
     editChapter(chapter) {
       this.$router.push(`/works/books/edit/${this.bookid}/${chapter.id}`)
+    },
+    translateChapter(chapter) {
+      this.$router.push(`/translater/book/${this.bookid}/${chapter.id}`)
     }
   }
 };

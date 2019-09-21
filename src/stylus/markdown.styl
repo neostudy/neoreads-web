@@ -2,18 +2,42 @@ dftColor = #409EFF
 dftDeepColor = #3096FF
 dftBorderColor = #C6E2FF
 dftBgColor = #E2F0FF
+codeBorderColor = #DDD
+codeBgColor = #EEE
 
 .markdown-content
   p, h1, h2, h3, h4
     margin 1.2em 0
 
+  h1
+    font-size 1.8em
+
+  h2
+    font-size 1.6em
+
+  h3
+    font-size 1.4em
+
+  h4
+    font-size 1.2em
+
   p
-    font-size 1.1em
+    font-size 1em
     line-height 1.6em
 
   strong
     font-size 1.1em
     color dftColor
+
+  pre
+    border 1px solid codeBorderColor
+    padding 10px
+    background-color codeBgColor
+    border-radius 5px
+
+    code
+      font-family 'Cascadia Code', Consolas, 'Courier New', monospace
+      font-size 0.9em
 
   ol
     counter-reset section /* Creates a new instance of the section counter with each ol element */

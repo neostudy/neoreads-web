@@ -60,6 +60,7 @@ export default {
   },
   props: {
     book: Object,
+    detailUrlMaker: Function,
     showDefaultToolbar: {
       type: Boolean,
       default: true
@@ -101,7 +102,13 @@ export default {
       });
     },
     openBookDetail() {
-      this.$router.push("/works/books/detail/" + this.book.id + "/toc");
+      let url = '';
+      if (this.detailUrlMaker) {
+        url = this.detailUrlMaker(this.book);
+      } else {
+        url = "/works/books/detail/" + this.book.id + "/toc";
+      }
+      this.$router.push(url);
     }
   }
 };

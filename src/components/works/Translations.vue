@@ -9,7 +9,7 @@
     <div class="book-list-pane">
       <div class="book-list">
         <div class="book-item-wrap" v-for="(c, i) in books" :key="i">
-          <book-card :showDefaultToolbar="false" :book="c">
+          <book-card :showDefaultToolbar="false" :book="c" :detailUrlMaker="detailUrlMaker">
             <template #toolbar="{book}">
               <el-button type="primary" size="small" @click="translate(book)">开始翻译</el-button>
             </template>
@@ -47,7 +47,11 @@ export default {
       this.$router.push("/works/translations/add");
     },
     translate(book) {
-
+      console.log("start translate book")
+      this.$router.push(`/works/translations/detail/${book.id}/toc`);
+    },
+    detailUrlMaker(book) {
+      return `/works/translations/detail/${book.id}/toc`;
     }
   }
 };

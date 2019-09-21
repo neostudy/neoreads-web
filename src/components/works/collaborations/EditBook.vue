@@ -159,8 +159,14 @@ export default {
     if (this.isEdit) {
       // fetch book info
       this.authGet("/api/v1/books/get/" + this.book.id).then(res => {
-        this.book = res.data;
-        console.log("got book:", this.book);
+        let book = res.data;
+        if (!book.toc) book.toc = [];
+        if (book.authorsjson) {
+          book.authors = book.authorsjson;
+          this.authors = book.authorsjson;
+        }
+        if (!book.authors) book.authors = [];
+        this.book = book;
       });
     }
   },

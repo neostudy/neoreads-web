@@ -43,6 +43,7 @@ import EditAuthor from './components/people/EditAuthor.vue';
 import Dev from './components/top/Dev.vue';
 import Book from './components/book/Book.vue';
 import Reader from './components/book/Reader.vue';
+import Translater from './components/book/Translater.vue';
 import Notes from './components/book/Notes.vue';
 import Login from './components/user/Login.vue';
 import Register from './components/user/Register.vue';
@@ -165,7 +166,7 @@ const routes = [
         component: EditChapter,
       },
       {
-        path:'books/detail/:bookid',
+        path: 'books/detail/:bookid',
         component: BookDetail,
         children: [
           {
@@ -176,7 +177,6 @@ const routes = [
             path: 'comments',
             component: BookComments
           }
-
         ]
       },
       {
@@ -188,14 +188,50 @@ const routes = [
         component: AddTranslation
       },
       {
+        path: 'translations/detail/:bookid',
+        component: BookDetail,
+        children: [
+          {
+            path: 'toc',
+            component: BookToc
+          },
+          {
+            path: 'comments',
+            component: BookComments
+          }
+        ]
+      },
+      {
         path: 'collaborations',
         component: Collaborations
       },
       {
         path: 'collaborations/edit',
         component: EditCollabBook
-      }
+      },
+      {
+        path: 'collaborations/edit/:bookid',
+        component: EditCollabBook
+      },
+      {
+        path: 'collaborations/detail/:bookid',
+        component: BookDetail,
+        children: [
+          {
+            path: 'toc',
+            component: BookToc
+          },
+          {
+            path: 'comments',
+            component: BookComments
+          }
+        ]
+      },
     ]
+  },
+  {
+    path: '/translater/book/:bookid/:chapid',
+    component: Translater
   },
   {
     path: '/notes',

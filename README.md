@@ -196,11 +196,17 @@ Website for neoreads, written in vue.js
 #### 协作
 
 - [x] 上传新书
-- [ ] 编辑作者/协作者
+- [x] 编辑作者/协作者
 
 #### 译作
 
 - [ ] 翻译界面
+- [ ] 重构reader界面，去掉分页功能
+- [ ] 翻译的阅读界面引入Mardown解析
+- [ ] 英文作品上传时，后台进行分句操作，并添加paraid和sentid
+- [ ] 换一种方式在文件中保存paraid和sentid，与markdown相适应
+- [ ] 写一个markdown-it插件来处理paraid和sentid
+- [ ] 将翻译好的章节导出为markdown文件
 
 
 #### 其他

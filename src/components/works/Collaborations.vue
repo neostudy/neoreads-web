@@ -15,7 +15,12 @@
       <el-main>
         <div class="book-list">
           <div class="book-item-wrap" v-for="(c, i) in books" :key="i">
-            <book-card :book="c" @book-removed="bookRemoved"></book-card>
+            <book-card :book="c" @book-removed="bookRemoved" :showDefaultToolbar="false" :detailUrlMaker="detailUrl">
+              <template #toolbar="{book}">
+                <faicon icon="pen" title="编辑" @click="editBook(book)"></faicon>
+                <faicon class="grey" icon="eye-slash" title="退出" @click="unwatch(book)"></faicon>
+              </template>
+            </book-card>
           </div>
         </div>
       </el-main>
@@ -54,6 +59,15 @@ export default {
     },
     bookRemoved(colid) {
       this.books = this.books.filter(c => c.id != colid);
+    },
+    editBook(book) {
+      this.$router.push("/works/collaborations/edit/" + book.id);
+    },
+    unwatch(book) {
+
+    },
+    detailUrl(book) {
+      this.$router.push(`/works/collaborations/detail/${book.id}/toc`);
     }
   }
 };

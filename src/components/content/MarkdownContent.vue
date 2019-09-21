@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-bar v-if="!noScroll">
-      <div id="article-content-pane" class="markdown-content">
+      <div id="markdown-content-pane" class="markdown-content">
+        <div class="markdown-content-inner">
         <paragraph
           v-for="(p,i) in paras"
           :key="i"
@@ -9,6 +10,7 @@
           @select="select"
           :highlight="highlight"
         ></paragraph>
+        </div>
       </div>
     </div>
     <div v-if="noScroll" class="markdown-content">
@@ -69,11 +71,9 @@ export default {
     // TODO: how to avoid contaminating <pre><code> blocks
     parseContent() {
       let md = mdi.render(this.content);
-      console.log("md:", md);
 
       let dp = new DOMParser();
       let dom = dp.parseFromString(md, "text/html");
-      console.log(dom.body.children);
 
       let tags = dom.body.children;
       let paras = [];
@@ -115,9 +115,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#article-content-pane
+#markdown-content-pane
   text-align left
-  max-height 700px
+  max-height 860px
+
+  .markdown-content-inner
+    padding 20px
+
 </style>
 
 <style lang="stylus" src="src/stylus/markdown.styl"></style>
