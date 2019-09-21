@@ -40,10 +40,13 @@
         </p>
       </el-main>
     </el-container>
-    <div class="toolbar">
+    <div class="toolbar" v-if="showDefaultToolbar">
       <faicon icon="pen" title="编辑" @click="editBook"></faicon>
       <faicon icon="share-alt" title="分享" @click="shareBook"></faicon>
       <faicon class="grey" icon="trash" title="删除" @click="removeBook"></faicon>
+    </div>
+    <div class="toolbar">
+      <slot name="toolbar" :book="book"></slot>
     </div>
   </div>
 </template>
@@ -55,7 +58,13 @@ export default {
   components: {
     DummyCover
   },
-  props: ["book"],
+  props: {
+    book: Object,
+    showDefaultToolbar: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       rate: 4.9

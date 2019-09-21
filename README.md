@@ -185,6 +185,7 @@ Website for neoreads, written in vue.js
 - [x] 删
 - [x] 查
 - [x] 改
+- [ ] 书籍列表卡片：名字过长需要隐藏
 - [x] 书籍详细信息页面
 - [x] 目录编辑
 - [x] 标签编辑

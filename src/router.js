@@ -34,6 +34,8 @@ import EditChapter from './components/works/books/EditChapter.vue';
 
 import EditCollabBook from './components/works/collaborations/EditBook.vue';
 
+import AddTranslation from './components/works/translations/AddTranslation.vue';
+
 import People from './components/top/People.vue';
 import Authors from './components/people/Authors.vue';
 import EditAuthor from './components/people/EditAuthor.vue';
@@ -180,6 +182,10 @@ const routes = [
       {
         path: 'translations',
         component: Translations
+      },
+      {
+        path: 'translations/add',
+        component: AddTranslation
       },
       {
         path: 'collaborations',

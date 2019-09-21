@@ -70,6 +70,7 @@
             <multiselect
               v-model="author.tags"
               label="tag"
+              track-by="tag"
               :options="tagOptions"
               :searchable="true"
               :close-on-select="false"
@@ -106,7 +107,8 @@ export default {
         cover: '',
         fullname: this.name,
         othernames: "",
-        id: this.$route.params.id
+        id: this.$route.params.id,
+        tags: []
       },
       params: {},
       headers: {},
@@ -138,10 +140,22 @@ export default {
         });
     }
 
-    // fetch tags
-    this.$axios.get("/api/v1/tags/list?c=3").then(res => {
+    // fetch tags, r=3 means tag role=3, which is people tag
+    this.$axios.get("/api/v1/tags/list?r=3").then(res => {
       this.tagOptions = res.data;
     });
+  },
+  watch: {
+    name(n, o) {
+      console.log("name changed!")
+      this.author = {
+        cover : '',
+        fullname : n,
+        othernames: "",
+        id: ''
+      }
+    }
+
   },
   methods: {
     save() {
@@ -203,8 +217,13 @@ export default {
       console.log("upload faile!");
     },
     addTag(newTag) {
-      this.tagOptions.push(newTag);
-      this.author.tags.push(newTag);
+      let tag = {
+        id : '',
+        role : 3, // tag for people
+        tag : newTag
+      };
+      this.tagOptions.push(tag);
+      this.author.tags.push(tag);
     },
     addAuthor(author) {
       this.newAuthor = author;
