@@ -77,11 +77,11 @@ export default {
       if (this.chapter.title || this.chapter.content) {
         this.$confirm("文章未保存，确认退出？")
           .then(_ => {
-            this.goArticles();
+            this.goBack();
           })
           .catch(_ => {});
       } else {
-        this.goArticles();
+        this.goBack();
       }
     },
     goBack() {

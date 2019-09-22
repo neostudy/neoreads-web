@@ -46,7 +46,8 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-sup"))
   .use(require("markdown-it-sub"))
   .use(require("markdown-it-mark"))
-  .use(require("markdown-it-ins"));
+  .use(require("markdown-it-ins"))
+  .use(require("markdown-it-attrs"));
 
 export default {
   props: ["title", "content", "noScroll"],
@@ -83,6 +84,7 @@ export default {
 
       let mdps = paras
         .map(ln => ln.trim())
+        /*
         .filter(ln => ln != "")
         .map(ln => {
           if (ln.startsWith("<pre")) {
@@ -94,6 +96,7 @@ export default {
             );
           }
         });
+        */
 
       /*
       let mdps = md
