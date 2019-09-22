@@ -9,8 +9,8 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.23",
-    "@fortawesome/free-regular-svg-icons": "^5.11.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.24",
+    "@fortawesome/free-regular-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.0",
     "@fortawesome/vue-fontawesome": "^0.1.7",
     "axios": "^0.19.0",

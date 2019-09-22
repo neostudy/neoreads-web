@@ -3,13 +3,13 @@
     <div v-bar v-if="!noScroll">
       <div id="markdown-content-pane" class="markdown-content">
         <div class="markdown-content-inner">
-        <paragraph
-          v-for="(p,i) in paras"
-          :key="i"
-          :html="p"
-          @select="select"
-          :highlight="highlight"
-        ></paragraph>
+          <paragraph
+            v-for="(p,i) in paras"
+            :key="i"
+            :html="p"
+            @select="select"
+            :highlight="highlight"
+          ></paragraph>
         </div>
       </div>
     </div>
@@ -21,6 +21,7 @@
 
 <script>
 import Paragraph from "./Paragraph.vue";
+import insp from "src/js/markdown/sentence.js";
 var hljs = require("highlight.js");
 import "highlight.js/styles/github.css";
 var mdi = require("markdown-it")({
@@ -47,7 +48,9 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-sub"))
   .use(require("markdown-it-mark"))
   .use(require("markdown-it-ins"))
-  .use(require("markdown-it-attrs"));
+  .use(require("markdown-it-attrs"))
+  .use(insp)
+  ;
 
 export default {
   props: ["title", "content", "noScroll"],
@@ -66,6 +69,7 @@ export default {
     }
   },
   created() {
+    console.log("Rules for text:", mdi.renderer.rules);
     //this.parseContent()
   },
   methods: {
@@ -82,9 +86,8 @@ export default {
         paras.push(tags[i].outerHTML);
       }
 
-      let mdps = paras
-        .map(ln => ln.trim())
-        /*
+      let mdps = paras.map(ln => ln.trim());
+      /*
         .filter(ln => ln != "")
         .map(ln => {
           if (ln.startsWith("<pre")) {
@@ -124,7 +127,6 @@ export default {
 
   .markdown-content-inner
     padding 20px
-
 </style>
 
 <style lang="stylus" src="src/stylus/markdown.styl"></style>
