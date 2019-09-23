@@ -4,10 +4,23 @@ dftBorderColor = #C6E2FF
 dftBgColor = #E2F0FF
 codeBorderColor = #DDD
 codeBgColor = #EEE
+codeInlineColor = #900// #BF6100
 
 .markdown-content
   p, h1, h2, h3, h4
     margin 1.2em 0
+
+    code
+      font-family 'Cascadia Code', Consolas, 'Courier New', monospace
+      font-size 0.9em
+      height 1.4em
+      line-height 1.4em
+      border 1px solid #eee
+      background-color codeBgColor
+      border-radius 4px
+      padding 0 5px
+      color codeInlineColor
+
 
   h1
     font-size 1.8em
@@ -34,6 +47,7 @@ codeBgColor = #EEE
     padding 10px
     background-color codeBgColor
     border-radius 5px
+    overflow auto
 
     code
       font-family 'Cascadia Code', Consolas, 'Courier New', monospace

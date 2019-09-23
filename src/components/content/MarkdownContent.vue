@@ -21,7 +21,7 @@
 
 <script>
 import Paragraph from "./Paragraph.vue";
-import insp from "src/js/markdown/sentence.js";
+import sentence from "src/js/markdown/sentence.js";
 var hljs = require("highlight.js");
 import "highlight.js/styles/github.css";
 var mdi = require("markdown-it")({
@@ -49,7 +49,7 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-mark"))
   .use(require("markdown-it-ins"))
   .use(require("markdown-it-attrs"))
-  .use(insp)
+  .use(sentence)
   ;
 
 export default {

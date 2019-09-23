@@ -308,6 +308,8 @@ Website for neoreads, written in vue.js
 - [ ] 自动切换图标的排序按钮
 - [ ] 自动切换状态的收藏图标
 - [ ] Markdown展示控件（可以参考maven-editor的预览和沉浸式阅读的功能）
+- [ ] 支持逐行笔记的代码展示控件，替换现在使用的highlight.js，参考：enlighterjs, prism.js, SyntaxHighlighter, Rainbow.js, SHJS 
+- [ ] 用自己开发的markdown-it-paras插件替换markdown-it-attrs，用于给所有para添加ID（原因：现在的attrs插件不支持code）
 
 ### 性能
 

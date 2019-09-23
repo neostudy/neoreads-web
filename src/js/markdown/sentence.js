@@ -75,8 +75,13 @@ module.exports = function ins_plugin(md) {
     if (tokens[idx].hidden) {
       return span;
     } else {
-      if (token.attrs && token.attrs.length > 0 && token.attrs[0] === 'id') {
-        return `<${tag} id="${token.attrs[1]}">${span}`;
+      if (token.attrs && token.attrs.length > 0) {
+        let attr = token.attrs[0];
+        if (attr.length > 0 && attr[0] === 'id') {
+          return `<${tag} id="${attr[1]}">${span}`;
+        } else {
+          return `<${tag}>${span}`;
+        }
       } else {
         return `<${tag}>${span}`;
       }
@@ -94,6 +99,7 @@ module.exports = function ins_plugin(md) {
 
   md.renderer.rules.paragraph_open = function (tokens, idx) {
     let token = tokens[idx]
+    let tag = token.tag;
     let span = '<span class="sent">';
     if (token.meta && token.meta.sentid) {
       span = `<span class="sent" id="${token.meta.sentid}">`
@@ -101,10 +107,15 @@ module.exports = function ins_plugin(md) {
     if (tokens[idx].hidden) {
       return span;
     } else {
-      if (token.attrs && token.attrs.length > 0 && token.attrs[0] === 'id') {
-        return `<p id="${token.attrs[1]}">${span}`;
+      if (token.attrs && token.attrs.length > 0) {
+        let attr = token.attrs[0];
+        if (attr.length > 0 && attr[0] === 'id') {
+          return `<${tag} id="${attr[1]}">${span}`;
+        } else {
+          return `<${tag}>${span}`;
+        }
       } else {
-        return `<p>${span}`;
+        return `<${tag}>${span}`;
       }
     }
   };
