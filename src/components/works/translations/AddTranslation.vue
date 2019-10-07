@@ -40,7 +40,6 @@ export default {
   },
   created() {
     // fetch public books for language
-
     this.$axios.get(`/api/v1/books/public?lang=${this.language}`).then(res => {
       console.log(res.data);
       this.books = res.data;
@@ -54,7 +53,6 @@ export default {
       }).catch(err => {
         this.$message({type:'error', message:"原著添加失败！"})
       })
-
     }
   }
 };

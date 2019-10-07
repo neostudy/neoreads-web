@@ -23,12 +23,13 @@
                   :bookid="bookid"
                   :chapid="chapid"
                   @content-loaded="contentLoaded"
+                  @select="select"
                 ></chapter-content>
               </div>
             </div>
           </el-col>
           <el-col :span="12">
-            <interactive v-bind="idata"></interactive>
+            <interactive v-bind="idata" dftTab="translations"></interactive>
           </el-col>
         </el-row>
       </el-main>
@@ -125,8 +126,11 @@ export default {
   },
   methods: {
     goBack() {},
-    contentLoaded() {
-
+    contentLoaded(content) {
+      console.log("loaded content:", content);
+    },
+    select(sent) {
+      EVENT_BUS.$emit("SELECT_CONTENT", sent);
     }
   }
 };

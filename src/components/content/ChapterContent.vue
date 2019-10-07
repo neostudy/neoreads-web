@@ -39,7 +39,6 @@ export default {
   watch: {},
   methods: {
     select(sent) {
-      console.log("selected:", sent);
       this.$emit("select", sent);
     },
     hightLightCurrentSent() {

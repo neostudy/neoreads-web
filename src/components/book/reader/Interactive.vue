@@ -37,6 +37,9 @@
         <faicon icon="globe-asia"></faicon>
         <label>翻译</label>
       </span>
+      <div>
+        <translation :sent="selectedContent.content"></translation>
+      </div>
     </el-tab-pane>
     <el-tab-pane name="qa" label="问答">
       <span slot="label" class="label">
@@ -65,20 +68,24 @@ import { NOTES } from "src/js/note/note.js";
 import { toPinyin } from "src/js/phonetics/pinyingen.js";
 
 import Notes from "./interactive/Notes.vue";
+import Translation from "../interactive/Translation.vue";
 import { scrypt } from "crypto";
 export default {
   components: {
-    Notes
+    Notes,
+    Translation
   },
-  props: ["dict"],
+  props: ["dict", "dftTab"],
   data() {
     return {
-      tab: "notes",
-      py: ""
+      tab: this.dftTab || "notes",
+      py: "",
+      selectedContent:{}
     };
   },
   created() {
     //EVENT_BUS.$on("OPEN_NOTES", this.openNotes);
+    EVENT_BUS.$on("SELECT_CONTENT", this.selectContent);
   },
   mounted() {
     this.py = toPinyin("你好");
@@ -109,6 +116,9 @@ export default {
   methods: {
     playMp3(url) {
       new Audio(url).play();
+    },
+    selectContent(sent) {
+      this.selectedContent = sent
     }
   }
 };

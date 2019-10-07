@@ -7,14 +7,12 @@ export default {
   props: ["html", "highlight"],
   created() {},
   mounted() {
-    for (let sent of this.$el.getElementsByTagName("sent")) {
+    for (let sent of this.$el.getElementsByClassName("sent")) {
       //console.log(sent.id, "|", sent.previousSibling.textContent);
-      let span = sent.previousSibling;
       //console.log(span);
       let self = this;
-      span.onclick = function(event) {
-        console.log("click");
-        self.$emit("select", { sentid: sent.id, el: span, event: event });
+      sent.onclick = function(event) {
+        self.$emit("select", { type: "sent", id: sent.id, content: sent.textContent, el: sent, event: event });
       };
     }
   },

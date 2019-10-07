@@ -19,7 +19,6 @@ module.exports = function ins_plugin(md) {
     } else {
       let sentid = state.src.substr(start + 2, 4)
       token = state.push('sentence', '', 0);
-      console.log("current tokens:", state.tokens)
       token.content = sentid;
       state.pos += 7;
       return true;
@@ -37,7 +36,6 @@ module.exports = function ins_plugin(md) {
       } else if (token.type === 'inline') {
         let children = token.children;
         if (!children) continue;
-        console.log(children.length)
         for (var j = 0; j < children.length; ++j) {
           let child = children[j]
           if (child.type === 'sentence') {
@@ -58,8 +56,6 @@ module.exports = function ins_plugin(md) {
       }
     }
 
-    console.log("tks:", tks)
-    console.log("tokens:", state.tokens)
   }
 
   md.inline.ruler.before('emphasis', '', tokenize);
