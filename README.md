@@ -220,6 +220,7 @@ Website for neoreads, written in vue.js
 - [ ] 研究如何将MarkDown发布成电子书（mobi, epub, pdf等）。参考leanpub
 - [ ] 研究如何实现动态历史地图（参考leaflet）
 - [ ] 研究如何展示历史并行时间轴，比如春秋战国各国的年表并行展示，或者中国、古希腊并行展示。
+- [x] 在码云上添加代码库
 
 #### 发表的文章
 
