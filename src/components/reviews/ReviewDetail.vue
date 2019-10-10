@@ -177,34 +177,35 @@ export default {
 
 <!-- NOTE: no scoped here for this to work -->
 <style lang="stylus">
-#chapter-content-pane
-  p
-    margin-bottom 20px
-    border-radius 4px
-    font-size 20px
-    line-height 36px
-    transition background-color 300ms ease-in
-
-    span
-      padding 4px 0
-      background-color white
+#review-sent-pane
+  #chapter-content-pane
+    p
+      margin-bottom 20px
       border-radius 4px
+      font-size 20px
+      line-height 36px
       transition background-color 300ms ease-in
 
-    span:hover
-      background-color #D9ECFF
-      cursor pointer
+      span
+        padding 4px 0
+        background-color white
+        border-radius 4px
+        transition background-color 300ms ease-in
 
-    span.mark
-      background-color #FFFFB3
+      span:hover
+        background-color #D9ECFF
+        cursor pointer
 
-    span.note
-      background-color #FFCFA0
+      span.mark
+        background-color #FFFFB3
 
-  ruby
-    rb
-      font-size 28px
+      span.note
+        background-color #FFCFA0
 
-    rt
-      font-size 8px
+    ruby
+      rb
+        font-size 28px
+
+      rt
+        font-size 8px
 </style>

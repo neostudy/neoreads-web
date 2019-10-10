@@ -101,6 +101,9 @@ export default {
     }
   },
   created() {
+    let sitename = this.$t("sitename");
+    document.title = sitename;
+
     EVENT_BUS.$on("HIDE_NAVMENU", this.hideNavMenu);
 
     // hide menubar in reader
@@ -126,6 +129,7 @@ export default {
     },
     changeLocale(loc) {
       this.$i18n.locale = loc;
+
     },
     userOptions() {
       console.log("show options");
@@ -160,7 +164,7 @@ export default {
           // self.$router.push("/home");
         })
         .catch(err => {
-          console.log("refresh failed!", err)
+          console.log("refresh failed!", err);
           self.$message("用户登录过期，请重新登录！");
           this.$store.dispatch("logout");
           self.$router.push("/user/login");

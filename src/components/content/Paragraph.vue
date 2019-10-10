@@ -1,5 +1,5 @@
 <template>
-  <div v-html="html"></div>
+  <div class="md-paragraph" v-html="html"></div>
 </template>
 
 <script>

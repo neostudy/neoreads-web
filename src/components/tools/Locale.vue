@@ -8,20 +8,22 @@
 
 <script>
 export default {
-  name: 'locale-changer',
-  data () {
-    return { langs: ['en', 'zh'] }
+  name: "locale-changer",
+  data() {
+    return { langs: ["en", "zh"] };
   },
   watch: {
-      "$i18n.locale"() {
-          console.log(this.$i18n.locale)
-      }
+    "$i18n.locale"() {
+      console.log(this.$i18n.locale);
+
+      let sitename = this.$t("sitename");
+      document.title = sitename;
+    }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
 .locale-changer
-    width 90px
-
+  width 90px
 </style>

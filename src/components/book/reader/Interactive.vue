@@ -38,7 +38,7 @@
         <label>翻译</label>
       </span>
       <div>
-        <translation :sent="selectedContent.content"></translation>
+        <translation-content></translation-content>
       </div>
     </el-tab-pane>
     <el-tab-pane name="qa" label="问答">
@@ -69,11 +69,13 @@ import { toPinyin } from "src/js/phonetics/pinyingen.js";
 
 import Notes from "./interactive/Notes.vue";
 import Translation from "../interactive/Translation.vue";
+import TranslationContent from "../../content/TranslationContent.vue";
 import { scrypt } from "crypto";
 export default {
   components: {
     Notes,
-    Translation
+    Translation,
+    TranslationContent
   },
   props: ["dict", "dftTab"],
   data() {

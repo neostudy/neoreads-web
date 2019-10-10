@@ -13,8 +13,9 @@
         </span>
         -->
         <span class="right">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="goWrite">修改文章</el-button>
-          <el-button type="primary" size="small" icon="el-icon-view" @click="goDetailView">研读模式</el-button>
+          <nicon i="pen" title="编辑" @click="goWrite"></nicon>
+          <nicon i="eye" title="研读" @click="goDetailView"></nicon>
+          <nicon i="globe-asia" title="翻译" @click="goTranslator"></nicon>
         </span>
       </el-header>
       <el-main>
@@ -26,9 +27,11 @@
 
 <script>
 import MdContent from "../../content/MarkdownContent.vue";
+import Nicon from "../../tools/NeoIcon.vue";
 export default {
   components: {
-    MdContent
+    MdContent,
+    Nicon
   },
   data() {
     return {
@@ -58,6 +61,7 @@ export default {
       this.$router.push(`/works/write/${this.artid}`)
     },
     goDetailView() {},
+    goTranslator() {},
     goBack() {
       this.$router.go(-1);
     },
@@ -93,4 +97,9 @@ export default {
 
     span.right
       float right
+      .neo-icon-wrap
+        color #409EFF
+        font-size 1.2em
+        margin-left 5px
+
 </style>

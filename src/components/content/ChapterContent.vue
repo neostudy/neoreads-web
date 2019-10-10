@@ -8,6 +8,8 @@
 import Scroller from "../tools/Scroller.vue";
 import MdContent from "./MarkdownContent.vue";
 import { CONTENTS } from "src/js/content/contents.js";
+import {EVENT_BUS} from "src/eventbus.js";
+
 
 export default {
   props: ["bookid", "chapid", "highlight"],
@@ -30,6 +32,8 @@ export default {
         self.title = CONTENTS.title;
       }
       this.$emit("content-loaded");
+      EVENT_BUS.$emit("chapter-content-loaded");
+      
     });
   },
   mounted() {},

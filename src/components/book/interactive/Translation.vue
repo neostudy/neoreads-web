@@ -6,7 +6,10 @@
 
 <script>
 export default {
-  props: ["sent"]
+  props: ["sent"],
+  created() {
+
+  }
 }
 </script>
 

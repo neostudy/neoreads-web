@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Home from './components/top/Home.vue';
+import 首页 from './components/top/Home.vue';
 import Library from './components/top/Library.vue';
 import Reviews from './components/top/Reviews.vue';
 
@@ -65,6 +66,10 @@ const routes = [
   {
     path: '/home',
     component: Home
+  },
+  {
+    path: '/首页',
+    component: 首页
   },
   {
     path: '/library',
