@@ -16,6 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './js/icon'
 Vue.component('faicon', FontAwesomeIcon)
 
+import Nfaicon from 'src/components/tools/NeoFAIcon.vue'
+Vue.component('nfaicon', Nfaicon)
+
 // axios
 import axios from 'axios'
 

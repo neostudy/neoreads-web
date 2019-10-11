@@ -1,12 +1,14 @@
 <template>
   <div id="translation-content-pane">
     <md-content :content="content" :title="title" @select="select"></md-content>
+    <translation-editor :show="showEditor"></translation-editor>
   </div>
 </template>
 
 <script>
 import Scroller from "../tools/Scroller.vue";
 import MdContent from "./MarkdownContent.vue";
+import TranslationEditor from "../book/interactive/TranslationEditor.vue";
 import { CONTENTS } from "src/js/content/contents.js";
 import { EVENT_BUS } from "src/eventbus.js";
 
@@ -15,11 +17,13 @@ export default {
   components: {
     Scroller,
     MdContent,
+    TranslationEditor
   },
   data() {
     return {
       title: "",
-      content: ""
+      content: "",
+      showEditor: false
     };
   },
   created() {
@@ -31,6 +35,7 @@ export default {
   updated() {
     this.updateIds();
     this.loadTranslations();
+    this.registerEditors();
   },
   watch: {},
   methods: {
@@ -44,9 +49,9 @@ export default {
       );
       for (let pane of contentpane) {
         for (let para of pane.getElementsByClassName("md-paragraph")) {
-          this.updateParaId(para, "P")
-          this.updateParaId(para, "LI")
-          this.updateParaId(para, "H1")
+          this.updateParaId(para, "P");
+          this.updateParaId(para, "LI");
+          this.updateParaId(para, "H1");
           for (let sent of para.getElementsByClassName("sent")) {
             let sid = sent.id;
             if (!!sid) {
@@ -64,8 +69,40 @@ export default {
         }
       }
     },
-    loadTranslations() {
-
+    loadTranslations() {},
+    registerEditors() {
+      for (let p of this.$el.getElementsByClassName("md-paragraph")) {
+        let elem = p.firstChild;
+        if (elem.tagName === "UL" || elem.tagName === "OL") {
+          for (let li of elem.children) {
+            li.classList.add("md-para");
+            li.onclick = event => {
+              this.openEditor(li);
+            };
+          }
+        } else {
+          elem.classList.add("md-para");
+          elem.onclick = event => {
+            this.openEditor(elem);
+          };
+        }
+      }
+    },
+    openEditor(p) {
+      let pid = p.id;
+      if (!!pid) {
+        let mdText = this.findMarkdownText(pid);
+        console.log(`pid: ${pid}, origin text:${mdText}`);
+        let editor = document.getElementById("translation-editor");
+        editor.remove();
+        //p.parentNode.insertBefore(editor, p.nextSibling);
+        p.classList.add("translation-panel")
+        p.appendChild(editor);
+        this.showEditor = true;
+      }
+    },
+    findMarkdownText(pid) {
+      return "TBI";
     }
   }
 };
@@ -74,4 +111,22 @@ export default {
 <style lang="stylus" scoped>
 #translation-content-pane
   min-height 860px
+</style>
+<style lang="stylus">
+#translation-content-pane
+  .md-para
+    border-radius 4px
+    cursor pointer
+
+    &:hover
+      background-color #ECF5FF
+
+  .translation-panel
+    padding 5px 10px
+    border 1px solid #C6E2FF
+    border-radius 5px
+    background-color #ECF5FF
+
+
+
 </style>
