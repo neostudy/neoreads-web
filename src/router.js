@@ -7,7 +7,8 @@ import Library from './components/top/Library.vue';
 import Reviews from './components/top/Reviews.vue';
 
 import Poems from './components/top/Poems.vue';
-import EditPoem from './components/poems/Edit.vue';
+import EditPoem from './components/poems/EditPoem.vue';
+import ViewPoem from './components/poems/ViewPoem.vue';
 
 import News from './components/top/News.vue';
 import NewsHome from "./components/news/Home.vue";
@@ -85,6 +86,10 @@ const routes = [
   {
     path: '/poems/edit',
     component: EditPoem
+  },
+  {
+    path: '/poems/view/:poemid',
+    component: ViewPoem
   },
   {
     path: '/reviews',

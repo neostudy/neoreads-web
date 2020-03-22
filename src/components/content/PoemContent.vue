@@ -2,7 +2,7 @@
   <div>
     <div v-bar v-if="!noScroll">
       <div class="poem-content-pane">
-        <div class="poem-content-inner">
+        <div class="poem-content-inner" :class="large ? 'large' : 'normal'">
           <paragraph
             v-for="(p,i) in paras"
             :key="i"
@@ -49,11 +49,9 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-mark"))
   .use(require("markdown-it-ins"))
   .use(require("markdown-it-attrs"))
-  .use(sentence)
-  ;
-
+  .use(sentence);
 export default {
-  props: ["title", "content", "noScroll"],
+  props: ["title", "content", "noScroll", "large"],
   components: {
     Paragraph
   },
@@ -65,7 +63,7 @@ export default {
   },
   watch: {
     content() {
-      console.log("content updated!")
+      console.log("content updated!");
       this.parseContent();
     }
   },
@@ -101,21 +99,22 @@ export default {
 
 <style lang="stylus" scoped>
 .poem-content-pane
-  text-align center
   max-height 860px
 
   .poem-content-inner
     padding 20px
-
-
-
 </style>
 
 <style lang="stylus">
 .poem-content-inner .sent
   display block
-  font-size 2em
   margin-bottom 0.6em
+
+.poem-content-inner.large .sent
+  font-size 2em
+
+.poem-content-inner.normal .sent
+  font-size 1.3em
 </style>
 
 <style lang="stylus" src="src/stylus/markdown.styl"></style>

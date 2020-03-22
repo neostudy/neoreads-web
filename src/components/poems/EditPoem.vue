@@ -70,7 +70,7 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      // fetch article content
+      // 获取诗歌内容
       this.authGet("/api/v1/articles/get/" + this.artid).then(res => {
         let article = res.data;
         this.kind = 2; // kind=2表示诗歌

@@ -15,8 +15,7 @@
       <el-main>
         <div class="book-list">
           <div class="book-item-wrap" v-for="(p, i) in poems" :key="i">
-            <div>{{p.title}}</div>
-            <div>{{p.content}}</div>
+            <poem-card :poem="p"></poem-card>
           </div>
         </div>
       </el-main>
@@ -27,8 +26,10 @@
 </template>
 
 <script>
+import PoemCard from "./PoemCard.vue"
 export default {
   components: {
+    PoemCard
   },
   data() {
     return {
@@ -86,5 +87,5 @@ export default {
       float right
 
   .book-item-wrap
-    display inline-block
+    display block
 </style>
