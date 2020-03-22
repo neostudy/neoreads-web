@@ -1,7 +1,7 @@
 <template>
   <div id="translation-content-pane">
     <md-content :content="content" :title="title" @select="select"></md-content>
-    <translation-editor :show="showEditor"></translation-editor>
+    <translation-editor :show="showEditor" :para="para"></translation-editor>
   </div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
     return {
       title: "",
       content: "",
-      showEditor: false
+      showEditor: false,
+      para: {}
     };
   },
   created() {
@@ -75,34 +76,43 @@ export default {
         let elem = p.firstChild;
         if (elem.tagName === "UL" || elem.tagName === "OL") {
           for (let li of elem.children) {
-            li.classList.add("md-para");
-            li.onclick = event => {
-              this.openEditor(li);
-            };
+            this.registerEditor(li);
           }
         } else {
-          elem.classList.add("md-para");
-          elem.onclick = event => {
-            this.openEditor(elem);
-          };
+          this.registerEditor(elem);
         }
       }
     },
+    registerEditor(elem) {
+      elem.classList.add("md-para");
+      let editor = document.getElementById("translation-editor");
+      elem.onclick = event => {
+        if (!event.path.includes(editor)) {
+          this.openEditor(elem);
+        }
+      };
+    },
     openEditor(p) {
       let pid = p.id;
+      if (pid.startsWith("t_")) pid = pid.substr(2);
       if (!!pid) {
         let mdText = this.findMarkdownText(pid);
-        console.log(`pid: ${pid}, origin text:${mdText}`);
+        let sents = CONTENTS.getParaSents(pid);
+        this.para = {
+          pid: pid,
+          sents: sents
+        };
         let editor = document.getElementById("translation-editor");
         editor.remove();
         //p.parentNode.insertBefore(editor, p.nextSibling);
-        p.classList.add("translation-panel")
+        p.classList.add("translation-panel");
         p.appendChild(editor);
         this.showEditor = true;
       }
     },
     findMarkdownText(pid) {
-      return "TBI";
+      let para = CONTENTS.getPara(pid);
+      return para;
     }
   }
 };
@@ -126,7 +136,4 @@ export default {
     border 1px solid #C6E2FF
     border-radius 5px
     background-color #ECF5FF
-
-
-
 </style>

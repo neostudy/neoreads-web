@@ -11,9 +11,9 @@
       </el-table>
     </div>
     <div class="toolbar">
-      <el-button type="primary">提交</el-button>
-      <el-button>取消</el-button>
-      <el-button class="right">机器翻译</el-button>
+      <el-button>机器翻译</el-button>
+      <el-button class="right">取消</el-button>
+      <el-button class="right" type="primary">提交</el-button>
     </div>
   </div>
 </template>
@@ -24,17 +24,13 @@ export default {
   data() {
     return {
       machineTranslation: "译文",
-      tableData: [
-        {
-          text: "a",
-          translation: "b"
-        },
-        {
-          text: "a",
-          translation: "b"
-        }
-      ]
+      tableData: []
     };
+  },
+  watch: {
+    para(n) {
+      this.tableData = this.para.sents;
+    }
   }
 };
 </script>

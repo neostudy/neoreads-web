@@ -27,6 +27,9 @@
                 <el-menu-item index="/library">
                   <span class="theme">{{$t('menu.library')}}</span>
                 </el-menu-item>
+                <el-menu-item index="/poems">
+                  <span class="theme">{{$t('menu.poems')}}</span>
+                </el-menu-item>
                 <el-menu-item index="/reviews">
                   <span class="theme">{{$t('menu.reviews')}}</span>
                 </el-menu-item>

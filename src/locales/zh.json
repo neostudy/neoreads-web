@@ -1,12 +1,13 @@
 {
   "menu": {
-    "home": "首页",
+    "home": "馆阁",
     "library": "书斋",
     "reviews": "温故",
     "news": "知新",
     "works": "以文",
     "people": "会友",
-    "dev": "开发"
+    "dev": "开发",
+    "poems": "诗社"
   },
   "en": "英文",
   "zh": "中文",

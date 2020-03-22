@@ -18,8 +18,9 @@
           <nicon i="globe-asia" title="翻译" @click="goTranslator"></nicon>
         </span>
       </el-header>
-      <el-main>
-        <md-content :content="content" :title="title" @select="contentSelected"></md-content>
+      <el-main class="content-pane">
+        <md-content v-if="kind != 1" :content="content" :title="title" @select="contentSelected"></md-content>
+        <poem-content v-if="kind == 1" :content="content" :title="title" @select="contentSelected"></poem-content>
       </el-main>
     </el-container>
   </div>
@@ -27,15 +28,18 @@
 
 <script>
 import MdContent from "../../content/MarkdownContent.vue";
+import PoemContent from "../../content/PoemContent.vue";
 import Nicon from "../../tools/NeoIcon.vue";
 export default {
   components: {
     MdContent,
+    PoemContent,
     Nicon
   },
   data() {
     return {
       artid: this.$route.params.artid,
+      kind: 0,
       title: "",
       content: "",
       paras: [],
@@ -53,6 +57,7 @@ export default {
       let articleUrl = `/api/v1/articles/get/${artid}`;
       return this.authGet(articleUrl).then(res => {
         let data = res.data;
+        this.kind = data.kind;
         this.title = data.title;
         this.content = data.content;
       });
@@ -102,4 +107,4 @@ export default {
         font-size 1.2em
         margin-left 5px
 
-</style>
+  </style>

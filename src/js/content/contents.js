@@ -1,4 +1,5 @@
 import { EVENT_BUS } from "src/eventbus.js"
+import _ from "lodash";
 var mdi = require("markdown-it")({
   html: true
 });
@@ -12,6 +13,7 @@ class ContentManager {
   element = null;
   initialized = false;
   last = {};
+  paras = {}; // markdown paragraphs
 
   constructor(store, axios) {
     this.$store = store;
@@ -55,6 +57,46 @@ class ContentManager {
     } else {
       throw "error";
     }
+  }
+
+  getPara(pid) {
+    if (!this.content) return null;
+    if (_.isEmpty(this.paras)) {
+      this.paras = this.splitParas(this.content);
+    }
+    return this.paras[pid];
+  }
+
+  splitParas(content) {
+    let dict = {}
+    let parts = content.split(/\{#(.{4})\}/);
+    if (parts.length >= 2) {
+      for (let i = 0; i < parts.length - 2; i += 2) {
+        let text = parts[i];
+        let pid = parts[i + 1];
+        dict[pid] = text;
+      }
+    }
+    return dict;
+  }
+
+  getParaSents(pid) {
+    let para = this.getPara(pid);
+    let sents = this.splitSents(para);
+    return sents;
+  }
+
+  splitSents(para) {
+    let res = []
+    let parts = para.split(/\[#(.{4})\]/);
+    if (parts.length >= 2) {
+      for (let i = 0; i < parts.length - 2; i += 2) {
+        let text = parts[i];
+        let sid = parts[i + 1];
+        res.push({ sid: sid, text: text });
+      }
+    }
+    return res;
   }
 
   parseContent() {

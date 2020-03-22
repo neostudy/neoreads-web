@@ -6,6 +6,9 @@ import 首页 from './components/top/Home.vue';
 import Library from './components/top/Library.vue';
 import Reviews from './components/top/Reviews.vue';
 
+import Poems from './components/top/Poems.vue';
+import EditPoem from './components/poems/Edit.vue';
+
 import News from './components/top/News.vue';
 import NewsHome from "./components/news/Home.vue";
 import NewsHot from "./components/news/Hot.vue";
@@ -74,6 +77,14 @@ const routes = [
   {
     path: '/library',
     component: Library
+  },
+  {
+    path: '/poems',
+    component: Poems
+  },
+  {
+    path: '/poems/edit',
+    component: EditPoem
   },
   {
     path: '/reviews',

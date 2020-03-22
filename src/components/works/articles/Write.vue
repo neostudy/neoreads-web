@@ -3,13 +3,26 @@
     <el-container>
       <el-header class="title-pane" height="50px">
         <span class="title">写文章</span>
+        <span></span>
       </el-header>
       <el-main>
         <div class="write-title-pane">
           <el-input size="large" class="write-title" v-model="title" placeholder="请输入标题"></el-input>
         </div>
+        <div class="write-kind-pane">
+          <el-radio-group v-model="kind">
+            <el-radio-button label="0">文章</el-radio-button>
+            <el-radio-button label="1">诗词</el-radio-button>
+            <el-radio-button label="2">新闻</el-radio-button>
+          </el-radio-group>
+        </div>
         <div class="write-editor-pane">
-          <mavon-editor id="write-mavon-editor" v-model="content" placeholder="请输入正文..." :boxShadow="false"></mavon-editor>
+          <mavon-editor
+            id="write-mavon-editor"
+            v-model="content"
+            placeholder="请输入正文..."
+            :boxShadow="false"
+          ></mavon-editor>
           <br />
           <el-button type="primary" @click="save">保存</el-button>
           <el-button @click="cancel()">取消</el-button>
@@ -25,7 +38,8 @@ export default {
     return {
       artid: this.$route.params.artid,
       title: "",
-      content: ""
+      content: "",
+      kind: 0
     };
   },
   computed: {
@@ -33,11 +47,18 @@ export default {
       return !!this.artid;
     }
   },
+  watch: {
+    kind: function(n, o) {
+      console.log(o, "->", n)
+    }
+
+  },
   created() {
     if (this.isEdit) {
       // fetch article content
       this.authGet("/api/v1/articles/get/" + this.artid).then(res => {
         let article = res.data;
+        this.kind = article.kind;
         this.title = article.title;
         this.content = article.content;
       });
@@ -53,6 +74,7 @@ export default {
         let url = "/api/v1/articles/add";
         let data = {
           title: this.title,
+          kind: Number(this.kind),
           content: this.content
         };
         if (this.isEdit) {
@@ -106,6 +128,9 @@ export default {
       float right
 
   .write-title-pane
+    margin-bottom 10px
+
+  .write-kind-pane
     margin-bottom 10px
 
 #write-mavon-editor
