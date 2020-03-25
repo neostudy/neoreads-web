@@ -64,16 +64,7 @@ Vue.use(Router)
 const routes = [
   {
     path: '/',
-    redirects: '/home',
-    component: Home
-  },
-  {
-    path: '/home',
-    component: Home
-  },
-  {
-    path: '/首页',
-    component: 首页
+    redirects: '/library'
   },
   {
     path: '/library',

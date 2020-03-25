@@ -6,7 +6,7 @@
           <el-row>
             <el-col :span="4">
               <div id="logo">
-                <router-link to="/home" id="logo-link">
+                <router-link to="/library" id="logo-link">
                   <span class="theme">{{$t('logo-neo')}}</span>
                   <span class="black">{{$t('logo-reads')}}</span>
                 </router-link>
@@ -21,9 +21,6 @@
                 mode="horizontal"
                 router
               >
-                <el-menu-item index="/home">
-                  <span class="theme">{{$t('menu.home')}}</span>
-                </el-menu-item>
                 <el-menu-item index="/library">
                   <span class="theme">{{$t('menu.library')}}</span>
                 </el-menu-item>
@@ -164,7 +161,6 @@ export default {
             expire: expire
           };
           self.$store.dispatch("refreshToken", user);
-          // self.$router.push("/home");
         })
         .catch(err => {
           console.log("refresh failed!", err);

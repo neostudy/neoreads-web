@@ -1,9 +1,11 @@
 <template>
   <div class="poem-card">
     <div class="poem-title">
+      <fav class="poem-fav" size="lg"></fav>
       <a class="poem-link" @click="view">{{poem.title}}</a>
       <span class="author">{{poem.author}}</span>
-      <span class="right">
+      <span class="poem-toolbar">
+        <star></star>
         <faicon icon="pen" title="编辑" @click="edit" size="sm"></faicon>
       </span>
     </div>
@@ -15,14 +17,17 @@
 
 <script>
 import PoemContent from "../content/PoemContent.vue";
+import Fav from "../tools/Fav.vue";
+import Star from "../tools/Star.vue";
 export default {
   props: ["poem"],
   components: {
-    PoemContent
+    PoemContent,
+    Fav,
+    Star
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     view() {
@@ -43,18 +48,27 @@ export default {
 
   .poem-title
     font-weight bold
-    padding 10px
+    padding 10px 10px 10px 0px
+
+    .poem-fav
+      margin-right 8px
 
     span.author
       font-weight normal
       color #666
 
-    span.right
+    span.poem-toolbar
       float right
+      font-weight normal
+      font-size 1.2em
+
+      span
+        margin-left 10px
 
       svg
         color #409eff
         cursor pointer
+        margin-left 10px
 
     a.poem-link
       font-size 1.2em

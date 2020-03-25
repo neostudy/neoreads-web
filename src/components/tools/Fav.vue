@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <faicon v-if="isFav" icon="heart" size="lg" @click="toggleFav" class="fav-icon" :class="isMark"></faicon>
-    <faicon v-if="!isFav" :icon="['far', 'heart']" size="lg" @click="toggleFav" class="fav-icon"></faicon>
-  </div>
+  <span>
+    <faicon v-if="isFav" icon="heart" :size="size" @click="toggleFav" class="fav-icon" :class="isMark"></faicon>
+    <faicon v-if="!isFav" :icon="['far', 'heart']" :size="size" @click="toggleFav" class="fav-icon"></faicon>
+  </span>
 </template>
 
 <script>
 export default {
-  props: ["fav"],
+  props: ["fav", "size"],
   computed: {
     isFav() {
       return this.fav && this.fav.id;
