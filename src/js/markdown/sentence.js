@@ -74,7 +74,7 @@ module.exports = function ins_plugin(md) {
       if (token.attrs && token.attrs.length > 0) {
         let attr = token.attrs[0];
         if (attr.length > 0 && attr[0] === 'id') {
-          return `<${tag} id="${attr[1]}">${span}`;
+          return `<${tag} class="para" id="${attr[1]}">${span}`;
         } else {
           return `<${tag}>${span}`;
         }
@@ -106,7 +106,7 @@ module.exports = function ins_plugin(md) {
       if (token.attrs && token.attrs.length > 0) {
         let attr = token.attrs[0];
         if (attr.length > 0 && attr[0] === 'id') {
-          return `<${tag} id="${attr[1]}">${span}`;
+          return `<${tag} class="para" id="${attr[1]}">${span}`;
         } else {
           return `<${tag}>${span}`;
         }

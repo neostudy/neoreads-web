@@ -33,7 +33,7 @@ class NoteManager {
   fetchNotes() {
     let self = this;
     let query = "bookid=" + this.ctx.pos.bookid + "&chapid=" + this.ctx.pos.chapid;
-    return this.authGet("/api/v1/note/list?" + query).then(res => {
+    return this.authGet("/api/v1/note/list/mine/?" + query).then(res => {
       for (let n of res.data) {
         self.notes[n.id] = n;
       }

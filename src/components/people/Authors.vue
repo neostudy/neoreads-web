@@ -15,8 +15,8 @@
         <div v-bar>
           <div class="article-list-vbar">
             <div class="article-list">
-              <div class="article-item-wrap" v-for="(a, i) in articles" :key="i">
-                <article-card @article-removed="articleRemoved" :article="a"></article-card>
+              <div class="article-item-wrap" v-for="(p, i) in people" :key="i">
+                <person-card :person="p"></person-card>
               </div>
             </div>
           </div>
@@ -27,8 +27,22 @@
 </template>
 
 <script>
+import PersonCard from "./PersonCard.vue";
 export default {
-  
+  components: {
+    PersonCard
+  },
+  data() {
+    return {
+      people: []
+    }
+  },
+  created() {
+    this.$axios.get("/api/v1/people/list").then(res => {
+      this.people = res.data
+    })
+
+  },
   methods: {
     editAuthor() {
       this.$router.push("/people/authors/edit");

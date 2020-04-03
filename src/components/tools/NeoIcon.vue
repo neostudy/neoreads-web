@@ -18,4 +18,5 @@ export default {
 
   .neo-icon
     margin-right 0.25em
+
 </style>

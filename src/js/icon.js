@@ -1,7 +1,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 // free-solid-svg
-import { faUser, faSearch, faList, faStream, faVolumeUp, faHeart, faQuoteLeft, faComment, faComments, faFire, faMoon, faSun, faChevronUp, faChevronDown, faExclamationCircle, faHashtag, faExternalLinkAlt, faUserFriends, faLanguage, faPenFancy, faUsers, faEyeSlash, faStar, faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import { faUser, faSearch, faList, faStream, faVolumeUp, faHeart, faQuoteLeft, faComment, faComments, faFire, faMoon, faSun, faChevronUp, faChevronDown, faExclamationCircle, faHashtag, faExternalLinkAlt, faUserFriends, faLanguage, faPenFancy, faUsers, faEyeSlash, faStar, faCaretDown, faPlus} from '@fortawesome/free-solid-svg-icons'
 import { faPenSquare, faPen, faGlobeAsia, faQuestion, faBookReader, faPenAlt, faTrash, faSort } from '@fortawesome/free-solid-svg-icons'
 import { faPlay, faNewspaper, faBook, faEdit, faHandsHelping, faShareAlt, faUpload, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { faEye, faHome} from '@fortawesome/free-solid-svg-icons'
@@ -12,7 +12,7 @@ library.add(faPlay, faNewspaper, faBook, faEdit, faHandsHelping)
 library.add(faArrowLeft, faEye, faHome, faFire, faMoon, faSun)
 library.add(faChevronUp, faChevronDown, faExclamationCircle, faHashtag)
 library.add(faExternalLinkAlt, faLanguage, faUserFriends, faPenFancy, faUsers, faEyeSlash)
-library.add(faStar, faCaretDown)
+library.add(faStar, faCaretDown, faPlus)
 
 // free-regular-svg
 import { faHeart as farHeart, faBookmark as farBookmark, faStar as farStar} from '@fortawesome/free-regular-svg-icons'

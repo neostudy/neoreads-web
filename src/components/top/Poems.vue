@@ -2,8 +2,8 @@
   <div>
     <div class="center-pane">
       <el-container>
-        <el-aside width="250px" class="side-bar"><poem-nav></poem-nav></el-aside>
-        <el-main>
+        <el-aside width="250px" class="poems-sidebar"><poem-nav></poem-nav></el-aside>
+        <el-main class="poems-main">
           <poem-list></poem-list>
           <!--
           <el-container>
@@ -44,11 +44,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.side-bar
-  padding 10px
+.poems-sidebar
+  padding 20px 20px 0px 0
   border-right 1px solid #eee
   min-height 500px
 
+.poems-main
+  padding 0px 20px
 .poems-header
   padding 5px
   border-bottom 1px solid #eee
