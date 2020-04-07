@@ -58,7 +58,7 @@ export default {
           }
           self.$store.dispatch("login", user);
           self.$message("登陆成功！")
-          self.$router.push('/home')
+          self.$router.push('/')
         })
         .catch(err => {
           self.errmsg = '登陆失败！用户名或密码错误，请重新登录'

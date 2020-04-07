@@ -6,7 +6,9 @@
           <div class="view-poem-pane">
             <div class="poem-title-pane">
               <span class="poem-title">{{poem.title}}</span>
-              <span class="author">{{poem.author}}</span>
+              <span class="author">
+                <a :href="'/#/people/view/'+poem.author" >{{poem.author}}</a>
+              </span>
             </div>
             <div class="poem-content">
               <poem-content :content="poem.content" @select="select"></poem-content>
@@ -113,7 +115,7 @@ export default {
     border-right 1px solid #eee
 
   .poem-notes
-    padding 30px
+    padding 0px 10px 0px 30px
 
   .poem-toolbar
     font-weight normal

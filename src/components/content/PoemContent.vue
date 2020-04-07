@@ -109,6 +109,11 @@ export default {
 .poem-content-inner .sent
   display block
   margin-bottom 0.6em
+  padding 5px 10px
+
+  &.selected
+    background-color #C6E2FF
+    border-radius 5px
 
 .poem-content-inner.large .sent
   font-size 2em

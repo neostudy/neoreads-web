@@ -13,9 +13,9 @@ export default {
     for (let sent of sents) {
       let self = this;
       sent.onclick = function(event) {
+        self.changeSelected(sent);
         // TODO: 应当遍历所有父节点，直到找到一个class="para"的节点
         let para = event.target.parentNode;
-        console.log("para:", para);
         let paraid = para.id;
         // TODO：处理跨句选择转化为多个完整句子的情形。
         let selectedText = getSelectionText();
@@ -50,7 +50,14 @@ export default {
       };
     }
   },
-  methods: {}
+  methods: {
+    // 取消其他句子的高亮，并将当前句子高亮
+    changeSelected(sent) {
+      let sents = this.$el.parentNode.getElementsByClassName("sent");
+      Array.from(sents).forEach(el => el.classList.remove("selected"));
+      sent.classList.add("selected");
+    }
+  }
 };
 </script>
 

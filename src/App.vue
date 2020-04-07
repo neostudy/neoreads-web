@@ -181,6 +181,7 @@ export default {
 a
   text-decoration none
   cursor pointer
+  color #999
   &:hover
     color #409EFF
 </style>

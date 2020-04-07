@@ -1,6 +1,6 @@
 <template>
   <div class="poem-notes">
-    <div class="note-section">
+    <div v-if="isSelection" class="note-section">
       <div class="note-section-title">
         <span class="right">
           <el-rate :value="4.5" disabled show-score text-color="#ff9900" score-template="{value}"></el-rate>
@@ -16,7 +16,6 @@
       <div class="note-section-title">
         笔记列表
         <faicon icon="plus" title="添加" class="right" @click="addNote"></faicon>
-        <faicon icon="pen" title="编辑" class="right" @click="editNote"></faicon>
       </div>
       <div class="note-pane">
         <div v-show="isEdit" class="note-editor">
@@ -26,7 +25,7 @@
           <el-button @click="cancel()">取消</el-button>
         </div>
         <div class="note-list">
-          <note-card v-for="n in notes" :key="n.id" :note="n"></note-card>
+          <note-card v-for="n in focusNotes" :key="n.id" :note="n" @removed="noteRemoved"></note-card>
         </div>
       </div>
     </div>
@@ -50,6 +49,26 @@ export default {
       },
       notes: []
     };
+  },
+  computed: {
+    isSelection() {
+      return "type" in this.selection;
+    },
+    focusNotes() {
+      // 如果用户选择了部分内容，只显示相关的笔记
+      if (this.isSelection) {
+        if (this.selection.type == "sent") {
+          let curSentid = this.selection.location.sentid;
+          return this.notes.filter(x => x.sentid == curSentid);
+        } else if (this.selection.type == "word") {
+          // TODO: implement
+          return this.notes;
+        }
+      } else {
+        // 否则只显示全文相关的笔记
+        return this.notes.filter(x => x.ptype == 3); // ptype==3 => article
+      }
+    }
   },
   created() {
     this.loadNotes();
@@ -89,7 +108,7 @@ export default {
         url = "/api/v1/note/add";
       }
 
-      console.log("save note:", note);
+      console.log("saving note:", note);
       return this.authPost(url, note)
         .then(res => {
           let noteid = res.data.id;
@@ -109,18 +128,21 @@ export default {
     loadNotes() {
       console.log("loading all notes");
       let query = "colid=" + this.where.colid + "&artid=" + this.where.artid;
-      this.authGet("/api/v1/note/list/all?" + query).then(res => {
+      this.authGet("/api/v1/note/list/cards?" + query).then(res => {
         this.notes = res.data;
         return true;
       });
     },
+    noteRemoved(note) {
+      this.notes = this.notes.filter(n => n.id != note.id);
+    }
   }
 };
 </script>
 
+
 <style lang="stylus" scoped>
 .note-section
-  padding 10px
   margin-bottom 10px
 
   .note-ref
@@ -154,5 +176,4 @@ export default {
     .sort-by
       font-weight normal
       color #999
-
 </style>

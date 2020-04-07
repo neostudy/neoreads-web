@@ -43,6 +43,7 @@ import AddTranslation from './components/works/translations/AddTranslation.vue';
 
 import People from './components/top/People.vue';
 import Authors from './components/people/Authors.vue';
+import PeopleView from './components/people/View.vue';
 import EditAuthor from './components/people/EditAuthor.vue';
 
 import Dev from './components/top/Dev.vue';
@@ -262,6 +263,10 @@ const routes = [
         component: EditAuthor
       }
     ]
+  },
+  {
+    path: '/people/view/:pid',
+    component: PeopleView
   },
   {
     path: '/book/:id',
