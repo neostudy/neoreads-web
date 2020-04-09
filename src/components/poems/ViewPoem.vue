@@ -7,7 +7,7 @@
             <div class="poem-title-pane">
               <span class="poem-title">{{poem.title}}</span>
               <span class="author">
-                <a :href="'/#/people/view/'+poem.author" >{{poem.author}}</a>
+                <a :href="'/#/people/view/'+poem.author">{{poem.author}}</a>
               </span>
             </div>
             <div class="poem-content">
@@ -16,7 +16,7 @@
           </div>
         </el-col>
         <el-col :span="14">
-          <poem-notes :selection="selection" :where="where"></poem-notes>
+          <poem-notes :selection="selection" :where="where" @notes-loaded="notesLoaded"></poem-notes>
         </el-col>
       </el-row>
       <div class="poem-toolbar">
@@ -48,10 +48,10 @@ export default {
       },
       selection: {},
       where: {
-        colid: "", 
-        artid: this.$route.params.poemid,
+        colid: "",
+        artid: this.$route.params.poemid
       },
-      selectedText: "",
+      selectedText: ""
     };
   },
   created() {
@@ -71,6 +71,29 @@ export default {
       if (data.type == "sent") {
       }
     },
+    notesLoaded(notes) {
+      console.log("notes loaded:", notes);
+      let sentCounts = {};
+      notes.map(n => {
+        if (n.ptype == 1) {
+          let sentid = n.sentid;
+          if (sentid in sentCounts) {
+            sentCounts[sentid]++;
+          } else {
+            sentCounts[sentid] = 1;
+          }
+        }
+      });
+      let sents = this.$el.getElementsByClassName("sent");
+      for (let sent of sents) {
+        let sentid = sent.id;
+        if (sentid in sentCounts) {
+          let stat = sent.nextSibling;
+          stat.innerText = sentCounts[sentid];
+          stat.style.display = "inline";
+        }
+      }
+    }
   }
 };
 </script>

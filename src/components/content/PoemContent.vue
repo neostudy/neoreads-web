@@ -106,20 +106,34 @@ export default {
 </style>
 
 <style lang="stylus">
-.poem-content-inner .sent
-  display block
-  margin-bottom 0.6em
-  padding 5px 10px
+.poem-content-inner
 
-  &.selected
-    background-color #C6E2FF
-    border-radius 5px
+  & .sent
+    display inline-block
+    margin-bottom 0.6em
+    padding 5px 10px
 
-.poem-content-inner.large .sent
-  font-size 2em
+    &.selected
+      background-color #C6E2FF
+      border-radius 5px
 
-.poem-content-inner.normal .sent
-  font-size 1.3em
+  &.large .sent
+    font-size 2em
+
+  &.normal .sent
+    font-size 1.3em
+
+  & .sent-stat
+    display none
+    border 1px solid #ddd
+    border-radius 4px
+    font-size 0.8em
+    color #666
+    background-color #fafafa
+    padding 2px 6px
+    margin-left 10px
+
+
 </style>
 
 <style lang="stylus" src="src/stylus/markdown.styl"></style>

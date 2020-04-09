@@ -15,17 +15,29 @@
     <div class="note-section my-note">
       <div class="note-section-title">
         笔记列表
+        <span class="note-type-filter">
+          <el-radio-group size="small" v-model="filterType">
+            <el-radio-button label="all">全部 {{noteCounts.all}}</el-radio-button>
+            <el-radio-button label="note">笔记 {{noteCounts.note}}</el-radio-button>
+            <el-radio-button label="reference">引用 {{noteCounts.reference}}</el-radio-button>
+            <el-radio-button label="translation">翻译 {{noteCounts.translation}}</el-radio-button>
+          </el-radio-group>
+        </span>
         <faicon icon="plus" title="添加" class="right" @click="addNote"></faicon>
       </div>
       <div class="note-pane">
-        <div v-show="isEdit" class="note-editor">
+        <div v-show="showEditor" class="note-editor">
+          <el-radio-group v-model="noteType">
+            <el-radio-button label="note">笔记</el-radio-button>
+            <el-radio-button label="reference">引用</el-radio-button>
+            <el-radio-button label="translation">翻译</el-radio-button>
+          </el-radio-group>
           <mavon-editor v-model="editorText"></mavon-editor>
-          <br />
           <el-button type="primary" @click="saveNote">保存</el-button>
           <el-button @click="cancel()">取消</el-button>
         </div>
         <div class="note-list">
-          <note-card v-for="n in focusNotes" :key="n.id" :note="n" @removed="noteRemoved"></note-card>
+          <note-card v-for="n in filteredNotes" :key="n.id" :note="n" @removed="noteRemoved"></note-card>
         </div>
       </div>
     </div>
@@ -41,7 +53,9 @@ export default {
   props: ["selection", "where"],
   data() {
     return {
-      isEdit: false,
+      showEditor: false,
+      filterType: "all",
+      noteType: "note",
       isFav: false,
       editorText: "",
       note: {
@@ -55,19 +69,49 @@ export default {
       return "type" in this.selection;
     },
     focusNotes() {
+      var focusNotes = [];
       // 如果用户选择了部分内容，只显示相关的笔记
       if (this.isSelection) {
         if (this.selection.type == "sent") {
           let curSentid = this.selection.location.sentid;
-          return this.notes.filter(x => x.sentid == curSentid);
+          focusNotes = this.notes.filter(x => x.sentid == curSentid);
         } else if (this.selection.type == "word") {
           // TODO: implement
-          return this.notes;
+          focusNotes = this.notes;
         }
       } else {
         // 否则只显示全文相关的笔记
-        return this.notes.filter(x => x.ptype == 3); // ptype==3 => article
+        focusNotes = this.notes.filter(x => x.ptype == 3); // ptype==3 => article
       }
+      return focusNotes;
+    },
+    filteredNotes() {
+      // 根据笔记类型筛选条件进行筛选
+      if (this.filterType == "note") {
+        return this.focusNotes.filter(x => x.ntype == 1);
+      } else if (this.filterType == "reference") {
+        return this.focusNotes.filter(x => x.ntype == 3);
+      } else if (this.filterType == "translation") {
+        return this.focusNotes.filter(x => x.ntype == 4);
+      } else {
+        return this.focusNotes;
+      }
+    },
+    noteCounts() {
+      let counts = {};
+      this.focusNotes.map(n => {
+        if (n.ntype in counts) {
+          counts[n.ntype]++;
+        } else {
+          counts[n.ntype] = 1;
+        }
+      });
+      return {
+        all: this.focusNotes.length,
+        note: counts[1],
+        reference: counts[3],
+        translation: counts[4]
+      };
     }
   },
   created() {
@@ -78,14 +122,15 @@ export default {
     removeFav() {},
     cancel() {
       this.editorText = "";
-      this.isEdit = false;
+      this.showEditor = false;
     },
     editNote() {
       this.editorText = this.note.content;
-      this.isEdit = true;
+      this.showEditor = true;
     },
     addNote() {
-      this.isEdit = true;
+      this.noteType = "note";
+      this.showEditor = true;
     },
     saveNote() {
       let note = this.note;
@@ -109,6 +154,7 @@ export default {
       }
 
       console.log("saving note:", note);
+      this.showEditor = false;
       return this.authPost(url, note)
         .then(res => {
           let noteid = res.data.id;
@@ -116,7 +162,6 @@ export default {
           //self.notes[noteid] = note;
           //EVENT_BUS.$emit("NOTE_ADDED", note);
           //this.$store.dispatch("addNote", note);
-          this.isEdit = false;
           this.loadNotes();
           return note;
         })
@@ -130,6 +175,7 @@ export default {
       let query = "colid=" + this.where.colid + "&artid=" + this.where.artid;
       this.authGet("/api/v1/note/list/cards?" + query).then(res => {
         this.notes = res.data;
+        this.$emit("notes-loaded", this.notes);
         return true;
       });
     },
@@ -162,6 +208,9 @@ export default {
     font-weight bold
     color #666
 
+    .note-type-filter
+      margin-left 20px
+
     svg
       margin-left 6px
       color #409EFF
@@ -176,4 +225,17 @@ export default {
     .sort-by
       font-weight normal
       color #999
+
+  .note-editor
+    border 1px dotted #ddd
+    border-radius 5px
+    padding 15px
+    background-color #eee
+
+    div
+      margin-bottom 10px
+
+    .note-editor-title
+      font-weight bold
+      margin-bottom 10px
 </style>

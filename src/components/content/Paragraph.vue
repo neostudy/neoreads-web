@@ -11,6 +11,16 @@ export default {
   mounted() {
     let sents = this.$el.getElementsByClassName("sent");
     for (let sent of sents) {
+      // 在每句话之前添加一个统计块
+      let stat = document.createElement("span");
+      stat.classList.add("sent-stat");
+      let parent = sent.parentNode;
+      if (parent.lastChild == sent) {
+        parent.appendChild(stat);
+      } else {
+        parent.insertBefore(stat, sent.nextSibling);
+      }
+      // 给每句话添加一个选中事件
       let self = this;
       sent.onclick = function(event) {
         self.changeSelected(sent);
