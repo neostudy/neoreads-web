@@ -67,3 +67,25 @@ export function getSelectionText() {
   }
   return text;
 }
+
+export function isCrossoverSelection() {
+  if (!window.getSelection()) {
+    return false;
+  }
+  let sel = window.getSelection();
+  if (sel.anchorNode == sel.focusNode) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export function getWordSelection() {
+  let sel = window.getSelection();
+  return {
+    el: sel.anchorNode,
+    startpos : sel.anchorOffset,
+    endpos: sel.focusOffset,
+    text: sel.toString()
+  }
+}

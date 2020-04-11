@@ -117,6 +117,14 @@ export default {
       background-color #C6E2FF
       border-radius 5px
 
+    & .note
+      //background-color #C6E2FF
+      border-bottom 5px inset #C6E2FF
+
+      &.deep
+        //background-color #A6C2CF
+        border-bottom 5px inset #A6C2CF
+
   &.large .sent
     font-size 2em
 

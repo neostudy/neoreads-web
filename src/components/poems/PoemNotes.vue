@@ -68,6 +68,18 @@ export default {
     isSelection() {
       return "type" in this.selection;
     },
+    nType() {
+      let typeMap = {
+        note: 1,
+        reference: 3,
+        translation: 4
+      };
+      if (this.noteType in typeMap) {
+        return typeMap[this.noteType];
+      } else {
+        return 1; // 默认是普通笔记
+      }
+    },
     focusNotes() {
       var focusNotes = [];
       // 如果用户选择了部分内容，只显示相关的笔记
@@ -140,14 +152,25 @@ export default {
         note.content = this.editorText;
         url = "/api/v1/note/modify";
       } else {
+        let sel = this.selection;
+        let ptype = 1; // 句子
+        let spos = 0;
+        let epos = 0;
+        if (sel.type == "word") {
+          ptype = 0; // 字词
+          spos = sel.location.startpos;
+          epos = sel.location.endpos;
+        }
         // create
         note = {
-          ntype: 1, // note
-          ptype: 1, // position: sentence
+          ntype: this.nType, // note
+          ptype: ptype,
           colid: this.where.colid,
           artid: this.where.artid,
           paraid: this.selection.location.paraid,
           sentid: this.selection.location.sentid,
+          startpos: spos,
+          endpos: epos,
           content: this.editorText
         };
         url = "/api/v1/note/add";

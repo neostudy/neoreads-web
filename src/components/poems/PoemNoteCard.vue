@@ -72,8 +72,8 @@ export default {
 
     .note-type
       color #666
-      background-color testcolor
-      border 1px solid #ddd
+      background-color #eaeaea
+      border 1px solid #999
       border-radius 3px
       font-size 0.6em
       padding 0.2em

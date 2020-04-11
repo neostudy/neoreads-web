@@ -73,6 +73,13 @@ export default {
     },
     notesLoaded(notes) {
       console.log("notes loaded:", notes);
+      // 更新每句内容的热点统计
+      this.updateStats(notes);
+      // 高亮单词级别的笔记（即ptype == 0的笔记）
+      let wordNotes = notes.filter(n => n.ptype == 0);
+      this.markWordNotes(wordNotes);
+    },
+    updateStats(notes) {
       let sentCounts = {};
       notes.map(n => {
         if (n.ptype == 1) {
@@ -92,6 +99,108 @@ export default {
           stat.innerText = sentCounts[sentid];
           stat.style.display = "inline";
         }
+      }
+    },
+    markWordNotes(wordNotes) {
+      // 先清理上次高亮的所有单词（用于笔记更新）
+      let words = this.$el.getElementsByClassName("word-with-note");
+      for (let word of words) {
+        word.classList.remove("word-with-note");
+      }
+      // 把各个句子中的单词收集到一起
+      let sentMap = {};
+
+      for (let note of wordNotes) {
+        let sentid = note.sentid;
+        if (sentid in sentMap) {
+          sentMap[sentid].push(note);
+        } else {
+          sentMap[sentid] = [note];
+        }
+      }
+
+      console.log("sentMap", sentMap);
+
+      // 对于每个句子，分别调用markWordsInSent()
+      for (let sentid in sentMap) {
+        let notes = sentMap[sentid];
+        this.markWordsInSent(sentid, notes);
+      }
+    },
+    markWordsInSent(sentid, notes) {
+      console.log("marking sent: ", sentid, "with", notes);
+      // 先获取所有笔记的位置信息，并进行排序。范围相同的笔记汇集到同一个range里
+      let ranges = [];
+      for (let note of notes) {
+        let spos = note.startpos;
+        let epos = note.endpos;
+        let isNewRange = true;
+        for (let range of ranges) {
+          if (range.spos == spos && range.epos == epos) {
+            range.notes.push(note);
+            isNewRange = false;
+          }
+        }
+        if (isNewRange) {
+          ranges.push({
+            spos: spos,
+            epos: epos,
+            notes: [note]
+          });
+        }
+      }
+      ranges.sort(function(x, y) {
+        if (x.spos != y.spos) {
+          return x.spos - y.spos;
+        } else {
+          return x.epos - y.epos;
+        }
+      });
+      console.log("sorted ranges:", ranges);
+
+      // 把各个range整理到一句话的各个字位上
+      let slots = [];
+      let sent = document.getElementById(sentid);
+      let text = sent.textContent;
+      for (let i = 0; i < text.length; ++i) {
+        slots.push({ s: [], e: [] });
+      }
+
+      for (let range of ranges) {
+        slots[range.spos].s.push(range);
+        slots[range.epos].e.push(range);
+      }
+
+      console.log("slots:", slots);
+
+      // 根据slots将文本转化为嵌套的span
+      let level = 0;
+      let spans = [];
+      let span = document.createElement("span");
+      spans.push(span);
+      for (let i = 0; i < slots.length; ++i) {
+        let slot = slots[i];
+        if (slot.s.length > 0) { // 如果是某个range的起点
+          span = document.createElement("span");
+          span.classList.add("note");
+          spans.push(span);
+          level = level + slot.s.length;
+          if (level > 1) {
+            span.classList.add("deep");
+          }
+        } else if (slot.e.length > 0) { // 如果是某个range的终点
+          span = document.createElement("span");
+          level = level - slot.e.length;
+          if (level > 0) {
+            span.classList.add("note");
+          }
+          spans.push(span);
+        }
+        span.innerText = span.innerText + text[i];
+      }
+      sent.innerHTML = "";
+      for (let span of spans) {
+        sent.append(span);
       }
     }
   }

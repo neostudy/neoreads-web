@@ -175,8 +175,6 @@ export default {
 
 <style lang="stylus">
 
-testcolor = #eee
-
 *
   margin 0
   padding 0
