@@ -10,7 +10,7 @@
                   <span class="theme">{{$t('logo-neo')}}</span>
                   <span class="black">{{$t('logo-reads')}}</span>
                 </router-link>
-                <span id="logo-version">v0.3.4</span>
+                <span id="logo-version">v0.3.5</span>
               </div>
             </el-col>
             <el-col :span="12">
@@ -24,17 +24,17 @@
                 <el-menu-item index="/library">
                   <span class="theme">{{$t('menu.library')}}</span>
                 </el-menu-item>
-                <el-menu-item index="/poems">
-                  <span class="theme">{{$t('menu.poems')}}</span>
-                </el-menu-item>
                 <el-menu-item index="/reviews">
                   <span class="theme">{{$t('menu.reviews')}}</span>
                 </el-menu-item>
-                <el-menu-item index="/news">
-                  <span class="theme">{{$t('menu.news')}}</span>
-                </el-menu-item>
                 <el-menu-item index="/works">
                   <span class="theme">{{$t('menu.works')}}</span>
+                </el-menu-item>
+                <el-menu-item index="/poems">
+                  <span class="theme">{{$t('menu.poems')}}</span>
+                </el-menu-item>
+                <el-menu-item index="/news">
+                  <span class="theme">{{$t('menu.news')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/people">
                   <span class="theme">{{$t('menu.people')}}</span>

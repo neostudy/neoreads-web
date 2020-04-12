@@ -2,14 +2,14 @@
   <div id="books-pane">
     <el-container>
       <el-header class="title-pane" height="50px">
-        <span class="title">诗歌列表</span>
+        <span class="title">我的诗单</span>
         <span class="right">
           <el-divider direction="vertical"></el-divider>按名称排序
           <faicon icon="sort" title="排序"></faicon>
         </span>
         <span class="right">
-          <el-button type="primary" size="small" icon="el-icon-search" @click="searchPoems">搜索</el-button>
-          <el-button type="primary" size="small" icon="el-icon-circle-plus" @click="addPoem">添加诗歌</el-button>
+          <el-button type="primary" size="small" icon="el-icon-search" @click="discoverPoems">发现</el-button>
+          <el-button type="primary" size="small" icon="el-icon-circle-plus" @click="addPoem">添加</el-button>
         </span>
       </el-header>
       <el-main>
@@ -49,7 +49,7 @@ export default {
       });
   },
   methods: {
-    searchPoems() {},
+    discoverPoems() {},
     addPoem() {
       this.$router.push("/poems/edit");
     },

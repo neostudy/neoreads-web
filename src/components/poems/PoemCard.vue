@@ -1,7 +1,6 @@
 <template>
   <div class="poem-card">
     <div class="poem-title">
-      <fav class="poem-fav" size="lg"></fav>
       <a class="poem-link" @click="view">{{poem.title}}</a>
       <span class="author">{{poem.author}}</span>
       <span class="poem-toolbar">
@@ -48,7 +47,8 @@ export default {
 
   .poem-title
     font-weight bold
-    padding 10px 10px 10px 0px
+    font-size 1.2em
+    padding 10px
 
     .poem-fav
       margin-right 8px
@@ -71,6 +71,7 @@ export default {
         margin-left 10px
 
     a.poem-link
+      color #333
       font-size 1.2em
       cursor pointer
       margin-right 10px

@@ -102,7 +102,7 @@ export default {
   max-height 860px
 
   .poem-content-inner
-    padding 20px
+    padding 20px 20px 20px 0
 </style>
 
 <style lang="stylus">
@@ -111,7 +111,7 @@ export default {
   & .sent
     display inline-block
     margin-bottom 0.6em
-    padding 5px 10px
+    padding 5px
 
     &.selected
       background-color #C6E2FF

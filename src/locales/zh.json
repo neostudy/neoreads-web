@@ -2,11 +2,11 @@
   "menu": {
     "home": "首页",
     "library": "书馆",
-    "reviews": "温故",
-    "news": "知新",
-    "works": "以文",
-    "people": "会友",
-    "dev": "开发",
+    "reviews": "学堂",
+    "news": "报亭",
+    "works": "文斋",
+    "people": "茶肆",
+    "dev": "研院",
     "poems": "诗社"
   },
   "en": "英文",
