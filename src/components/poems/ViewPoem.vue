@@ -68,8 +68,38 @@ export default {
     select(data) {
       this.selection = data;
       this.selectedText = data.content;
-      if (data.type == "sent") {
+      this.highlightSelection(this.selection);
+    },
+    // 取消其他句子的高亮，并将当前句子高亮
+    highlightSelection(sel) {
+      this.clearCurrentSelection();
+      if (sel.type == "sent") {
+        let sent = sel.el;
+        sent.classList.add("selected");
+      } else if (sel.type == "word") {
+        let spos = sel.location.startpos;
+        let epos = sel.location.endpos;
+        let sent = sel.el;
+        // 找到所有涉及到的span
+        let curIdx = 0;
+        for (let span of sent.children) {
+          let text = span.textContent;
+          let textLen = text.length;
+          if (curIdx >= spos && curIdx + textLen <= epos) {
+            span.classList.add("selected");
+          }
+          curIdx += text.length;
+        }
+        console.log("selected location:", JSON.stringify(sel.location));
+        //this.highlightWord(sent, spos, epos);
       }
+    },
+    clearCurrentSelection() {
+      // 清除所有包含selected类别的span
+      let highlighted = this.$el.getElementsByClassName("selected");
+      Array.from(highlighted).forEach(span =>
+        span.classList.remove("selected")
+      );
     },
     notesLoaded(notes) {
       console.log("notes loaded:", notes);
@@ -163,7 +193,7 @@ export default {
       let sent = document.getElementById(sentid);
       let text = sent.textContent;
       for (let i = 0; i < text.length; ++i) {
-        slots.push({ s: [], e: [] });
+        slots.push({ s: [], e: [], h: [] }); // s: start, e: end, h: highlight
       }
 
       for (let range of ranges) {
@@ -180,19 +210,33 @@ export default {
       spans.push(span);
       for (let i = 0; i < slots.length; ++i) {
         let slot = slots[i];
-        if (slot.s.length > 0) { // 如果是某个range的起点
+        if (slot.s.length > 0) {
+          // 如果是某个range的起点
           span = document.createElement("span");
+          span.pos = i;
           span.classList.add("note");
+          span.ranges = slot.s;
+          this.registerWordNote(span);
           spans.push(span);
           level = level + slot.s.length;
           if (level > 1) {
             span.classList.add("deep");
           }
-        } else if (slot.e.length > 0) { // 如果是某个range的终点
+        } else if (slot.e.length > 0) {
+          // 如果是某个range的终点
+          if (!span.ranges) {
+            span.ranges = slot.e;
+          } else {
+            span.ranges = span.ranges.concat(slot.e);
+          }
+
           span = document.createElement("span");
+          span.pos = i;
           level = level - slot.e.length;
           if (level > 0) {
             span.classList.add("note");
+            //span.ranges = slot.e;
+            this.registerWordNote(span);
           }
           spans.push(span);
         }
@@ -202,6 +246,42 @@ export default {
       for (let span of spans) {
         sent.append(span);
       }
+    },
+    registerWordNote(span) {
+      span.onclick = event => {
+        console.log("word note clicked");
+        console.log("notes:", span.notes);
+        console.log("ranges:", span.ranges);
+        event.stopPropagation();
+        let cur = span.curRange;
+        if (cur == undefined) {
+          cur = 0;
+          span.curRange = 0;
+        } else {
+          cur = (cur + 1) % span.ranges.length;
+          span.curRange = cur;
+        }
+        console.log("cur:", cur);
+        let sent = span.parentNode;
+        let sentid = sent.id;
+        let para = sent.parentNode;
+        let paraid = para.id;
+        let range = span.ranges[cur];
+        let sel = {
+          type: "word",
+          content: span.textContent,
+          el: sent,
+          event: event,
+          location: {
+            paraid: paraid,
+            sentid: sentid,
+            startpos: range.spos,
+            endpos: range.epos
+          }
+        };
+        console.log("sel:", sel);
+        this.select(sel, sel.content);
+      };
     }
   }
 };

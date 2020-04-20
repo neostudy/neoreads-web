@@ -80,12 +80,3 @@ export function isCrossoverSelection() {
   }
 }
 
-export function getWordSelection() {
-  let sel = window.getSelection();
-  return {
-    el: sel.anchorNode,
-    startpos : sel.anchorOffset,
-    endpos: sel.focusOffset,
-    text: sel.toString()
-  }
-}

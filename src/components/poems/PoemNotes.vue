@@ -84,12 +84,21 @@ export default {
       var focusNotes = [];
       // 如果用户选择了部分内容，只显示相关的笔记
       if (this.isSelection) {
-        if (this.selection.type == "sent") {
-          let curSentid = this.selection.location.sentid;
-          focusNotes = this.notes.filter(x => x.sentid == curSentid);
-        } else if (this.selection.type == "word") {
+        let sel = this.selection;
+        if (sel.type == "sent") {
+          let curSentid = sel.location.sentid;
+          focusNotes = this.notes.filter(
+            x => x.ptype == 1 && x.sentid == curSentid
+          );
+        } else if (sel.type == "word") {
           // TODO: implement
-          focusNotes = this.notes;
+          focusNotes = this.notes.filter(
+            x =>
+              x.ptype == 0 &&
+              x.sentid == sel.location.sentid &&
+              x.startpos == sel.location.startpos &&
+              x.endpos == sel.location.endpos
+          );
         }
       } else {
         // 否则只显示全文相关的笔记

@@ -117,6 +117,9 @@ export default {
       background-color #C6E2FF
       border-radius 5px
 
+    & span.selected
+      background-color #C6E2FF
+
     & .note
       //background-color #C6E2FF
       border-bottom 5px inset #C6E2FF
