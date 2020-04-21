@@ -18,9 +18,9 @@
         <span class="note-type-filter">
           <el-radio-group size="small" v-model="filterType">
             <el-radio-button label="all">全部 {{noteCounts.all}}</el-radio-button>
-            <el-radio-button label="note">笔记 {{noteCounts.note}}</el-radio-button>
-            <el-radio-button label="reference">引用 {{noteCounts.reference}}</el-radio-button>
-            <el-radio-button label="translation">翻译 {{noteCounts.translation}}</el-radio-button>
+            <el-radio-button v-show="noteCounts.note > 0" label="note">笔记 {{noteCounts.note}}</el-radio-button>
+            <el-radio-button v-show="noteCounts.reference > 0" label="reference">引用 {{noteCounts.reference}}</el-radio-button>
+            <el-radio-button v-show="noteCounts.translation > 0" label="translation">翻译 {{noteCounts.translation}}</el-radio-button>
           </el-radio-group>
         </span>
         <faicon icon="plus" title="添加" class="right" @click="addNote"></faicon>

@@ -269,7 +269,7 @@ export default {
         let range = span.ranges[cur];
         let sel = {
           type: "word",
-          content: span.textContent,
+          content: sent.textContent.substr(range.spos, range.epos - range.spos),
           el: sent,
           event: event,
           location: {

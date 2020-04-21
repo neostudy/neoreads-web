@@ -261,6 +261,10 @@ const routes = [
       {
         path: 'authors/edit',
         component: EditAuthor
+      },
+      {
+        path: 'authors/edit/:pid',
+        component: EditAuthor
       }
     ]
   },

@@ -107,7 +107,7 @@ export default {
         cover: '',
         fullname: this.name,
         othernames: "",
-        id: this.$route.params.id,
+        id: this.$route.params.pid,
         tags: []
       },
       params: {},
@@ -134,7 +134,7 @@ export default {
     if (this.author.id) {
       // fetch author info
       this.$axios
-        .get(`/api/v1/people/authors/get/${this.author.id}`)
+        .get(`/api/v1/people/get/${this.author.id}`)
         .then(res => {
           this.author = res.data;
         });

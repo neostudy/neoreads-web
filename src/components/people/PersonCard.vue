@@ -6,6 +6,9 @@
     <div class="person-info">
       <a class="person-link" @click="viewPerson">{{person.fullname}}</a>
       <span v-if="person.othernames">别号： {{person.othernames}}</span>
+      <span class="person-toolbar">
+        <faicon icon="edit" @click="editPerson"></faicon>
+      </span>
     </div>
     <div class="person-intro">{{person.intro}}</div>
   </div>
@@ -18,7 +21,11 @@ export default {
     viewPerson() {
       let id = this.person.id;
       this.$router.push("/people/view/" + id);
-    }
+    },
+    editPerson() {
+      let id = this.person.id;
+      this.$router.push("/people/authors/edit/" + id);
+    },
   }
 };
 </script>
@@ -47,4 +54,12 @@ export default {
       font-weight bold
       font-size 1.2em
       margin-right 20px
+
+    .person-toolbar
+      float right
+
+      svg
+        color #409EFF
+        cursor pointer
+
 </style>

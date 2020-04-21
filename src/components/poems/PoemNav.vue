@@ -9,9 +9,7 @@
         </span>
       </div>
       <div class="nav-body">
-        <a href="#">杜甫</a>
-        <a href="#">李白</a>
-        <author-list></author-list>
+        <hot-authors :tags="poets"></hot-authors>
       </div>
     </div>
     <div class="nav-box poem-genres">
@@ -27,7 +25,6 @@
         <a href="#">七律</a>
         <a href="#">古风</a>
         <a href="#">歌行体</a>
-
       </div>
     </div>
     <div class="nav-box poem-styles">
@@ -43,7 +40,13 @@
 </template>
 
 <script>
-export default {};
+import HotAuthors from "./HotAuthors.vue";
+
+export default {
+  components: {
+    HotAuthors
+  }
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -68,7 +71,7 @@ export default {};
 
         &:hover
           color #409EFF
-  
+
   .nav-body
     padding 10px
 
@@ -80,5 +83,4 @@ export default {};
 
       &:hover
         color #409EFF
-
 </style>
