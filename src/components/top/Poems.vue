@@ -39,7 +39,11 @@ export default {
   created() {
     this.$store.dispatch("setActiveMenuIndex", "/poems");
   },
-  methods: {}
+  methods: {
+    filterAuthor(a) {
+      console.log("main filter author!", a)
+    }
+  }
 };
 </script>
 

@@ -9,7 +9,7 @@
         </span>
       </div>
       <div class="nav-body">
-        <hot-authors :tags="poets"></hot-authors>
+        <hot-authors tags="poets"></hot-authors>
       </div>
     </div>
     <div class="nav-box poem-genres">
@@ -45,11 +45,13 @@ import HotAuthors from "./HotAuthors.vue";
 export default {
   components: {
     HotAuthors
+  },
+  methods: {
   }
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .nav-box
   margin-bottom 20px
   text-align left

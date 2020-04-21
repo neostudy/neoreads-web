@@ -26,29 +26,60 @@
 </template>
 
 <script>
-import PoemCard from "./PoemCard.vue"
+import PoemCard from "./PoemCard.vue";
+import { EVENT_BUS } from "src/eventbus.js";
 export default {
   components: {
     PoemCard
   },
   data() {
     return {
+      filter: null,
       poems: []
     };
   },
   created() {
     // 初始化诗歌列表
+    this.searchPoems();
     // TODO: 添加默认搜索条件
-    this.$axios.get("/api/v1/articles/poems/list")
-      .then(res => {
-        console.log("got books:", res.data);
-        this.poems = res.data;
-      })
-      .catch(err => {
-        console.log("error getting books: " + err);
-      });
+    EVENT_BUS.$on("poems-filter", f => {
+      this.filter = f;
+    });
+  },
+  watch: {
+    filter() {
+      this.searchPoems();
+    }
   },
   methods: {
+    searchPoems() {
+      if (!this.filter) {
+        this.$axios
+          .get("/api/v1/articles/poems/list")
+          .then(res => {
+            console.log("got books:", res.data);
+            this.poems = res.data;
+          })
+          .catch(err => {
+            console.log("error getting books: " + err);
+          });
+      } else {
+        let s = "?";
+        if (this.filter.kind == "author") {
+          s = s + "pid=" + this.filter.value.id
+        }
+
+        this.$axios
+          .get("/api/v1/articles/poems/search" + s)
+          .then(res => {
+            console.log("got books:", res.data);
+            this.poems = res.data;
+          })
+          .catch(err => {
+            console.log("error getting books: " + err);
+          });
+      }
+    },
     discoverPoems() {},
     addPoem() {
       this.$router.push("/poems/edit");
@@ -59,9 +90,7 @@ export default {
     editBook(book) {
       this.$router.push("/works/collaborations/edit/" + book.id);
     },
-    unwatch(book) {
-
-    },
+    unwatch(book) {},
     detailUrl(book) {
       this.$router.push(`/works/collaborations/detail/${book.id}/toc`);
     }
