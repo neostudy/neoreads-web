@@ -1,6 +1,13 @@
 <template>
   <span>
-    <faicon v-if="isFav" icon="heart" :size="size" @click="toggleFav" class="fav-icon" :class="isMark"></faicon>
+    <faicon
+      v-if="isFav"
+      icon="heart"
+      :size="size"
+      @click="toggleFav"
+      class="fav-icon"
+      :class="isMark"
+    ></faicon>
     <faicon v-if="!isFav" :icon="['far', 'heart']" :size="size" @click="toggleFav" class="fav-icon"></faicon>
   </span>
 </template>
@@ -22,8 +29,7 @@ export default {
   },
   methods: {
     toggleFav() {
-      if (this.isFav) {
-      }
+      this.$emit("toggle-fav", !this.isFav);
     }
   }
 };
@@ -31,7 +37,7 @@ export default {
 
 <style lang="stylus" scoped>
 svg.fav-icon
-  //color #409EFF
+  // color #409EFF
   color #ddd
 
 svg.fav-icon.mark

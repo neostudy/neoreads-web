@@ -4,23 +4,7 @@
       <el-container>
         <el-aside width="250px" class="poems-sidebar"><poem-nav></poem-nav></el-aside>
         <el-main class="poems-main">
-          <poem-list :fav="true"></poem-list>
-          <!--
-          <el-container>
-            <el-header height="60px" class="poems-header">
-              <span>123</span>
-              <span>4214</span>
-              <span>123</span>
-            </el-header>
-            <el-main>
-              <el-row>
-                <el-col :span="16" :offset="4">
-                  <div>诗社1</div>
-                </el-col>
-              </el-row>
-            </el-main>
-          </el-container>
-          -->
+          <poem-list></poem-list>
         </el-main>
       </el-container>
     </div>
@@ -40,9 +24,6 @@ export default {
     this.$store.dispatch("setActiveMenuIndex", "/poems");
   },
   methods: {
-    filterAuthor(a) {
-      console.log("main filter author!", a)
-    }
   }
 };
 </script>

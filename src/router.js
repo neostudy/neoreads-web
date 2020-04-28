@@ -9,6 +9,7 @@ import Reviews from './components/top/Reviews.vue';
 import Poems from './components/top/Poems.vue';
 import EditPoem from './components/poems/EditPoem.vue';
 import ViewPoem from './components/poems/ViewPoem.vue';
+import DiscoverPoems from './components/poems/DiscoverPoems.vue';
 
 import News from './components/top/News.vue';
 import NewsHome from "./components/news/Home.vue";
@@ -74,6 +75,10 @@ const routes = [
   {
     path: '/poems',
     component: Poems
+  },
+  {
+    path: '/poems/discover',
+    component: DiscoverPoems
   },
   {
     path: '/poems/edit',

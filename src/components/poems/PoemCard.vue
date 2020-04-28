@@ -4,7 +4,7 @@
       <a class="poem-link" @click="view">{{poem.title}}</a>
       <span class="author">{{poem.author}}</span>
       <span class="poem-toolbar">
-        <star></star>
+        <star :star="poem.star" @changed="onStarChanged"></star>
         <faicon icon="pen" title="编辑" @click="edit" size="sm"></faicon>
       </span>
     </div>
@@ -16,23 +16,31 @@
 
 <script>
 import PoemContent from "../content/PoemContent.vue";
-import Fav from "../tools/Fav.vue";
 import Star from "../tools/Star.vue";
 export default {
   props: ["poem"],
   components: {
     PoemContent,
-    Fav,
     Star
   },
   data() {
-    return {};
+    return {
+      isFav: false,
+    };
+  },
+  created() {
   },
   methods: {
     view() {
       this.$router.push("/poems/view/" + this.poem.id);
     },
-    edit() {}
+    edit() {},
+    toggleFav(isFav) {
+      this.isFav = isFav;
+    },
+    onStarChanged(delta) {
+      this.$emit("star-changed", delta);
+    }
   }
 };
 </script>

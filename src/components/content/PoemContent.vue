@@ -68,7 +68,6 @@ export default {
     }
   },
   created() {
-    console.log("Rules for text:", mdi.renderer.rules);
     if (this.content !== "") {
       this.parseContent();
     }
