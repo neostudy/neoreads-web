@@ -19,6 +19,9 @@ Vue.component('faicon', FontAwesomeIcon)
 import Nfaicon from 'src/components/tools/NeoFAIcon.vue'
 Vue.component('nfaicon', Nfaicon)
 
+import RIIcon from 'src/components/tools/RIIcon.vue'
+Vue.component('ri', RIIcon)
+
 // axios
 import axios from 'axios'
 

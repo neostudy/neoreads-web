@@ -48,6 +48,11 @@ export default {
 
   .grey
     color #ccc
+    cursor pointer
+
+    &:hover
+      color #409EFF
+  
 </style>
 <style lang="stylus" scoped>
 .star-button

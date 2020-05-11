@@ -106,6 +106,7 @@ export default {
             poems.forEach(p => {
               if (p.star == undefined) {
                 p.star = {
+                  artid: p.id,
                   value: 0
                 };
               }
@@ -128,8 +129,12 @@ export default {
           smap[artid] = star;
         }
         for (let p of this.poems) {
-          let star = smap[p.id];
-          p.star = star;
+          if (p.id in smap) {
+            let star = smap[p.id];
+            p.star = star;
+          } else {
+
+          }
         }
       });
     },

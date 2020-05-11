@@ -5,7 +5,7 @@
         <el-col :span="10">
           <div class="view-poem-pane">
             <div class="poem-title-pane">
-              <span class="poem-title">{{poem.title}}</span>
+              <span class="poem-title" @click="onTitle">{{poem.title}}</span>
               <span class="author">
                 <a :href="'/#/people/view/'+poem.author">{{poem.author}}</a>
               </span>
@@ -20,8 +20,6 @@
         </el-col>
       </el-row>
       <div class="poem-toolbar">
-        <fav class="poem-fav" size="lg"></fav>
-        <star></star>
         <faicon icon="pen" title="编辑" @click="edit" size="sm"></faicon>
       </div>
     </div>
@@ -46,7 +44,9 @@ export default {
       poem: {
         content: ""
       },
-      selection: {},
+      notes: [],
+      star: {},
+      selection: this.dftSelection(),
       where: {
         colid: "",
         artid: this.$route.params.poemid
@@ -58,6 +58,9 @@ export default {
     // 获取诗歌内容
     this.$axios.get("/api/v1/articles/poems/get/" + this.id).then(res => {
       this.poem = res.data;
+      // 获取诗歌所有笔记
+      // TODO: 为了防止加载笔记时诗歌内容还没渲染好，所以放在这里了。但这么做并不是最优的
+      this.loadNotes();
     });
   },
   updated() {
@@ -65,10 +68,60 @@ export default {
   },
   methods: {
     edit() {},
+    loadNotes() {
+      console.log("loading all notes");
+      let query = "colid=" + this.where.colid + "&artid=" + this.where.artid;
+      this.authGet("/api/v1/note/list/cards?" + query).then(res => {
+        this.notes = res.data;
+        this.notesLoaded(this.notes);
+        return true;
+      });
+    },
+    noteRemoved(note) {
+      this.notes = this.notes.filter(n => n.id != note.id);
+    },
+    focusNotes() {
+      var focusNotes = [];
+      // 如果用户选择了部分内容，只显示相关的笔记
+      let sel = this.selection;
+      if (sel.type == "sent") {
+        let curSentid = sel.location.sentid;
+        focusNotes = this.notes.filter(
+          x => x.ptype == 1 && x.sentid == curSentid
+        );
+      } else if (sel.type == "word") {
+        // TODO: implement
+        focusNotes = this.notes.filter(
+          x =>
+            x.ptype == 0 &&
+            x.sentid == sel.location.sentid &&
+            x.startpos == sel.location.startpos &&
+            x.endpos == sel.location.endpos
+        );
+      } else {
+        // 否则只显示全文相关的笔记
+        focusNotes = this.notes.filter(x => x.ptype == 3); // ptype==3 => article
+      }
+      return focusNotes;
+    },
+    dftSelection() {
+      return {
+        type: "article",
+        content: "",
+        colid: "",
+        artid: this.$route.params.poemid
+      };
+    },
+    onTitle() {
+      this.selection = this.dftSelection();
+      this.selectedText = "";
+      this.clearCurrentSelection();
+    },
     select(data) {
       this.selection = data;
       this.selectedText = data.content;
       this.highlightSelection(this.selection);
+      this.selection.focusNotes = this.focusNotes();
     },
     // 取消其他句子的高亮，并将当前句子高亮
     highlightSelection(sel) {
@@ -102,7 +155,7 @@ export default {
       );
     },
     notesLoaded(notes) {
-      console.log("notes loaded:", notes);
+      this.selection.focusNotes = this.focusNotes();
       // 更新每句内容的热点统计
       this.updateStats(notes);
       // 高亮单词级别的笔记（即ptype == 0的笔记）
