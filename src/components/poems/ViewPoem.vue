@@ -9,6 +9,12 @@
               <span class="author">
                 <a :href="'/#/people/view/'+poem.author">{{poem.author}}</a>
               </span>
+              <span class="poem-toolbar">
+                <ri i="sound" @click="showSound"></ri>
+                <ri i="note"></ri>
+                <ri i="quote"></ri>
+                <ri i="translate"></ri>
+              </span>
             </div>
             <div class="poem-content">
               <poem-content :content="poem.content" @select="select"></poem-content>
@@ -19,9 +25,19 @@
           <poem-notes :selection="selection" :where="where" @notes-loaded="notesLoaded"></poem-notes>
         </el-col>
       </el-row>
-      <div class="poem-toolbar">
-        <faicon icon="pen" title="编辑" @click="edit" size="sm"></faicon>
-      </div>
+      <!--
+      <el-row class="progress-pane">
+        <el-col :span="16" :offset="4">
+          <el-steps :active="activeStep" finish-status="success">
+            <el-step title="读"></el-step>
+            <el-step title="释"></el-step>
+            <el-step title="译"></el-step>
+            <el-step title="抄"></el-step>
+          </el-steps>
+        </el-col>
+      </el-row>
+      -->
+
     </div>
   </div>
 </template>
@@ -51,7 +67,8 @@ export default {
         colid: "",
         artid: this.$route.params.poemid
       },
-      selectedText: ""
+      selectedText: "",
+      activeStep : 0
     };
   },
   created() {
@@ -335,6 +352,9 @@ export default {
         console.log("sel:", sel);
         this.select(sel, sel.content);
       };
+    },
+    showSound() {
+      console.log("show sound");
     }
   }
 };
@@ -343,6 +363,11 @@ export default {
 <style lang="stylus" scoped>
 .center-pane
   text-align left
+
+  .progress-pane
+    margin-top 20px
+    border-top 1px solid #eee
+    padding-top 20px
 
   .view-poem-pane
     text-align left
@@ -356,6 +381,7 @@ export default {
         font-weight bold
         font-size 1.5em
         padding 10px 10px 10px 0px
+        width 100%
 
         .poem-fav
           margin-right 8px
@@ -371,6 +397,12 @@ export default {
 
         a.poem-link:hover
           color #409EFF
+
+     
+      .poem-toolbar
+        float right
+        margin-right 10px
+
 
     .poem-content
       font-size 1.2em

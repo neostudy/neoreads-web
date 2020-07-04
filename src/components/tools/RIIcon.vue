@@ -6,16 +6,18 @@
 
 <script>
 var nameMap = {
-  "pinyin": "pinyin-input",
   "note": "mark-pen-line",
+  "pinyin": "pinyin-input",
   "quote": "double-quotes-l",
+  "sound": "volume-up-line",
   "translate": "translate-2"
 };
 
 var titleMap = {
-  "pinyin": "注音",
   "note": "笔记",
+  "pinyin": "注音",
   "quote": "引用",
+  "sound": "读音",
   "translate": "翻译"
 };
 export default {

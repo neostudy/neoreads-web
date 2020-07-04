@@ -4,7 +4,8 @@ import Router from 'vue-router';
 import Home from './components/top/Home.vue';
 import 首页 from './components/top/Home.vue';
 import Library from './components/top/Library.vue';
-import Reviews from './components/top/Reviews.vue';
+import Ocean from "./components/top/Ocean.vue";
+import Classroom from './components/top/Classroom.vue';
 
 import Poems from './components/top/Poems.vue';
 import EditPoem from './components/poems/EditPoem.vue';
@@ -73,6 +74,10 @@ const routes = [
     component: Library
   },
   {
+    path: '/ocean',
+    component: Ocean
+  },
+  {
     path: '/poems',
     component: Poems
   },
@@ -89,8 +94,8 @@ const routes = [
     component: ViewPoem
   },
   {
-    path: '/reviews',
-    component: Reviews
+    path: '/classroom',
+    component: Classroom 
   },
   {
     path: '/news',

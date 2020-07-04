@@ -21,11 +21,11 @@
                 mode="horizontal"
                 router
               >
+                <el-menu-item index="/classroom">
+                  <span class="theme">{{$t('menu.classroom')}}</span>
+                </el-menu-item>
                 <el-menu-item index="/library">
                   <span class="theme">{{$t('menu.library')}}</span>
-                </el-menu-item>
-                <el-menu-item index="/reviews">
-                  <span class="theme">{{$t('menu.reviews')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/works">
                   <span class="theme">{{$t('menu.works')}}</span>
@@ -38,6 +38,9 @@
                 </el-menu-item>
                 <el-menu-item index="/people">
                   <span class="theme">{{$t('menu.people')}}</span>
+                </el-menu-item>
+                <el-menu-item index="/ocean">
+                  <span class="theme">{{$t('menu.ocean')}}</span>
                 </el-menu-item>
                 <el-menu-item index="/dev">
                   <span class="theme">{{$t('menu.dev')}}</span>

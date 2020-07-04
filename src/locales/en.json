@@ -2,12 +2,13 @@
   "menu": {
     "home": "Home",
     "library": "Library",
-    "reviews": "Reviews",
+    "classroom": "Classroom",
     "news": "News",
     "works": "Works",
     "people": "People",
     "dev": "Dev",
-    "poems": "Poems"
+    "poems": "Poems",
+    "ocean": "Ocean"
   },
   "en": "English",
   "zh": "Chinese",
