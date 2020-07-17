@@ -18,7 +18,7 @@
     "element-ui": "^2.13.0",
     "highlight.js": "^9.18.1",
     "htmlparser2": "^4.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "markdown-it": "^8.4.2",
     "markdown-it-attrs": "^3.0.2",
     "markdown-it-ins": "^2.0.0",
