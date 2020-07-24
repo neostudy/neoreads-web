@@ -32,3 +32,17 @@ export function makeTone(pinyin) {
     return pinyin2toneMap[m] || m;
   });
 }
+
+var pinyin = require("pinyin")
+
+export function toPinyin(word) {
+  if (word == '於') {
+    return ['yú'];
+  }
+  return pinyin(word);
+}
+
+export function getPinyin(ch) {
+  let py = pinyin(ch)[0][0];
+  return py;
+}

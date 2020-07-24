@@ -2,21 +2,17 @@
   <div class="item-info">
     <el-container>
       <el-aside width="100px">
-        <img v-show="cover != ''" :src="cover" :alt="title" class="cover" />
+        <img :src="cover" :alt="title" class="cover" />
         <h4 class="name">
           <span>{{i.name}}</span>
         </h4>
       </el-aside>
       <el-main>
-        <el-row>
-          <el-col :span="12">
-            <div class="item-stats-num">正在学习 {{i.count}} {{i.unit}}</div>
-            <div class="item-stats-stars">获得星值 {{i.stars}}</div>
-            <div class="review-progress">
-              <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
-            </div>
-          </el-col>
-        </el-row>
+        <div class="item-stats-num">正在学习 {{i.count}} {{i.unit}}</div>
+        <div class="item-stats-stars">获得星值 {{i.stars}}</div>
+        <div class="review-progress">
+          <el-progress :text-inside="true" :stroke-width="18" :percentage="70"></el-progress>
+        </div>
       </el-main>
     </el-container>
   </div>
@@ -25,8 +21,7 @@
 <script>
 import { toHumanString } from "src/js/math.js";
 export default {
-  components: {
-  },
+  components: {},
   props: {
     i: Object,
     id: String,
@@ -60,7 +55,6 @@ export default {
 </script>
 
 <style lang="stylus">
-
 div.item-info
   margin 15px
   padding 5px
@@ -68,7 +62,6 @@ div.item-info
   border 1px solid #fff
 
   .cover
-    float left
     width 90px
     height 120px
     border 1px solid #ebebeb
@@ -76,40 +69,17 @@ div.item-info
     background-size 100%
     box-shadow 2px 4px 6px #bbb
 
+  .name
+    margin-top 5px
+    height 22px
+    line-height 22px
+    font-size 1.2em
+
   .el-main
-    height 130px
     padding 0px 0px 0px 6px
 
-    .name
-      height 22px
-      line-height 22px
-      font-size 15px
-      color #333 !important
-
-      .status
-        margin-left 10px
-        font-size 12px
-
-      .finished
-        color red
-
-      .serial
-        color green
-
-    .desc
-      margin-top 5px
-      height 40px
-      line-height 20px
-      font-size 12px
-      color #999
-
-    .popularity
-      margin-top 15px
-      height 20px
-      font-size 14px
-
-    .c-red
-      color red
+    div
+      margin-bottom 30px
 
     .review-progress
       height 92px
@@ -118,9 +88,6 @@ div.item-info
         margin-bottom 4px
         line-height 32px
 
-    .review-buttons
-      float right
-      margin-right 5px
 </style>
 
 

@@ -11,7 +11,7 @@
               </div>
             </el-col>
             <el-col :span="8" class="control-pane">
-              <el-button type="primary">开始学习</el-button>
+              <el-button type="primary" @click="goLearn">开始学习</el-button>
             </el-col>
           </el-row>
         </el-main>
@@ -62,6 +62,11 @@ export default {
   },
   created() {
     this.$store.dispatch("setActiveMenuIndex", "/classroom");
+  },
+  methods: {
+    goLearn() {
+      this.$router.push("/learn");
+    }
   }
 };
 </script>

@@ -1,59 +1,29 @@
 <template>
   <div>
-    <div v-bar v-if="!noScroll">
+    <div v-bar>
       <div class="poem-content-pane">
-        <div class="poem-content-inner" :class="large ? 'large' : 'normal'">
-          <paragraph
+        <div class="poem-content-inner normal">
+          <phonetics-para
             v-for="(p,i) in paras"
             :key="i"
             :html="p"
             @select="select"
             :highlight="highlight"
-          ></paragraph>
+          ></phonetics-para>
         </div>
       </div>
-    </div>
-    <div v-if="noScroll" class="poem-content">
-      <paragraph v-for="(p,i) in paras" :key="i" :html="p" @select="select" :highlight="highlight"></paragraph>
     </div>
   </div>
 </template>
 
 <script>
-import Paragraph from "./Paragraph.vue";
-import sentence from "src/js/markdown/sentence.js";
-var hljs = require("highlight.js");
+import PhoneticsPara from "./PhoneticsPara.vue";
+import mdi from "src/js/markdown/render.js";
 import "highlight.js/styles/github.css";
-var mdi = require("markdown-it")({
-  html: true,
-  linkify: true,
-  typographer: true,
-  highlight: function(str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return (
-          '<pre class="hljs"><code>' +
-          hljs.highlight(lang, str, true).value +
-          "</code></pre>"
-        );
-      } catch (__) {}
-    }
-
-    return (
-      '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + "</code></pre>"
-    );
-  }
-})
-  .use(require("markdown-it-sup"))
-  .use(require("markdown-it-sub"))
-  .use(require("markdown-it-mark"))
-  .use(require("markdown-it-ins"))
-  .use(require("markdown-it-attrs"))
-  .use(sentence);
 export default {
-  props: ["content", "noScroll", "large"],
+  props: ["content"],
   components: {
-    Paragraph
+    PhoneticsPara
   },
   data() {
     return {
@@ -106,7 +76,6 @@ export default {
 
 <style lang="stylus">
 .poem-content-inner
-
   & .sent
     display inline-block
     margin-bottom 0.6em
@@ -120,11 +89,11 @@ export default {
       background-color #C6E2FF
 
     & .note
-      //background-color #C6E2FF
+      // background-color #C6E2FF
       border-bottom 5px inset #C6E2FF
 
       &.deep
-        //background-color #A6C2CF
+        // background-color #A6C2CF
         border-bottom 5px inset #A6C2CF
 
   &.large .sent
@@ -142,8 +111,6 @@ export default {
     background-color #fafafa
     padding 2px 6px
     margin-left 10px
-
-
 </style>
 
 <style lang="stylus" src="src/stylus/markdown.styl"></style>
