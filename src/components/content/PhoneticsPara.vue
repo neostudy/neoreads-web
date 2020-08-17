@@ -4,7 +4,7 @@
 
 <script>
 import { getSelectionText } from "../../js/selection/selection.js";
-import { getPinyin } from "src/js/pinyin.js";
+import { getPinyins } from "src/js/pinyin.js";
 import FanggePinyin from "../tools/charbox/FanggePinyin.vue";
 const P = Vue.extend(FanggePinyin);
 import Vue from "vue";
@@ -14,8 +14,7 @@ export default {
   components: {
     FanggePinyin,
   },
-  created() {
-  },
+  created() {},
   mounted() {
     let sents = this.$el.getElementsByClassName("sent");
     for (let sent of sents) {
@@ -24,6 +23,9 @@ export default {
   },
   methods: {
     addPhonetics(sent) {
+      let para = sent.parentNode;
+      let paraid = para.id;
+      let sentid = sent.id;
       let chars = Array.from(sent.textContent);
       console.log("chars:[", chars, "]");
       // TODO: 找到更优雅的方法将文本内容替换为注音
@@ -31,39 +33,35 @@ export default {
       for (let i in chars) {
         // 判断是否需要添加注音
         let ch = chars[i];
-        let py = getPinyin(ch);
-        if (py !== "" && py != ch) {
-          let pbox = this.makePhoneticBox(ch);
+        let pys = getPinyins(ch);
+        if (pys.length > 0 && pys[0] != "" && pys[0] != ch) {
+          let pbox = this.makePhoneticBox(ch, pys, i, paraid, sentid);
           sent.appendChild(pbox);
-          const instance = new P({
-            parent: this,
-            propsData: {
-              p: py,
-              c: ch,
-              i: i,
-            },
-          });
-          instance.$on("pinyin-clicked", this.onPinyinClick);
-          instance.$on("char-clicked", this.onCharClick);
-          instance.$mount(pbox);
         } else {
           let txt = document.createTextNode(ch);
           sent.appendChild(txt);
         }
       }
     },
-    makePhoneticBox(ch) {
-      let pbox = document.createElement("span");
-      pbox.classList.add("phonetics");
-      return pbox;
+    makePhoneticBox(ch, pys, i, paraid, sentid) {
+      const instance = new P({
+        parent: this,
+        propsData: {
+          pinyins: pys,
+          char: ch,
+          i: i,
+          paraid: paraid,
+          sentid: sentid
+        },
+      });
+      instance.$on("select", this.onSelect);
+      // 创建一个虚拟dom对象
+      let vcomponent = instance.$mount();
+      return vcomponent.$el;
     },
-    onPinyinClick(e) {
-      console.log("pnyin click", e)
-
-    },
-    onCharClick(e) {
-      console.log("char click", e)
-
+    onSelect(e) {
+      console.log("click", e);
+      this.$emit("select", e);
     },
     addClickListener(sent) {
       let self = this;

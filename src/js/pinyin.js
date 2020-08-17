@@ -42,7 +42,12 @@ export function toPinyin(word) {
   return pinyin(word);
 }
 
-export function getPinyin(ch) {
+export function getPinyins(ch) {
+  let py = pinyin(ch, {heteronym: true})[0];
+  return py;
+}
+
+export function getFirstPinyin(ch) {
   let py = pinyin(ch)[0][0];
   return py;
 }

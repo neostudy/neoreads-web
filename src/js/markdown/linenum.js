@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * 将形如 [#abcd] 形式的句子ID转换为 <span class="sent"id="abcd"></span>
+ * 给Markdown文件的每一行添加行号，并转换成<span class="line" num="N"></span>的形式
  * @param {*} md 
  */
 
@@ -21,9 +21,9 @@ module.exports = function ins_plugin(md) {
     if (state.src.charCodeAt(state.pos + 6) !== 0x5D /* ] */) {
       return false;
     } else {
-      let sentid = state.src.substr(start + 2, 4)
-      token = state.push('sentence', '', 0);
-      token.content = sentid;
+      let linenum = state.src.substr(start + 2, 4)
+      token = state.push('linenum', '', 0);
+      token.content = linenum;
       state.pos += 7;
       return true;
     }
@@ -42,7 +42,7 @@ module.exports = function ins_plugin(md) {
         if (!children) continue;
         for (var j = 0; j < children.length; ++j) {
           let child = children[j]
-          if (child.type === 'sentence') {
+          if (child.type === 'linenum') {
             tks.push(child)
           }
         }
@@ -52,11 +52,11 @@ module.exports = function ins_plugin(md) {
     for (var k = 0; k < tks.length - 1; ++k) {
       let tk = tks[k]
       let ntk = tks[k + 1]
-      if (ntk.type === 'sentence') {
+      if (ntk.type === 'linenum') {
         if (tk.meta === null) {
           tk.meta = {}
         }
-        tk.meta.sentid = ntk.content
+        tk.meta.linenum = ntk.content
       }
     }
 
@@ -68,9 +68,9 @@ module.exports = function ins_plugin(md) {
   md.renderer.rules.heading_open = function (tokens, idx) {
     let token = tokens[idx]
     let tag = token.tag;
-    let span = '<span class="sent">';
-    if (token.meta && token.meta.sentid) {
-      span = `<span class="sent" id="${token.meta.sentid}">`
+    let span = '<span class="line">';
+    if (token.meta && token.meta.linenum) {
+      span = `<span class="line" num="${token.meta.linenum}">`
     }
     if (tokens[idx].hidden) {
       return span;
@@ -100,9 +100,9 @@ module.exports = function ins_plugin(md) {
   md.renderer.rules.paragraph_open = function (tokens, idx) {
     let token = tokens[idx]
     let tag = token.tag;
-    let span = '<span class="sent">';
-    if (token.meta && token.meta.sentid) {
-      span = `<span class="sent" id="${token.meta.sentid}">`
+    let span = '<span class="line">';
+    if (token.meta && token.meta.linenum) {
+      span = `<span class="line" num="${token.meta.linenum}">`
     }
     if (tokens[idx].hidden) {
       return span;
@@ -128,10 +128,10 @@ module.exports = function ins_plugin(md) {
     }
   };
 
-  md.renderer.rules.sentence = function (tokens, idx) {
+  md.renderer.rules.linenum = function (tokens, idx) {
     let token = tokens[idx]
-    if (token.meta && token.meta.sentid) {
-      return `</span><span class="sent" id="${token.meta.sentid}">`
+    if (token.meta && token.meta.linenum) {
+      return `</span><span class="line" num="${token.meta.linenum}">`
     } else {
       return "";
     }

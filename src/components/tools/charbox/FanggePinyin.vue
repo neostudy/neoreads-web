@@ -1,27 +1,31 @@
 <template>
-  <div class="charbox-fangge">
-    <div class="charbox-pinyin" @click="onPinyin">{{p}}</div>
-    <div class="charbox-char" @click="onChar">{{c}}</div>
-    <div class="charbox-char">{{i}}</div>
+  <div class="charbox-fanggepinyin">
+    <div class="charbox-pinyin" @click="onPinyin" :class="pinyins.length > 1 ? 'multi': ''">{{py}}</div>
+    <div class="charbox-char" @click="onChar">{{char}}</div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["p","c", "i"],
+  props: ["pinyins","char", "i", "paraid", "sentid"],
+  computed: {
+    py() {
+      return this.pinyins[0];
+    }
+  },
   methods: {
     onPinyin() {
-      this.$emit("pinyin-clicked", {pinyin: this.p, char: this.c, pos: this.i})
+      this.$emit("select", {type: "pinyin", pinyins: this.pinyins, char: this.char, pos: this.i, paraid: this.paraid, sentid: this.sentid})
     },
     onChar() {
-      this.$emit("char-clicked", {pinyin: this.p, char: this.c, pos: this.i})
+      this.$emit("select", {type: "char", pinyins: this.pinyins, char: this.char, pos: this.i, paraid: this.paraid, sentid: this.sentid})
     }
   }
 };
 </script>
 
 <style lang="stylus">
-.charbox-fangge
+.charbox-fanggepinyin
   text-align center
   display inline-block
   margin-right 0.1em
@@ -34,13 +38,16 @@ export default {
     border 1px solid #999
     height 25px
     line-height 25px
+
+    &.multi
+      background-color #BFFFBF
     &:hover
       background-color #A0CFFF
 
 
   .charbox-char
     border 1px solid #999
-    border-top 0
+    border-top 0px solid
     font-size 2em
     padding 0.25em
     background-color white

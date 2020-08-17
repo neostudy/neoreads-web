@@ -41,7 +41,9 @@ export default {
     selection(o, n) {
       let oldMode = this.noteMode;
       if ("type" in this.selection) {
-        if (this.selection.type == "sent") {
+        if (this.selection.type == "line") {
+          this.noteMode = "sentence";
+        } else if (this.selection.type == "sent") {
           this.noteMode = "sentence";
         } else if (this.selection.type == "word") {
           this.noteMode = "word";

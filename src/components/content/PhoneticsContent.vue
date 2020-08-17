@@ -7,7 +7,7 @@
             v-for="(p,i) in paras"
             :key="i"
             :html="p"
-            @select="select"
+            @select="$emit('select', $event)"
             :highlight="highlight"
           ></phonetics-para>
         </div>
@@ -59,9 +59,6 @@ export default {
       let mdps = paras.map(ln => ln.trim());
       this.paras = mdps;
     },
-    select(data) {
-      this.$emit("select", data);
-    }
   }
 };
 </script>

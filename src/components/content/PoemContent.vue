@@ -22,6 +22,7 @@
 <script>
 import Paragraph from "./Paragraph.vue";
 import sentence from "src/js/markdown/sentence.js";
+import linenum from "src/js/markdown/linenum.js";
 var hljs = require("highlight.js");
 import "highlight.js/styles/github.css";
 var mdi = require("markdown-it")({
@@ -49,7 +50,17 @@ var mdi = require("markdown-it")({
   .use(require("markdown-it-mark"))
   .use(require("markdown-it-ins"))
   .use(require("markdown-it-attrs"))
-  .use(sentence);
+  .use(linenum);
+
+function addLineNum(text) {
+  let lines = text.split("\n");
+  for (let i = 0; i < lines.length; ++i) {
+    if (lines[i].trim() != "") {
+      lines[i] = lines[i] + "[#" + String(i).padStart(4, "0") + "]";
+    }
+  }
+  return lines.join("\n");
+}
 export default {
   props: ["content", "noScroll", "large"],
   components: {
@@ -75,7 +86,11 @@ export default {
   methods: {
     // TODO: how to avoid contaminating <pre><code> blocks
     parseContent() {
-      let md = mdi.render(this.content);
+      // 给每行内容添加行号：
+      let content = addLineNum(this.content);
+
+      console.log("parsing content: ", content);
+      let md = mdi.render(content);
 
       let dp = new DOMParser();
       let dom = dp.parseFromString(md, "text/html");
@@ -107,7 +122,7 @@ export default {
 <style lang="stylus">
 .poem-content-inner
 
-  & .sent
+  & .line
     display inline-block
     margin-bottom 0.6em
     padding 5px
@@ -127,13 +142,13 @@ export default {
         //background-color #A6C2CF
         border-bottom 5px inset #A6C2CF
 
-  &.large .sent
+  &.large .line
     font-size 2em
 
-  &.normal .sent
+  &.normal .line
     font-size 1.3em
 
-  & .sent-stat
+  & .line-stat
     display none
     border 1px solid #ddd
     border-radius 4px

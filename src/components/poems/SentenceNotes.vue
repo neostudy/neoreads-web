@@ -33,7 +33,12 @@
           <el-button @click="cancel()">取消</el-button>
         </div>
         <div class="note-list">
-          <note-card v-for="n in filteredNotes" :key="n.id" :note="n" @removed="$emit('note-removed', $event)"></note-card>
+          <note-card
+            v-for="n in filteredNotes"
+            :key="n.id"
+            :note="n"
+            @removed="$emit('note-removed', $event)"
+          ></note-card>
         </div>
       </div>
     </div>
@@ -41,13 +46,12 @@
 </template>
 
 <script>
-
 import NoteCard from "./PoemNoteCard.vue";
 import PinyinEditor from "../tools/PinyinEditor.vue";
 export default {
   components: {
     PinyinEditor,
-    NoteCard
+    NoteCard,
   },
   props: ["selection", "where"],
   data() {
@@ -59,7 +63,7 @@ export default {
       isFav: false,
       editorText: "",
       note: {
-        content: ""
+        content: "",
       },
     };
   },
@@ -72,7 +76,7 @@ export default {
         note: 1,
         phonetics: 2,
         reference: 3,
-        translation: 4
+        translation: 4,
       };
       if (this.noteType in typeMap) {
         return typeMap[this.noteType];
@@ -83,34 +87,42 @@ export default {
     filteredNotes() {
       // 根据笔记类型筛选条件进行筛选
       if (this.filterType == "note") {
-        return this.selection.focusNotes.filter(x => x.ntype == 1);
+        return this.selection.focusNotes.filter((x) => x.ntype == 1);
       } else if (this.filterType == "reference") {
-        return this.selection.focusNotes.filter(x => x.ntype == 3);
+        return this.selection.focusNotes.filter((x) => x.ntype == 3);
       } else if (this.filterType == "translation") {
-        return this.selection.focusNotes.filter(x => x.ntype == 4);
+        return this.selection.focusNotes.filter((x) => x.ntype == 4);
       } else {
         return this.selection.focusNotes;
       }
     },
     noteCounts() {
       let counts = {};
-      this.selection.focusNotes.map(n => {
-        if (n.ntype in counts) {
-          counts[n.ntype]++;
-        } else {
-          counts[n.ntype] = 1;
-        }
-      });
-      return {
-        all: this.selection.focusNotes.length,
-        note: counts[1],
-        reference: counts[3],
-        translation: counts[4]
-      };
-    }
+      if (this.selection.focusNotes) {
+        this.selection.focusNotes.map((n) => {
+          if (n.ntype in counts) {
+            counts[n.ntype]++;
+          } else {
+            counts[n.ntype] = 1;
+          }
+        });
+        return {
+          all: this.selection.focusNotes.length,
+          note: counts[1],
+          reference: counts[3],
+          translation: counts[4],
+        };
+       } else {
+         return {
+           all: 0,
+           note: 0,
+           reference: 0,
+           translation: 0
+         }
+       }
+    },
   },
-  created() {
-  },
+  created() {},
   methods: {
     addFav() {},
     removeFav() {},
@@ -159,9 +171,11 @@ export default {
           artid: this.where.artid,
           paraid: this.selection.location.paraid,
           sentid: this.selection.location.sentid,
+          lineid: "", // TODO
+          linenum: Number(this.selection.location.linenum),
           startpos: spos,
           endpos: epos,
-          content: this.editorText
+          content: this.editorText,
         };
         url = "/api/v1/note/add";
       }
@@ -169,7 +183,7 @@ export default {
       console.log("saving note:", note);
       this.showEditor = false;
       return this.authPost(url, note)
-        .then(res => {
+        .then((res) => {
           let noteid = res.data.id;
           note.id = noteid;
           //self.notes[noteid] = note;
@@ -178,12 +192,11 @@ export default {
           this.loadNotes();
           return note;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           throw error;
         });
     },
-    
-  }
+  },
 };
 </script>

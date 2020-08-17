@@ -1,7 +1,7 @@
 <template>
   <div class="article-content-pane">
     <poem-content v-if="mode == ViewMode.Read" :content="content" :large="true"></poem-content>
-    <phonetics-content v-if="mode == ViewMode.Phonetics" :content="content"></phonetics-content>
+    <phonetics-content v-if="mode == ViewMode.Phonetics" :content="content" @select="$emit('select', $event)"></phonetics-content>
   </div>
 </template>
 
@@ -29,6 +29,8 @@ export default {
     return {
       ViewMode: ViewMode
     };
+  },
+  methods: {
   }
 };
 </script>

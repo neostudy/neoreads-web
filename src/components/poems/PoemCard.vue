@@ -8,8 +8,10 @@
         <faicon icon="pen" title="编辑" @click="edit" size="sm"></faicon>
       </span>
     </div>
+    <div v-bar>
     <div class="poem-content">
       <poem-content :content="poem.content"></poem-content>
+    </div>
     </div>
   </div>
 </template>

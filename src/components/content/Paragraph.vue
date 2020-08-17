@@ -7,25 +7,27 @@ import { getSelectionText } from "../../js/selection/selection.js";
 
 export default {
   props: ["html", "highlight"],
-  created() {},
+  created() {
+    console.log("rendering html: ", this.html);
+  },
   mounted() {
-    let sents = this.$el.getElementsByClassName("sent");
-    for (let sent of sents) {
-      // 在每句话之前添加一个统计块。TODO：是不是放到PoemContent里更好
-      this.addStatsSpan(sent);
+    let lines = this.$el.getElementsByClassName("line");
+    for (let line of lines) {
+      // 在每行内容之前添加一个统计块。TODO：是不是放到PoemContent里更好
+      this.addStatsSpan(line);
       // 给每句话添加一个选中事件
-      this.addClickListener(sent);
+      this.addClickListener(line);
     }
   },
   methods: {
-    addStatsSpan(sent) {
+    addStatsSpan(line) {
       let stat = document.createElement("span");
-      stat.classList.add("sent-stat");
-      let parent = sent.parentNode;
-      if (parent.lastChild == sent) {
+      stat.classList.add("line-stat");
+      let parent = line.parentNode;
+      if (parent.lastChild == line) {
         parent.appendChild(stat);
       } else {
-        parent.insertBefore(stat, sent.nextSibling);
+        parent.insertBefore(stat, line.nextSibling);
       }
     },
     getWordSelection() {
@@ -33,13 +35,13 @@ export default {
       let startspan = sel.anchorNode;
       let endspan = sel.focusNode;
       if (startspan == endspan) {
-        let sent = this.findParentSent(startspan);
+        let line = this.findParentSent(startspan);
         // 正好在同一个span中
-        let senttext = sent.textContent;
+        let senttext = line.textContent;
         let seltext = sel.toString();
         let startpos = senttext.indexOf(seltext);
         return {
-          el: sent,
+          el: line,
           startpos: startpos,
           endpos: startpos + seltext.length,
           text: seltext
@@ -59,11 +61,11 @@ export default {
             text: ""
           };
         } else {
-          let sent = startSent.textContent;
+          let line = startSent.textContent;
           let seltext = sel.toString();
-          let startpos = sent.indexOf(seltext);
+          let startpos = line.indexOf(seltext);
           return {
-            el: sent,
+            el: line,
             startpos: startpos,
             endpos: startpos + seltext.length,
             text: seltext
@@ -75,19 +77,20 @@ export default {
       if (span.nodeType == 3) {
         span = span.parentNode;
       }
-      if (span.classList.contains("sent")) {
+      if (span.classList.contains("line")) {
         return span;
       } else {
         let parent = span.parentNode;
-        while (!parent.classList.contains("sent")) {
+        while (!parent.classList.contains("line")) {
           parent = parent.parentNode;
         }
         return parent;
       }
     },
-    addClickListener(sent) {
+    addClickListener(line) {
+      let linenum = line.getAttribute("num");
       let self = this;
-      sent.onclick = event => {
+      line.onclick = event => {
         // TODO: 应当遍历所有父节点，直到找到一个class="para"的节点
         let para = event.target.parentNode;
         let paraid = para.id;
@@ -100,11 +103,11 @@ export default {
           sel = {
             type: "word",
             content: wordsel.text,
-            el: sent,
+            el: line,
             event: event,
             location: {
               paraid: paraid,
-              sentid: sent.id,
+              linenum: linenum,
               startpos: wordsel.startpos,
               endpos: wordsel.endpos
             }
@@ -112,17 +115,19 @@ export default {
         } else {
           // 如果只是单选一行
           sel = {
-            type: "sent",
-            id: sent.id,
-            content: sent.textContent,
-            el: sent,
+            type: "line",
+            id: line.id,
+            content: line.textContent,
+            el: line,
             event: event,
             location: {
               paraid: paraid,
-              sentid: sent.id
+              lineid: line.id,
+              linenum: linenum
             }
           };
         }
+        console.log("selected:", JSON.stringify(sel));
         self.$emit("select", sel);
       };
     }

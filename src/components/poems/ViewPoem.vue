@@ -143,7 +143,7 @@ export default {
     // 取消其他句子的高亮，并将当前句子高亮
     highlightSelection(sel) {
       this.clearCurrentSelection();
-      if (sel.type == "sent") {
+      if (sel.type == "line") {
         let sent = sel.el;
         sent.classList.add("selected");
       } else if (sel.type == "word") {
