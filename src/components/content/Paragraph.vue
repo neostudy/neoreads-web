@@ -8,7 +8,7 @@ import { getSelectionText } from "../../js/selection/selection.js";
 export default {
   props: ["html", "highlight"],
   created() {
-    console.log("rendering html: ", this.html);
+    //console.log("rendering html: ", this.html);
   },
   mounted() {
     let lines = this.$el.getElementsByClassName("line");
@@ -127,7 +127,7 @@ export default {
             }
           };
         }
-        console.log("selected:", JSON.stringify(sel));
+        //console.log("selected:", JSON.stringify(sel));
         self.$emit("select", sel);
       };
     }

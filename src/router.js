@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from './components/top/Home.vue';
-import 首页 from './components/top/Home.vue';
 import Library from './components/top/Library.vue';
 import Classroom from './components/top/Classroom.vue';
 import Learn from './components/top/Learn.vue';
+import Coding from './components/top/Coding.vue';
 
 import Poems from './components/top/Poems.vue';
 import EditPoem from './components/poems/EditPoem.vue';
@@ -301,6 +300,10 @@ const routes = [
   {
     path: '/user/login',
     component: Login
+  },
+  {
+    path: '/coding',
+    component: Coding
   },
   {
     path: '/dev',

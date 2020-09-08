@@ -89,7 +89,6 @@ export default {
       // 给每行内容添加行号：
       let content = addLineNum(this.content);
 
-      console.log("parsing content: ", content);
       let md = mdi.render(content);
 
       let dp = new DOMParser();

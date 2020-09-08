@@ -13,6 +13,13 @@
             v-show="fav"
             type="primary"
             size="small"
+            icon="el-icon-refresh"
+            @click="shufflePoems"
+          >随机</el-button>
+          <el-button
+            v-show="fav"
+            type="primary"
+            size="small"
             icon="el-icon-search"
             @click="discoverPoems"
           >发现</el-button>
@@ -42,6 +49,17 @@
 <script>
 import PoemCard from "./PoemCard.vue";
 import { EVENT_BUS } from "src/eventbus.js";
+
+function randomIndexes(max, size) {
+  let idxs = new Set(); 
+  while (idxs.size < size) {
+    let idx = Math.floor(Math.random()*max)
+    idxs.add(idx);
+  }
+  console.log("idex: ", Array.from(idxs))
+  return Array.from(idxs);
+}
+
 export default {
   props: ["fav"],
   components: {
@@ -50,7 +68,8 @@ export default {
   data() {
     return {
       filter: null,
-      poems: []
+      poems: [],
+      allPoems: []
     };
   },
   computed: {
@@ -72,6 +91,15 @@ export default {
     }
   },
   methods: {
+    shufflePoems() {
+      let size = this.allPoems.length;
+      let idxs = randomIndexes(size, 5);
+      let shuffledPoems = [];
+      for (let idx of idxs) {
+        shuffledPoems.push(this.allPoems[idx]);
+      }
+      this.poems = shuffledPoems;
+    },
     searchPoems() {
       let s = "?";
       if (this.filter) {
@@ -93,6 +121,7 @@ export default {
               }
             });
             this.poems = poems;
+            this.allPoems = poems;
             this.loadStars();
           })
           .catch(err => {
@@ -112,6 +141,7 @@ export default {
               }
             });
             this.poems = poems;
+            this.allPoems = poems;
             this.loadStars();
           })
           .catch(err => {

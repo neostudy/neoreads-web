@@ -39,6 +39,9 @@
                 <el-menu-item index="/people">
                   <span class="theme">{{$t('menu.people')}}</span>
                 </el-menu-item>
+                <el-menu-item index="/coding">
+                  <span class="theme">{{$t('menu.coding')}}</span>
+                </el-menu-item>
                 <el-menu-item index="/dev">
                   <span class="theme">{{$t('menu.dev')}}</span>
                 </el-menu-item>
